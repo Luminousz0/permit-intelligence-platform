@@ -536,7 +536,7 @@ async function runCLI(): Promise<void> {
   console.log("Maximum score: 12 pts (all maximums) → Category 3");
   console.log("");
 
-  const answers: Partial<AmsterdamAnswers> = {};
+  const answers: any = {};
 
   for (const question of AMSTERDAM_QUESTIONS) {
     console.log("─".repeat(50));
@@ -568,7 +568,7 @@ async function runCLI(): Promise<void> {
       }
     }
 
-    answers[question.id] = question.options[choice - 1].id as any;
+    (answers as any)[question.id] = question.options[choice - 1].id;
     console.log(`  ✓ ${question.options[choice - 1].points} pt${question.options[choice - 1].points > 1 ? "s" : ""} — ${question.options[choice - 1].label_nl}`);
     console.log("");
   }
