@@ -1,0 +1,1165 @@
+{
+  "_meta": {
+    "description": "Municipality Participation Database — Layer 3 backbone for the Permit Intelligence Platform",
+    "version": "2.0.0",
+    "last_updated": "2026-04-20",
+    "profiled_count": 28,
+    "total_dutch_municipalities": 342,
+    "source_notes": [
+      "Data sourced from Parolo index, lokaleregelgeving.overheid.nl, and individual municipality portals",
+      "All policies apply to BOPA (Buitenplanse Omgevingsactiviteit) applications under the Omgevingswet",
+      "Legal basis: Art. 16.55 Omgevingswet + Art. 7.4 Omgevingsregeling",
+      "v2.0.0 (2026-04-20): +10 municipalities (Delft, Amersfoort, Venlo, Zoetermeer, Helmond, Leeuwarden, Zaanstad, Deventer, Ede, Dordrecht). Corrections: Tilburg (Impactscan), Apeldoorn (binary_list), Nijmegen (binary_list resolved), Enschede (7-category list mapped), Utrecht (process_mandatory)."
+    ],
+    "architecture_types": [
+      "blanket_mandatory",
+      "binary_list",
+      "scoring",
+      "designated_only",
+      "proportional_discretionary",
+      "case_by_case",
+      "explicit_opt_out",
+      "scale_based",
+      "quickscan_intake",
+      "broad_trigger",
+      "process_mandatory",
+      "voluntary_guidance",
+      "pending_binary_list",
+      "general_discretionary",
+      "no_policy"
+    ]
+  },
+  "municipalities": [
+    {
+      "id": "amsterdam",
+      "municipality": "Amsterdam",
+      "population": 930000,
+      "province": "Noord-Holland",
+      "mandatory_bopa_participation": true,
+      "mandatory_trigger": "all_bopas",
+      "architecture": "blanket_mandatory",
+      "scoring_system": {
+        "type": "category_assignment",
+        "description": "Developer answers a 4-question questionnaire → point score → category assigned (Participatiehandreiking 2022)",
+        "source": "Participatiehandreiking 'Betrek de buurt bij uw initiatieven' — Gemeente Amsterdam (2022)",
+        "source_pdf": "Wiki/Sources/participatiehandreiking_betrek_de_buurt_bij_uw_initiatieven.pdf",
+        "score_range": { "min": 4, "max": 12 },
+        "questions": [
+          {
+            "id": "q1",
+            "question_nl": "Wat is het type/omvang van uw initiatief?",
+            "question_en": "What is the type/scale of your initiative?",
+            "options": [
+              { "id": "A", "label_nl": "Veelvoorkomende initiatieven met beperkte gevolgen", "points": 1 },
+              { "id": "B", "label_nl": "Initiatief met middelgrote gevolgen", "points": 2 },
+              { "id": "C", "label_nl": "Initiatief met grote gevolgen", "points": 3 }
+            ]
+          },
+          {
+            "id": "q2",
+            "question_nl": "Zorgt uw initiatief voor meer verkeer of parkeerdrukte?",
+            "question_en": "Does your initiative cause more traffic or parking pressure?",
+            "options": [
+              { "id": "1", "label_nl": "(Bijna) niet", "points": 1 },
+              { "id": "2", "label_nl": "Meer verkeer en/of parkeerdrukte", "points": 2 },
+              { "id": "3", "label_nl": "Veel meer verkeer en/of parkeerdrukte", "points": 3 }
+            ]
+          },
+          {
+            "id": "q3",
+            "question_nl": "Heeft uw initiatief gevolgen voor het groen?",
+            "question_en": "Does your initiative affect green space?",
+            "options": [
+              { "id": "1", "label_nl": "(Bijna) niet", "points": 1 },
+              { "id": "2", "label_nl": "Gevolgen voor het groen", "points": 2 },
+              { "id": "3", "label_nl": "Grote gevolgen voor het groen", "points": 3 }
+            ]
+          },
+          {
+            "id": "q4",
+            "question_nl": "Verandert uw initiatief de beleving van de wijk of buurt?",
+            "question_en": "Does your initiative change the experience of the neighbourhood?",
+            "options": [
+              { "id": "1", "label_nl": "(Bijna) niet", "points": 1 },
+              { "id": "2", "label_nl": "Verandering van de beleving van de wijk of buurt", "points": 2 },
+              { "id": "3", "label_nl": "Grote veranderingen van de beleving van de wijk of buurt", "points": 3 }
+            ]
+          }
+        ],
+        "override_rule": "conflict_with_omgevingsplan_shifts_up_one_category",
+        "categories": [
+          {
+            "id": 1,
+            "score_max": 4,
+            "label": "Beperkte gevolgen",
+            "participation_form": "Informeren",
+            "required_actions": ["inform_direct_neighbours"],
+            "methods": ["letter", "email", "info_boards"],
+            "description": "Inform direct neighbours and immediate residents only"
+          },
+          {
+            "id": 2,
+            "score_min": 5,
+            "score_max": 8,
+            "label": "Middelgrote gevolgen",
+            "participation_form": "Raadplegen",
+            "required_actions": ["consult_broader_group", "gather_reactions_ideas_opinions"],
+            "methods": ["online_survey", "informatieavond"],
+            "description": "Consult broader group including neighbours, residents, and local entrepreneurs"
+          },
+          {
+            "id": 3,
+            "score_min": 9,
+            "score_max": 12,
+            "label": "Aanzienlijke gevolgen",
+            "participation_form": "Adviseren",
+            "required_actions": ["active_advisory_process", "involve_gebiedsmakelaar_early", "motivate_deviations_from_advice"],
+            "methods": ["inspraakbijeenkomsten", "brainstormsessies", "digital_input_platform"],
+            "description": "Active advisory process — must involve gebiedsmakelaar, must motivate any deviations from advice"
+          }
+        ],
+        "participatieplan_required_fields": [
+          "who_was_involved",
+          "how_involved",
+          "degree_of_participation",
+          "how_objections_handled"
+        ],
+        "results_must_be_shared_with": ["municipality", "stakeholders_who_participated"]
+      },
+      "documents_required": ["participatieplan"],
+      "document_notes": "Amsterdam uses 'participatieplan' (not 'participatieverslag'). Must match category depth. Results shared with municipality AND stakeholders.",
+      "non_compliance_consequence": "rejected_as_incomplete",
+      "prior_framework_exemption": false,
+      "rule_effective_date": "2024-01-01",
+      "rule_adopted_date": "2022-11-01",
+      "policy_document_type": "Beleidskader Participatie",
+      "policy_url": "https://lokaleregelgeving.overheid.nl/CVDR684242/1",
+      "strictness": "highest",
+      "strictness_notes": "Strictest municipality in the Netherlands. No exceptions. Score system determines intensity.",
+      "product_play": "The scoring questionnaire is fully replicable as a product feature. Amsterdam is the best MVP demo case.",
+      "data_completeness": "full",
+      "research_gaps": []
+    },
+    {
+      "id": "rotterdam",
+      "municipality": "Rotterdam",
+      "population": 670000,
+      "province": "Zuid-Holland",
+      "mandatory_bopa_participation": true,
+      "mandatory_trigger": "large_initiatives",
+      "architecture": "scale_based",
+      "scale_system": {
+        "type": "large_small_split",
+        "description": "Large initiatives = mandatory with intake team. Small = encouraged, lighter touch.",
+        "tracks": [
+          {
+            "track": "large",
+            "required_actions": ["early_intake_team", "participation_advisor", "participation_report"],
+            "description": "Full mandatory participation with professional support"
+          },
+          {
+            "track": "small",
+            "required_actions": ["factsheet_guidance"],
+            "description": "Lighter touch with factsheet, encouraged but not strictly mandatory"
+          }
+        ],
+        "size_threshold_notes": "Threshold between large/small not explicitly published — intake team assessment determines track"
+      },
+      "documents_required": ["participatierapportage"],
+      "document_notes": "Required for large initiatives only",
+      "non_compliance_consequence": "permit_may_be_denied",
+      "prior_framework_exemption": true,
+      "prior_framework_exemption_notes": "If project aligns with an existing approved spatial framework (masterplan, urban vision), no fresh participation required — participation already occurred at the planning stage. Major time-saver.",
+      "rule_effective_date": "2023-03-01",
+      "policy_document_type": "Participatierapportage",
+      "policy_url": "https://lokaleregelgeving.overheid.nl/CVDR696135/1",
+      "strictness": "high",
+      "strictness_notes": "High for large projects, lighter for small. Prior-framework exemption reduces burden significantly.",
+      "product_play": "Auto-flag whether a project qualifies for the prior-framework exemption — major value-add.",
+      "data_completeness": "partial",
+      "research_gaps": ["Exact definition of 'large' vs 'small' initiative threshold"]
+    },
+    {
+      "id": "den-haag",
+      "municipality": "Den Haag",
+      "population": 560000,
+      "province": "Zuid-Holland",
+      "mandatory_bopa_participation": null,
+      "mandatory_trigger": "designated_categories_being_finalised",
+      "architecture": "designated_only",
+      "designated_system": {
+        "type": "council_designation_list",
+        "description": "Council must formally designate which project types require mandatory participation. List still being finalised as of 2026.",
+        "designation_list_available": false,
+        "designation_list_notes": "A court ruled Sep 2024 that no mandatory participation applied to a specific project because council had not formally designated it. Policy was ambiguous through all of 2024. Published decisions and ordinances are findable via the Den Haag Gemeenteblad.",
+        "permit_announcements_url": "https://www.overheid.nl/berichten-over-uw-buurt",
+        "gemeenteblad_url": "https://zoek.officielebekendmakingen.nl/uitgebreidzoeken/officielebekendmakingen"
+      },
+      "documents_required": ["participatieverslag"],
+      "document_notes": "Required for designated categories only",
+      "non_compliance_consequence": "permit_may_be_denied",
+      "prior_framework_exemption": false,
+      "rule_effective_date": "2025-03-01",
+      "rule_adopted_date": "2024-12-18",
+      "policy_document_type": "Inspraak- en Participatieverordening Den Haag 2024",
+      "policy_url": null,
+      "strictness": "moderate",
+      "strictness_notes": "Policy adopted Dec 2024, in effect March 2025. Designation list still maturing — treat as uncertain until full list is published.",
+      "product_play": "High value in providing up-to-date Den Haag designations as they are finalised. Monitor this municipality closely.",
+      "data_completeness": "partial",
+      "research_gaps": ["Full designation list of mandatory project types under the 2024 ordinance"]
+    },
+    {
+      "id": "utrecht",
+      "municipality": "Utrecht",
+      "population": 370000,
+      "province": "Utrecht",
+      "mandatory_bopa_participation": true,
+      "mandatory_trigger": "process_mandatory_via_kompas",
+      "architecture": "process_mandatory",
+      "process_system": {
+        "type": "kompas_voor_zeggenschap",
+        "description": "No fixed project-type trigger yet. Developers must run the 'kompas voor zeggenschap' — a decision-making compass guiding which cooperation form is appropriate. Functionally mandatory for all significant BOPAs.",
+        "cooperation_forms": [
+          "overheidsmiddelen",
+          "overheidsparticipatie",
+          "samen_aan_zet",
+          "burgerparticipatie",
+          "peilen"
+        ],
+        "incoming_change": "Utrecht is transitioning to a hybrid model. The Beleidsregel Vergunningenstrategie Omgevingswet (effective 18-03-2026, para. 3.3) explicitly states a BOPA designation list will be submitted to council in Q1 2026. Once published, architecture will shift from process_mandatory to a hybrid process_mandatory + binary_list.",
+        "incoming_change_status": "Q1/Q2 2026 council decision — not yet published as of April 20, 2026",
+        "wrong_source_note": "CVDR721904 ('Verordening re-integratie en tegenprestatie Participatiewet') is an employment ordinance under social welfare law — irrelevant to spatial planning. Do not use.",
+        "contact_email": "samenstadmaken@utrecht.nl"
+      },
+      "documents_required": ["samenwerkingsplan", "samenwerkingsverslag"],
+      "document_notes": "Samenwerkingsplan (before) + samenwerkingsverslag (after). Both required.",
+      "non_compliance_consequence": "permit_may_be_denied",
+      "prior_framework_exemption": false,
+      "rule_effective_date": "2024-06-27",
+      "policy_document_type": "Beleidsnota 'Samen stad maken' + Verordening samenwerking participatie inspraak (10-04-2025)",
+      "policy_url": "https://lokaleregelgeving.overheid.nl/CVDR758853/1",
+      "strictness": "high",
+      "strictness_notes": "Civic culture is strong — even voluntary participation is de facto expected. Kompas requires genuine deliberation, not checkbox exercise.",
+      "product_play": "Utrecht needs a guided workflow tool more than a binary checker now. Walk developers through the kompas questions → output samenwerkingsplan template. Add binary checker once the designation list is published.",
+      "data_completeness": "partial",
+      "research_gaps": ["Utrecht BOPA designation list — Q1/Q2 2026 council decision not yet published. Monitor lokaleregelgeving.overheid.nl."]
+    },
+    {
+      "id": "eindhoven",
+      "municipality": "Eindhoven",
+      "population": 240000,
+      "province": "Noord-Brabant",
+      "mandatory_bopa_participation": true,
+      "mandatory_trigger": "many_cases_via_quickscan",
+      "architecture": "quickscan_intake",
+      "quickscan_system": {
+        "type": "self_serve_tool",
+        "description": "Developer uses municipality's Quickscan tool to determine if participation is required and at what level. Large projects go through intake team with participation advisor.",
+        "quickscan_available": true,
+        "quickscan_url": "https://www.eindhoven.nl/bouwen/bouwprojecten/intake-nieuwe-bouwinitiatieven/participatie-bij-bouwplannen-en-initiatieven",
+        "tracks": [
+          {
+            "track": "large",
+            "required_actions": ["intake_team", "participation_advisor", "participation_report"]
+          },
+          {
+            "track": "standard",
+            "required_actions": ["quickscan", "participation_report_if_required"]
+          }
+        ]
+      },
+      "documents_required": ["participatieverslag"],
+      "document_notes": "Who was involved, how participation occurred, what was done with input",
+      "non_compliance_consequence": "permit_delayed_or_denied",
+      "prior_framework_exemption": false,
+      "rule_effective_date": "2024-01-01",
+      "policy_document_type": "Participatie routewijzer",
+      "policy_url": "https://www.eindhoven.nl/bouwen/bouwprojecten/intake-nieuwe-bouwinitiatieven/participatie-bij-bouwplannen-en-initiatieven",
+      "strictness": "high",
+      "strictness_notes": "Only municipality with a self-serve Quickscan tool — the benchmark for developer tooling.",
+      "product_play": "The product is essentially 'Eindhoven's Quickscan for all 342 municipalities.' This is the clearest product positioning.",
+      "data_completeness": "partial",
+      "research_gaps": ["Exact Quickscan parameters and thresholds — need to run through the tool"]
+    },
+    {
+      "id": "tilburg",
+      "municipality": "Tilburg",
+      "population": 225000,
+      "province": "Noord-Brabant",
+      "mandatory_bopa_participation": true,
+      "mandatory_trigger": "all_bopas",
+      "architecture": "blanket_mandatory",
+      "impactscan_system": {
+        "type": "4_level_impact_scoring",
+        "description": "All BOPAs mandatory. Intensity determined by Impactscan across 6 themes → Level A/B/C/D.",
+        "source": "CVDR738554 — Aanwijzen gevallen van verplichte participatie bij een omgevingsvergunning voor een buitenplanse omgevingsplanactiviteit",
+        "themes": [
+          "initiative_type",
+          "traffic",
+          "green_space",
+          "aesthetics",
+          "health_and_nuisance",
+          "alignment_with_omgevingsplan"
+        ],
+        "levels": [
+          {
+            "id": "A",
+            "score_range": "1–2",
+            "label": "Beperkte gevolgen",
+            "label_en": "Minimal impact",
+            "required_actions": ["inform_direct_surroundings"],
+            "participation_form": "Informeren",
+            "description": "Information only to direct surroundings"
+          },
+          {
+            "id": "B",
+            "score_range": "3",
+            "label": "Matige gevolgen",
+            "label_en": "Moderate impact",
+            "required_actions": ["consult_broader_stakeholders"],
+            "participation_form": "Raadplegen",
+            "description": "Consultation (raadplegen) with broader stakeholder group"
+          },
+          {
+            "id": "C",
+            "score_range": "4–5",
+            "label": "Aanzienlijke gevolgen",
+            "label_en": "Major impact",
+            "required_actions": ["advisory_process_with_independent_facilitation"],
+            "participation_form": "Adviseren",
+            "description": "Advisory process with independent facilitation (not municipality-led)"
+          },
+          {
+            "id": "D",
+            "score_range": "4–5 (strategic zones)",
+            "label": "Aanzienlijke gevolgen — strategisch gebied",
+            "label_en": "Major impact — strategic area",
+            "required_actions": ["advisory_process_with_municipality_as_co_partner"],
+            "participation_form": "Adviseren (co-partner)",
+            "description": "Advisory process where municipality acts as active co-partner (not just facilitator)"
+          }
+        ],
+        "override_rule": "projects_in_designated_strategic_zones_automatically_qualify_for_level_D_regardless_of_score",
+        "scoring_formula_note": "Exact per-theme scoring weights not yet extracted from CVDR738554 — impactscan scoring is heuristic until formula is documented"
+      },
+      "documents_required": ["participatieverslag"],
+      "document_notes": "Report must document: intensity level chosen, participation process, outcomes, and how feedback was incorporated into the plan.",
+      "non_compliance_consequence": "permit_may_be_denied",
+      "prior_framework_exemption": false,
+      "rule_effective_date": "2024-01-01",
+      "policy_document_type": "Aanwijzen gevallen verplichte participatie BOPA",
+      "policy_url": "https://lokaleregelgeving.overheid.nl/CVDR738554/1",
+      "strictness": "high",
+      "strictness_notes": "Blanket mandatory — no exceptions. The 4-level Impactscan makes this the second fully modellable scoring system found (alongside Amsterdam). Level D for strategic zones is particularly demanding.",
+      "product_play": "Tilburg's Impactscan is the second replicable scoring system after Amsterdam. Also high value for the participatieverslag generator — Impactscan level determines report depth.",
+      "data_completeness": "partial",
+      "research_gaps": ["Exact per-theme scoring scale and weights from CVDR738554 — needed for precise Level A/B/C/D assignment"]
+    },
+    {
+      "id": "almere",
+      "municipality": "Almere",
+      "population": 230000,
+      "province": "Flevoland",
+      "mandatory_bopa_participation": null,
+      "mandatory_trigger": "case_by_case",
+      "architecture": "case_by_case",
+      "case_by_case_system": {
+        "description": "No fixed threshold or list. Municipality assesses each application individually. If participation is found insufficient, municipality collects stakeholder views itself — causing delay at minimum.",
+        "policy_being_finalised": true,
+        "policy_finalisation_expected": "2025"
+      },
+      "documents_required": ["participation_description"],
+      "document_notes": "Who was involved, how, how their interests were addressed",
+      "non_compliance_consequence": "municipal_self_collection_causing_delay",
+      "prior_framework_exemption": false,
+      "policy_document_type": "Beleidsnota (being finalized)",
+      "policy_url": "https://www.almere.nl/bouwen/omgevingswet/participatie-omgevingswet",
+      "strictness": "moderate",
+      "strictness_notes": "Most ambiguous of all profiled municipalities. Policy still being defined.",
+      "product_play": "Highest immediate pain for developers in Almere. Ambiguity = maximum confusion = maximum product value.",
+      "special_note": "This is dad's primary municipality — highest personal relevance.",
+      "data_completeness": "partial",
+      "research_gaps": ["Final policy document once published", "Exact triggers and standards once policy is finalised"]
+    },
+    {
+      "id": "groningen",
+      "municipality": "Groningen",
+      "population": 235000,
+      "province": "Groningen",
+      "mandatory_bopa_participation": true,
+      "mandatory_trigger": "binary_activities_list",
+      "architecture": "binary_list",
+      "binary_list_system": {
+        "type": "activiteitenlijst",
+        "description": "14-category binary activities list. On the list = mandatory participation. Not on the list = optional.",
+        "list_effective_date": "2024-03-22",
+        "categories": [
+          { "code": "A", "activity": "Renovation / modification / expansion of existing housing and buildings", "threshold": "Excludes replacement on same site", "mandatory": true },
+          { "code": "B", "activity": "New housing in small villages", "threshold": "Village population <5,000 residents AND >2 homes organic growth", "mandatory": true },
+          { "code": "C", "activity": "Converting recreational homes to permanent residence", "threshold": "All cases", "mandatory": true },
+          { "code": "D", "activity": "Second service dwelling for agricultural business", "threshold": "All cases", "mandatory": true },
+          { "code": "E", "activity": "Agricultural plot boundary expansion", "threshold": "Any increase of existing land area", "mandatory": true },
+          { "code": "F", "activity": "Infill construction", "threshold": "Building in gaps in existing settlement patterns", "mandatory": true },
+          { "code": "G", "activity": "Business buildings on industrial parks", "threshold": "Construction, modification, or expansion", "mandatory": true },
+          { "code": "H", "activity": "Social facilities", "threshold": "Welfare, healthcare, culture, education, sports, childcare — all cases", "mandatory": true },
+          { "code": "I", "activity": "Mobile telecom masts", "threshold": "ALL THREE conditions simultaneously: terrain >100m² AND structure >5m AND mast >40m", "mandatory": true, "threshold_logic": "AND" },
+          { "code": "J", "activity": "Small public space structures", "threshold": "Kiosks, pavilions, temporary cultural or commercial buildings", "mandatory": true },
+          { "code": "K", "activity": "Boat mooring", "threshold": "Waterways for vessel moorage including houseboats", "mandatory": true },
+          { "code": "L", "activity": "Renewable energy", "threshold": "Solar fields, wind turbines, biogas installations", "mandatory": true },
+          { "code": "M", "activity": "Tree removal", "threshold": ">20 trees, OR any heritage-designated tree", "mandatory": true, "threshold_logic": "OR" },
+          { "code": "N", "activity": "Sports / recreation facilities", "threshold": "Expansion with disproportionate construction", "mandatory": true }
+        ]
+      },
+      "beleidsregels": {
+        "developer_owns_process": true,
+        "must_involve_all_affected_parties": true,
+        "identical_info_to_all_parties": true,
+        "insufficient_consequence": "remedy_opportunity_then_rejection"
+      },
+      "documents_required": ["participatieverslag"],
+      "document_notes": "Covers who was involved, what was communicated, what feedback was received, and how it was handled",
+      "non_compliance_consequence": "remedy_opportunity_then_rejection",
+      "prior_framework_exemption": false,
+      "policy_document_type": "Participatiewerkboek",
+      "policy_url_activiteitenlijst": "https://lokaleregelgeving.overheid.nl/CVDR716944/1",
+      "policy_url_beleidsregels": "https://lokaleregelgeving.overheid.nl/CVDR708912/1",
+      "strictness": "high",
+      "strictness_notes": "Most structured municipal participation system in the Netherlands. Binary list leaves no ambiguity.",
+      "product_play": "Groningen's structure is the ideal product database schema. Every municipality should eventually have this level of structured data.",
+      "data_completeness": "full",
+      "research_gaps": []
+    },
+    {
+      "id": "breda",
+      "municipality": "Breda",
+      "population": 185000,
+      "province": "Noord-Brabant",
+      "mandatory_bopa_participation": true,
+      "mandatory_trigger": "all_spatial_initiatives",
+      "architecture": "blanket_mandatory",
+      "two_document_system": {
+        "description": "Unique requirement: TWO documents at different stages of the process",
+        "documents": [
+          {
+            "name": "Participation Plan",
+            "stage": "initiative",
+            "timing": "submitted at initiative stage",
+            "contents": ["participation approach", "stakeholder identification strategy", "planned timeline"]
+          },
+          {
+            "name": "Participation Report",
+            "stage": "application",
+            "timing": "submitted with permit application",
+            "contents": ["participation level chosen", "steps taken", "stakeholders involved", "considerations raised", "how feedback was incorporated", "what was not incorporated and why"]
+          }
+        ]
+      },
+      "documents_required": ["participatieplan", "participatieverslag"],
+      "document_notes": "Both documents required — plan before, report after. Unique in the Netherlands.",
+      "non_compliance_consequence": "permit_denied",
+      "non_compliance_notes": "If insufficient, justification for zoning deviation fails → permit denied",
+      "prior_framework_exemption": false,
+      "policy_document_type": "Verordening",
+      "policy_url": "https://lokaleregelgeving.overheid.nl/CVDR626689",
+      "strictness": "high",
+      "strictness_notes": "Two-document requirement is the most structured submission requirement of any profiled municipality.",
+      "product_play": "The product can automate generation of both the plan and the report — unusually high value for Breda.",
+      "data_completeness": "full",
+      "research_gaps": []
+    },
+    {
+      "id": "arnhem",
+      "municipality": "Arnhem",
+      "population": 165000,
+      "province": "Gelderland",
+      "mandatory_bopa_participation": true,
+      "mandatory_trigger": "all_bopas_score_based_intensity",
+      "architecture": "scoring",
+      "scoring_system": {
+        "type": "parameter_scoring",
+        "description": "4-parameter scoring system. Sum scores → divide by 4 → assign participation level.",
+        "parameters": [
+          { "name": "building_category", "description": "Number of housing units or commercial space volume" },
+          { "name": "traffic_congestion_effects", "description": "Impact on traffic flow and congestion" },
+          { "name": "green_space_impact", "description": "Impact on green spaces and ecology" },
+          { "name": "neighbourhood_character_change", "description": "Changes to street profile and neighbourhood character" }
+        ],
+        "scoring_formula": "sum_of_parameters / 4",
+        "levels": [
+          { "id": 1, "label": "Minimal impact", "required_actions": ["basic_information_sharing"], "description": "Inform affected parties with basic project information" },
+          { "id": 2, "label": "Moderate impact", "required_actions": ["input_gathering", "discussion_sessions"], "description": "Structured input and discussion with stakeholders" },
+          { "id": 3, "label": "Major impact", "required_actions": ["collaborative_design_involvement"], "description": "Stakeholders actively involved in shaping the plan" }
+        ]
+      },
+      "documents_required": ["attendance_records", "participation_report"],
+      "document_notes": "Report must cover: steps taken, results, support levels, how feedback shaped the plan",
+      "non_compliance_consequence": "permit_may_be_denied",
+      "prior_framework_exemption": false,
+      "policy_document_type": "Handreiking",
+      "policy_url": "https://lokaleregelgeving.overheid.nl/CVDR678218/1",
+      "strictness": "high",
+      "strictness_notes": "Score-based like Amsterdam — replicable pattern. Level 1/2/3 based on 4-parameter impact score.",
+      "product_play": "Arnhem and Amsterdam both use scoring systems — this is a replicable architecture across multiple municipalities.",
+      "data_completeness": "partial",
+      "research_gaps": ["Exact scoring scale per parameter (e.g., how many points for 10 housing units vs 50?)"]
+    },
+    {
+      "id": "nijmegen",
+      "municipality": "Nijmegen",
+      "population": 180000,
+      "province": "Gelderland",
+      "mandatory_bopa_participation": true,
+      "mandatory_trigger": "binary_list_linked_to_bindend_advies",
+      "architecture": "binary_list",
+      "binary_list_system": {
+        "type": "activiteitenlijst",
+        "description": "Participation mandatory for exactly those activities where the council holds binding advisory rights. CVDR696321 states explicitly: 'Participatie is alleen verplicht voor die activiteiten waarbij de raad een bindend adviesrecht heeft.' One lookup, two flags: mandatory participation (Art. 16.55) AND council binding advisory right (Art. 16.15a) — same list.",
+        "sources": ["CVDR696321 (Art. 16.55 participation)", "CVDR708153 (Art. 16.15a bindend advies)"],
+        "list_effective_date": "2024-01-01",
+        "list_adopted_date": "2022-09-28",
+        "categories": [
+          { "id": 1, "activity": "Housing", "threshold": "≥ 2 woningen (including two-under-one-roof)", "mandatory": true },
+          { "id": 2, "activity": "Building expansion", "threshold": "> 1,000m² BVO", "mandatory": true },
+          { "id": 3, "activity": "Bijgebouw outside bebouwde kom", "threshold": "> 100m² BVO", "mandatory": true },
+          { "id": 4, "activity": "Function change to retail/services/office/social/horeca", "threshold": "> 1,500m² BVO cumulative new function", "mandatory": true },
+          { "id": 5, "activity": "Greenhouses", "threshold": "> 1,000m² BVO", "mandatory": true },
+          { "id": 6, "activity": "Duurzame energie & verkeersinfrastructuur", "threshold": "Any", "mandatory": true }
+        ]
+      },
+      "documents_required": ["participatieverslag"],
+      "document_notes": "Per the Participatiebeleid voor het ruimtelijk domein van de gemeente Nijmegen",
+      "non_compliance_consequence": "permit_may_be_denied",
+      "prior_framework_exemption": false,
+      "policy_document_type": "Aanwijzingsbesluit verplichte participatie + Participatiebeleid ruimtelijk domein",
+      "policy_url_participation": "https://lokaleregelgeving.overheid.nl/CVDR696321/1",
+      "policy_url_bindend_advies": "https://lokaleregelgeving.overheid.nl/CVDR708153/",
+      "strictness": "high",
+      "strictness_notes": "Compact list — 6 categories. Housing trigger is low (≥2 units) meaning most residential developments qualify. Energy and infrastructure always mandatory.",
+      "product_play": "Nijmegen is now fully modellable. Model the list once → surface two product features simultaneously (participation flag + council advisory flag).",
+      "data_completeness": "full",
+      "research_gaps": []
+    },
+    {
+      "id": "haarlem",
+      "municipality": "Haarlem",
+      "population": 165000,
+      "province": "Noord-Holland",
+      "mandatory_bopa_participation": true,
+      "mandatory_trigger": "when_statutory_requirement_or_stakeholders_reasonably_expectable",
+      "architecture": "broad_trigger",
+      "broad_trigger_system": {
+        "description": "Mandatory when a legal statute requires it OR when 'reasonably expectable stakeholders' exist. Broad trigger means almost any project with affected neighbours requires participation.",
+        "trigger_conditions": ["statutory_requirement", "reasonably_expectable_stakeholders_exist"]
+      },
+      "documents_required": ["participation_paragraph"],
+      "document_contents": [
+        "project impact description", "participation objectives", "influence level offered",
+        "participation timeline", "stakeholder identification method", "outreach methods used",
+        "feedback mechanisms", "how input was handled"
+      ],
+      "post_participation": {
+        "results_submitted_to": ["participants", "council_commission"],
+        "commission_assesses": "incorporation of findings"
+      },
+      "non_compliance_consequence": "permit_may_be_denied",
+      "prior_framework_exemption": false,
+      "rule_effective_date": "2024-02-29",
+      "policy_document_type": "Verordening participatie en uitdaagrecht 2024",
+      "policy_url": "https://lokaleregelgeving.overheid.nl/CVDR716990/",
+      "parolo_data_note": "Parolo incorrectly lists Haarlem as 'geen beleid' — Parolo is outdated. Haarlem has a 2024 ordinance.",
+      "strictness": "high",
+      "strictness_notes": "Detailed documentation requirements among the most demanding of all profiled municipalities.",
+      "product_play": "Participatieverslag generator highly valuable here — Haarlem's required documentation is unusually detailed.",
+      "data_completeness": "full",
+      "research_gaps": []
+    },
+    {
+      "id": "s-hertogenbosch",
+      "municipality": "'s-Hertogenbosch",
+      "population": 160000,
+      "province": "Noord-Brabant",
+      "mandatory_bopa_participation": true,
+      "mandatory_trigger": "all_bopas",
+      "architecture": "blanket_mandatory",
+      "dialogue_system": {
+        "type": "bossche_omgevingsdialoog",
+        "description": "When a plan doesn't fit the omgevingsplan (i.e., a BOPA is needed), the Bossche omgevingsdialoog is required. Flexible format — the initiator enters into dialogue with surrounding stakeholders.",
+        "format": "flexible",
+        "minimum_standard": "meaningful_dialogue_with_surrounding_stakeholders"
+      },
+      "documents_required": ["documentation_of_dialogue_process_and_outcomes"],
+      "document_notes": "No fixed template — document what was done and what came of it",
+      "non_compliance_consequence": "permit_may_be_denied",
+      "prior_framework_exemption": false,
+      "policy_document_type": "Bossche omgevingsdialoog",
+      "policy_url": null,
+      "strictness": "high",
+      "strictness_notes": "Flexible format is harder to navigate than structured systems — no clear checklist of what 'sufficient' looks like.",
+      "product_play": "Product should clarify what 'sufficient dialogue' looks like in 's-Hertogenbosch context — filling the flexibility gap.",
+      "data_completeness": "partial",
+      "research_gaps": ["Minimum standards for 'sufficient' Bossche omgevingsdialoog — what does the municipality actually check for?"]
+    },
+    {
+      "id": "zwolle",
+      "municipality": "Zwolle",
+      "population": 135000,
+      "province": "Overijssel",
+      "mandatory_bopa_participation": true,
+      "mandatory_trigger": "eight_threshold_categories",
+      "architecture": "binary_list",
+      "binary_list_system": {
+        "type": "threshold_based_categories",
+        "description": "8 categories with measurable, programmatically evaluable thresholds",
+        "policy_documents": ["Participatie aanpak", "Aanwijzingsbesluit"],
+        "categories": [
+          { "id": 1, "name": "tall_buildings", "description": "Tall buildings", "threshold": "height > 25m", "threshold_type": "numeric", "parameter": "building_height_meters", "operator": ">", "value": 25, "notes": "Excluding antenna masts", "mandatory": true },
+          { "id": 2, "name": "wind_turbines", "description": "Wind turbines", "threshold": "one or more turbines", "threshold_type": "binary", "parameter": "wind_turbine_count", "operator": ">=", "value": 1, "mandatory": true },
+          { "id": 3, "name": "solar_installations", "description": "Standalone solar installations", "threshold": "standalone in open fields (not building-mounted)", "threshold_type": "categorical", "parameter": "solar_installation_type", "value": "standalone_ground_mounted", "mandatory": true },
+          { "id": 4, "name": "vision_conflicts", "description": "Projects contradicting the municipal environmental vision", "threshold": "contradicts omgevingsvisie", "threshold_type": "judgment", "notes": "Judgment call — flag for user to check with municipality", "mandatory": true },
+          { "id": 5, "name": "housing_urban", "description": "Housing projects in urban areas", "threshold": "5 or more homes in one project, urban location", "threshold_type": "numeric", "parameter": "housing_unit_count", "operator": ">=", "value": 5, "location_constraint": "urban", "mandatory": true },
+          { "id": 6, "name": "housing_rural", "description": "Housing projects in rural areas", "threshold": "5 or more homes in rural areas", "threshold_type": "numeric", "parameter": "housing_unit_count", "operator": ">=", "value": 5, "location_constraint": "rural", "mandatory": true },
+          { "id": 7, "name": "eia_required", "description": "Projects requiring mandatory Environmental Impact Assessment (m.e.r.)", "threshold": "any project requiring mandatory EIA", "threshold_type": "binary", "parameter": "eia_required", "value": true, "mandatory": true },
+          { "id": 8, "name": "sensitive_nature_areas", "description": "Construction in sensitive nature zones", "threshold": "construction in 'waardevol' or 'zeer waardevol' zones on municipal nature map", "threshold_type": "spatial", "parameter": "nature_zone_designation", "value": ["waardevol", "zeer_waardevol"], "mandatory": true }
+        ]
+      },
+      "documents_required": ["participatieverslag"],
+      "non_compliance_consequence": "permit_may_be_denied",
+      "prior_framework_exemption": false,
+      "policy_document_type": "Participatie aanpak",
+      "policy_url": "https://lokaleregelgeving.overheid.nl/CVDR726092/1",
+      "strictness": "high",
+      "strictness_notes": "Thresholds are precise and programmatically evaluable — simplest to build a checker for.",
+      "product_play": "Input project specs → check against thresholds → binary output. Best first binary-list implementation.",
+      "data_completeness": "full",
+      "research_gaps": []
+    },
+    {
+      "id": "enschede",
+      "municipality": "Enschede",
+      "population": 160000,
+      "province": "Overijssel",
+      "mandatory_bopa_participation": true,
+      "mandatory_trigger": "council_designated_bopa_list",
+      "architecture": "binary_list",
+      "binary_list_system": {
+        "type": "council_designation_list",
+        "description": "7 categories (with subcategories). On the list → mandatory. Off the list → voluntary. Adopted May 25, 2022. Effective January 1, 2024. List to be evaluated after 2 years.",
+        "source": "CVDR702431",
+        "list_effective_date": "2024-01-01",
+        "list_adopted_date": "2022-05-25",
+        "trigger_criteria": "substantial_consequences_for_physical_living_environment_with_expected_stakeholder_objections",
+        "categories": [
+          {
+            "id": 1, "name": "duurzaamheid", "label": "Duurzaamheid",
+            "subcategories": [
+              { "activity": "Solar park", "threshold": "Any — within or outside bebouwde kom", "mandatory": true },
+              { "activity": "Wind turbines", "threshold": "Tiphoogte > 20m", "mandatory": true },
+              { "activity": "Public utility facilities", "threshold": "> 400m² BVO or > 3.5m height", "mandatory": true, "threshold_logic": "OR" },
+              { "activity": "New or expanded nature areas", "threshold": "Any", "mandatory": true }
+            ]
+          },
+          {
+            "id": 2, "name": "woningbouw", "label": "Woningbouw",
+            "subcategories": [
+              { "activity": "New houses — in bebouwde kom", "threshold": "≥ 6 woningen", "mandatory": true },
+              { "activity": "New houses — outside bebouwde kom", "threshold": "≥ 3 woningen", "mandatory": true },
+              { "activity": "Woning volume extension — outside bebouwde kom", "threshold": "> 1,000m³", "mandatory": true }
+            ]
+          },
+          {
+            "id": 3, "name": "bedrijvigheid", "label": "Bedrijvigheid",
+            "subcategories": [
+              { "activity": "Horeca cat. 1b or higher", "threshold": "Any (exempt: aangewezen centrumgebieden)", "mandatory": true },
+              { "activity": "New or expanded business activity", "threshold": "> 500m² BVO (exempt: business parks; <500m²; nieuwe economische dragers; home-based)", "mandatory": true },
+              { "activity": "Higher milieucategorie than omgevingsplan allows", "threshold": "≥ 2 steps higher (single-step upgrade exempted)", "mandatory": true }
+            ]
+          },
+          {
+            "id": 4, "name": "infrastructuur", "label": "Infrastructuur",
+            "subcategories": [
+              { "activity": "New or expanded parking terrain", "threshold": "≥ 11 parkeerplaatsen", "mandatory": true },
+              { "activity": "New large-scale infrastructure", "threshold": "Any", "mandatory": true },
+              { "activity": "Antenna mast", "threshold": "> 40m", "mandatory": true },
+              { "activity": "Garage boxes in bebouwde kom", "threshold": "Any", "mandatory": true }
+            ]
+          },
+          {
+            "id": 5, "name": "verblijfsrecreatieterreinen", "label": "Verblijfsrecreatieterreinen",
+            "subcategories": [
+              { "activity": "Holiday park area or unit count expansion", "threshold": "Any", "mandatory": true },
+              { "activity": "Expansion of bouwmassa of recreational units", "threshold": "Any", "mandatory": true },
+              { "activity": "Hotel room addition or expansion", "threshold": "Any", "mandatory": true }
+            ]
+          },
+          {
+            "id": 6, "name": "overige", "label": "Overige",
+            "subcategories": [
+              { "activity": "Large temporary worker housing", "threshold": "> 30 persons", "mandatory": true },
+              { "activity": "Asylum centre (toevoeging/uitbreiding)", "threshold": "Any", "mandatory": true },
+              { "activity": "Intensive livestock farming", "threshold": "Any", "mandatory": true }
+            ]
+          },
+          {
+            "id": 7, "name": "maatschappelijke_onrust", "label": "Maatschappelijke onrust",
+            "subcategories": [
+              { "activity": "Politically sensitive / socially disruptive cases", "threshold": "College judgment — NOT a hard requirement; always flag for manual review", "mandatory": false, "flag": true, "flag_note": "Always produce a soft warning in checker output — municipality may require participation even if no other category triggered" }
+            ]
+          }
+        ]
+      },
+      "documents_required": ["participation_statement"],
+      "document_notes": "Statement of whether and how stakeholders were involved, and what results emerged",
+      "non_compliance_consequence": "permit_may_be_denied",
+      "prior_framework_exemption": false,
+      "policy_document_type": "Verordening lijst specifieke gevallen waarbij participatie voor een aanvraag BOPA verplicht is",
+      "policy_url": "https://lokaleregelgeving.overheid.nl/CVDR702431",
+      "strictness": "high",
+      "strictness_notes": "7-category list with detailed subcategories. Categories 1–6 are fully rule-based and programmatically checkable. Category 7 is a soft catch-all.",
+      "product_play": "Fully modellable. Model categories 1–6 programmatically; always surface category 7 as a soft warning.",
+      "data_completeness": "full",
+      "research_gaps": []
+    },
+    {
+      "id": "maastricht",
+      "municipality": "Maastricht",
+      "population": 120000,
+      "province": "Limburg",
+      "mandatory_bopa_participation": null,
+      "mandatory_trigger": "proportional_to_scale_and_impact",
+      "architecture": "proportional_discretionary",
+      "checklist_system": {
+        "type": "six_step_checklist",
+        "description": "No explicit mandatory trigger stated. Developer determines scope using the municipality's 6-step checklist. Proportional to project scale and environmental impact.",
+        "steps": [
+          { "step": 1, "title": "Define plan", "contents": ["goals", "timeline", "budget", "decision-makers"] },
+          { "step": 2, "title": "Analyse stakeholders", "contents": ["who is affected", "at what level"] },
+          { "step": 3, "title": "Choose participation method", "options": ["kitchen-table talks", "design sessions", "surveys", "public meetings"] },
+          { "step": 4, "title": "Invite participants", "contents": ["personal invitations", "clarity on what is fixed vs. flexible in the plan"] },
+          { "step": 5, "title": "Test and document agreements", "contents": ["record agreements", "document participation activities"] },
+          { "step": 6, "title": "Submit participation report", "contents": ["methodology", "attendance", "changes made", "satisfaction ratings"] }
+        ]
+      },
+      "documents_required": ["participation_report"],
+      "document_notes": "Report must include: methodology, attendance, changes made, satisfaction ratings",
+      "non_compliance_consequence": "unclear",
+      "prior_framework_exemption": false,
+      "policy_document_type": "Participatiechecklist",
+      "policy_url": "https://www.gemeentemaastricht.nl/bouwen-en-verbouwen/participatie/checklist-participatie",
+      "strictness": "moderate",
+      "strictness_notes": "Scale-based proportionality — no hard threshold. Developer self-determines scope using checklist.",
+      "product_play": "Maastricht's 6-step checklist format is close to the ideal participatieverslag generator flow.",
+      "data_completeness": "full",
+      "research_gaps": []
+    },
+    {
+      "id": "apeldoorn",
+      "municipality": "Apeldoorn",
+      "population": 165000,
+      "province": "Gelderland",
+      "mandatory_bopa_participation": true,
+      "mandatory_trigger": "binary_list_linked_to_advisory_rights",
+      "architecture": "binary_list",
+      "binary_list_system": {
+        "type": "linked_to_advisory_rights",
+        "description": "Mandatory participation for all BOPAs where the municipal council has advisory rights. The council designated specific categories via a policy rule on advisory rights adopted July 7, 2023. Participation obligation applies to exactly those same categories — one lookup, two flags (same pattern as Nijmegen).",
+        "source": "CVDR711762 — Notitie Participatie en participatieregels onder de Omgevingswet",
+        "list_effective_date": "2024-01-01",
+        "advisory_rights_policy_date": "2023-07-07",
+        "categories_available": false,
+        "categories_note": "Categories exist in the July 7, 2023 advisory rights policy rule but have not yet been extracted. Priority: fetch CVDR711762 and map the full list."
+      },
+      "documents_required": ["participatieplan", "participatieverslag"],
+      "document_notes": "Two documents required: participatieplan (before — who, when, how) + participatieverslag (after — who, what was said, how feedback shaped the plan). Same two-document pattern as Breda.",
+      "non_compliance_consequence": "permit_may_be_denied",
+      "prior_framework_exemption": false,
+      "policy_document_type": "Notitie Participatie en participatieregels onder de Omgevingswet",
+      "policy_url": "https://lokaleregelgeving.overheid.nl/CVDR711762/1",
+      "strictness": "high",
+      "strictness_notes": "Two-document requirement + binary list trigger. High compliance burden once categories are known.",
+      "product_play": "Apeldoorn's two-document requirement is the same pattern as Breda — high-value output. Fetch the July 7, 2023 advisory rights list to complete the checker.",
+      "data_completeness": "partial",
+      "research_gaps": ["Extract specific BOPA categories from the July 7, 2023 advisory rights policy rule (CVDR711762)"]
+    },
+    {
+      "id": "leiden",
+      "municipality": "Leiden",
+      "population": 125000,
+      "province": "Zuid-Holland",
+      "mandatory_bopa_participation": false,
+      "mandatory_trigger": "none",
+      "architecture": "explicit_opt_out",
+      "opt_out": {
+        "description": "Leiden's policy rules explicitly state: no participation obligation applies to environmental permit applications for BOPAs. Participation is entirely voluntary.",
+        "explicit_statement": true,
+        "voluntary_participation_encouraged": true
+      },
+      "documents_required": [],
+      "document_notes": "No mandatory documentation required. Voluntary participation may be documented at developer's discretion.",
+      "non_compliance_consequence": "none",
+      "prior_framework_exemption": false,
+      "policy_document_type": "Verordening (explicit BOPA opt-out)",
+      "policy_url": null,
+      "strictness": "lightest",
+      "strictness_notes": "Only profiled municipality that has completely opted out of mandatory BOPA participation.",
+      "product_play": "Must surface this clearly. Developers from other cities assume mandatory = everywhere. Leiden is a significant exception that prevents unnecessary work.",
+      "data_completeness": "full",
+      "research_gaps": []
+    },
+    {
+      "id": "delft",
+      "municipality": "Delft",
+      "population": 103000,
+      "province": "Zuid-Holland",
+      "mandatory_bopa_participation": true,
+      "mandatory_trigger": "threshold_based_designation_list",
+      "architecture": "binary_list",
+      "binary_list_system": {
+        "type": "activiteitenlijst_with_adviesrecht_split",
+        "description": "6 categories trigger BOTH mandatory participation (Art. 16.55) AND council advisory rights (Art. 16.15a). 2 additional categories trigger advisory rights only (NOT mandatory participation). All apply only when project conflicts with the omgevingsplan (BOPA condition). Exception: if council previously approved a stedenbouwkundig plan, ontwikkelplan, or programma for the development, no advisory right required.",
+        "source": "gmb-2024-63914 — Lijst verzwaard advies en participatieplicht gemeente Delft",
+        "published": "2024-02-08",
+        "adopted": "2022-02-03",
+        "list_effective_date": "2024-01-01",
+        "categories_mandatory_participation": [
+          { "id": 1, "activity": "Bouw van meer dan 20 woningen", "threshold": "> 20 woningen", "mandatory_participation": true, "bopa_condition": true },
+          { "id": 2, "activity": "Realiseren van nieuwe onderwijsgebouwen", "threshold": "Any new school building", "mandatory_participation": true, "bopa_condition": true },
+          { "id": 3, "activity": "Realiseren of uitbreiden van supermarkten", "threshold": "> 500m² BVO", "mandatory_participation": true, "bopa_condition": true },
+          { "id": 4, "activity": "Bouw van bouwwerken met bouwhoogte > 30m", "threshold": "> 30m height", "mandatory_participation": true, "bopa_condition": true },
+          { "id": 5, "activity": "Functiewijziging van maatschappelijke functie", "threshold": "> 250m² BVO", "mandatory_participation": true, "bopa_condition": true },
+          { "id": 6, "activity": "Nieuwvestiging nachthoreca buiten binnenstad", "threshold": "> 500m² BVO, outside binnenstad", "mandatory_participation": true, "bopa_condition": true }
+        ],
+        "categories_adviesrecht_only": [
+          { "id": 7, "activity": "Functiewijziging van monumenten", "threshold": "> 250m² BVO", "mandatory_participation": false, "adviesrecht_only": true, "bopa_condition": true },
+          { "id": 8, "activity": "Projecten die openbare ruimte verminderen", "threshold": "> 250m²", "mandatory_participation": false, "adviesrecht_only": true, "bopa_condition": true }
+        ],
+        "per_gebied_adviesrecht_only": [
+          { "area": "Binnenstad", "activity": "Functiewijzigingen", "threshold": "> 500m² BVO", "mandatory_participation": false, "adviesrecht_only": true },
+          { "area": "Bedrijventerreinen", "activity": "Vestiging of uitbreiding andere functies", "threshold": "> 500m² BVO", "mandatory_participation": false, "adviesrecht_only": true }
+        ]
+      },
+      "documents_required": ["participatieverslag"],
+      "document_notes": "Per Delft's environmental dialogue guideline (adopted Oct 31, 2023 by college). Previous error: earlier profile was based on outdated 2022 pre-OW verordening (CVDR669329) — correct document is gmb-2024-63914.",
+      "non_compliance_consequence": "permit_may_be_denied",
+      "prior_framework_exemption": false,
+      "policy_document_type": "Lijst verzwaard advies en participatieplicht gemeente Delft",
+      "policy_url": "https://zoek.officielebekendmakingen.nl/gmb-2024-63914.pdf",
+      "strictness": "high",
+      "strictness_notes": "6 mandatory participation triggers, all programmatically checkable. The adviesrecht-only categories (7, 8) are an important nuance — product must flag both separately.",
+      "product_play": "Fully modellable. 6 hard triggers + 2 soft adviesrecht flags. Worth modelling Delft as a second binary-list showcase (alongside Groningen).",
+      "data_completeness": "full",
+      "research_gaps": []
+    },
+    {
+      "id": "amersfoort",
+      "municipality": "Amersfoort",
+      "population": 160000,
+      "province": "Utrecht",
+      "mandatory_bopa_participation": null,
+      "mandatory_trigger": "process_mandatory_for_large_projects_guidance_for_small",
+      "architecture": "voluntary_guidance",
+      "guidance_system": {
+        "type": "participatiegids_two_tier",
+        "description": "No formal aanwijzingsbesluit under Art. 16.55 lid 7 OW found. Participation obligation for larger projects arises from the municipal Participatiegids guidance, not a legal designation. Non-compliance does not automatically trigger rejection under OW, but may block permit progress in practice.",
+        "source": "Participatiegids ruimtelijke ontwikkelingen — Gemeente Amersfoort (July 2024)",
+        "source_url": "https://www.amersfoort.nl/participatiegids-ruimtelijke-ontwikkelingen",
+        "tiers": [
+          {
+            "tier": "smaller",
+            "examples": "house extensions, small commercial changes",
+            "required_actions": ["inform_neighbours"],
+            "participation_level": "guidance_only"
+          },
+          {
+            "tier": "larger",
+            "examples": "new housing developments, solar fields, significant construction",
+            "required_actions": ["fixed_process_steps_with_municipal_project_team", "participatiedocument_upfront"],
+            "participation_level": "process_mandatory_in_practice"
+          }
+        ],
+        "previous_error": "Earlier profile was based on the 2009 inspraakverordening (CVDR8423) which predates the Omgevingswet entirely"
+      },
+      "documents_required": ["participatiedocument"],
+      "document_notes": "Participatiedocument based on the Participatiegids fixed steps. Required for larger projects.",
+      "non_compliance_consequence": "may_block_permit_progress_in_practice",
+      "prior_framework_exemption": false,
+      "policy_document_type": "Participatiegids ruimtelijke ontwikkelingen",
+      "policy_url": "https://www.amersfoort.nl/participatiegids-ruimtelijke-ontwikkelingen",
+      "strictness": "moderate",
+      "strictness_notes": "Guidance-based, no formal legal designation. Larger projects have fixed process steps that are de facto mandatory. Smaller projects: inform and document.",
+      "product_play": "Amersfoort is a process guidance play — walk developers through the participatiegids steps and generate the participatiedocument.",
+      "data_completeness": "partial",
+      "research_gaps": ["Exact Participatiegids process steps and thresholds for 'larger' vs 'smaller' projects — need to read the July 2024 PDF"]
+    },
+    {
+      "id": "venlo",
+      "municipality": "Venlo",
+      "population": 160000,
+      "province": "Limburg",
+      "mandatory_bopa_participation": true,
+      "mandatory_trigger": "broad_binary_list_9_categories",
+      "architecture": "binary_list",
+      "binary_list_system": {
+        "type": "activiteitenlijst",
+        "description": "One of the broadest designation lists found. 9 categories. All apply when projects 'do not fit within a spatial-planning framework' established by the municipal council (BOPA condition). Key characteristic: any single additional housing unit triggers mandatory participation.",
+        "source": "CVDR705837 — Lijst van gevallen verplichte participatie buitenplanse omgevingsplanactiviteiten",
+        "list_effective_date": "2024-01-01",
+        "categories": [
+          { "id": 1, "name": "woningbouw", "activity": "Woningbouw", "threshold": "Toevoeging van één of meerdere woningen (any housing unit addition)", "mandatory": true, "note": "Widest housing trigger of all profiled municipalities — single unit triggers it" },
+          { "id": 2, "name": "maatschappelijke_voorzieningen", "activity": "Maatschappelijke voorzieningen", "threshold": "Large-scale community services", "mandatory": true },
+          { "id": 3, "name": "sportvoorzieningen", "activity": "Sportvoorzieningen", "threshold": "Constructing sports amenities", "mandatory": true },
+          { "id": 4, "name": "recreatie", "activity": "Recreatie", "threshold": "Intensive recreational developments + infrastructure", "mandatory": true },
+          { "id": 5, "name": "commercieel_5_1", "activity": "Commercieel (5.1)", "threshold": "Retail or business spaces", "mandatory": true },
+          { "id": 6, "name": "commercieel_5_2", "activity": "Commercieel (5.2)", "threshold": "Glasshouse initiatives outside designated contours", "mandatory": true },
+          { "id": 7, "name": "kantoren", "activity": "Kantoren", "threshold": "New office construction", "mandatory": true },
+          { "id": 8, "name": "energie", "activity": "Energie", "threshold": "Wind turbines (any), solar fields (any scale), alternative energy storage", "mandatory": true },
+          { "id": 9, "name": "antennes", "activity": "Antennes", "threshold": "Installing or modifying antenna installations (any height)", "mandatory": true },
+          { "id": 10, "name": "infrastructuur", "activity": "Infrastructuur", "threshold": "Large-scale infrastructure (ring roads, tunnels, viaducts)", "mandatory": true }
+        ],
+        "participation_principles": ["early_engagement", "transparency", "genuine_dialogue"]
+      },
+      "documents_required": ["participation_documentation"],
+      "document_notes": "Participation documentation per municipality's six guiding principles: early engagement, transparency, genuine dialogue.",
+      "non_compliance_consequence": "permit_may_be_denied",
+      "prior_framework_exemption": false,
+      "policy_document_type": "Lijst van gevallen verplichte participatie buitenplanse omgevingsplanactiviteiten",
+      "policy_url": "https://lokaleregelgeving.overheid.nl/CVDR705837",
+      "strictness": "high",
+      "strictness_notes": "Broadest list found in the Netherlands. 'Any housing unit' trigger means almost every residential developer in Venlo must participate. Energy and antennas: any scale.",
+      "product_play": "High-value municipality. Breadth of list means almost every developer needs guidance. The single-unit housing trigger will surprise many developers who assume participation is only for large projects.",
+      "data_completeness": "partial",
+      "research_gaps": ["Exact thresholds for 'large-scale' community services (cat. 2), sports amenities (cat. 3), and intensive recreation (cat. 4) — need to read CVDR705837 in full"]
+    },
+    {
+      "id": "zoetermeer",
+      "municipality": "Zoetermeer",
+      "population": 135000,
+      "province": "Zuid-Holland",
+      "mandatory_bopa_participation": true,
+      "mandatory_trigger": "threshold_based_designation_list",
+      "architecture": "binary_list",
+      "binary_list_system": {
+        "type": "threshold_based",
+        "description": "Mandatory participation for projects involving ≥26 dwellings that conflict with the environmental plan (BOPA condition). Additional categories may be designated by the council in the full Participatieverordening 2022.",
+        "sources": ["Kadernota Participatie 2022 (CVDR684306)", "Participatieverordening 2022"],
+        "list_effective_date": "2024-01-01",
+        "categories": [
+          { "id": 1, "activity": "Housing development", "threshold": "≥ 26 dwellings", "threshold_type": "numeric", "mandatory": true }
+        ],
+        "categories_note": "≥26 dwellings is the confirmed mandatory trigger. Additional categories likely exist in the full Participatieverordening but have not been extracted.",
+        "guide": "In gesprek met je omgeving — available on doemee.zoetermeer.nl. Covers: who to consult, when, methods, how to use results."
+      },
+      "documents_required": ["participatiedocumentatie"],
+      "document_notes": "Must document: manner of participation, participants involved, feedback received, how feedback influenced modifications, specific plan adjustments made. Missing → municipality will not process the application.",
+      "non_compliance_consequence": "application_not_processed",
+      "prior_framework_exemption": false,
+      "policy_document_type": "Kadernota Participatie 2022 + Participatieverordening 2022",
+      "policy_url": "https://lokaleregelgeving.overheid.nl/CVDR684306/1",
+      "strictness": "moderate",
+      "strictness_notes": "≥26 dwelling trigger is clean and programmatically evaluable. Civic engagement culture (doemee platform) means developers who ignore it get pushback.",
+      "product_play": "Clean, product-friendly rule. One threshold → binary output. Zoetermeer is an easy win to model.",
+      "data_completeness": "partial",
+      "research_gaps": ["Full Participatieverordening 2022 — extract any additional BOPA categories beyond the ≥26 dwellings trigger"]
+    },
+    {
+      "id": "helmond",
+      "municipality": "Helmond",
+      "population": 160000,
+      "province": "Noord-Brabant",
+      "mandatory_bopa_participation": null,
+      "mandatory_trigger": "guidance_based_disclosure",
+      "architecture": "voluntary_guidance",
+      "guidance_system": {
+        "type": "beleidskader_disclosure",
+        "description": "No formal aanwijzingsbesluit designating specific BOPA categories under Art. 16.55 lid 7 OW found publicly. Participation is strongly expected and recommended for all spatial initiatives, but non-compliance is not an automatic rejection trigger (unless a not-yet-found aanwijzingsbesluit exists).",
+        "source": "Beleidskader participatie — Gemeente Helmond (January 2024)",
+        "source_url": "https://www.helmond.nl/Media%20Helmond.nl/Documenten%20Helmond/Bewoners/Participatie/Beleidskader-participatie-januari-2024.pdf",
+        "slogan": "Over de kracht van de samenleving",
+        "disclosure_requirement": "At permit submission: indicate whether/how/what participation occurred (Art. 16.55 lid 1 — applies everywhere)",
+        "handboek_note": "A 'Handboek BOPA en wijzigen omgevingsplan' is available by email request (gemeente@helmond.nl) — not published publicly. May contain a formal BOPA participation designation."
+      },
+      "documents_required": ["participation_disclosure"],
+      "document_notes": "Standard disclosure at submission: whether, how, and what happened with participation outcomes.",
+      "non_compliance_consequence": "unclear",
+      "prior_framework_exemption": false,
+      "policy_document_type": "Beleidskader participatie (January 2024)",
+      "policy_url": "https://www.helmond.nl/Media%20Helmond.nl/Documenten%20Helmond/Bewoners/Participatie/Beleidskader-participatie-januari-2024.pdf",
+      "strictness": "moderate",
+      "strictness_notes": "Guidance-based — similar to Zaanstad and Amersfoort. Participation expected and recommended; non-compliance not automatically fatal.",
+      "product_play": "Helmond is a guidance play. The withheld Handboek is a product opportunity — developers shouldn't need to email the municipality to find out the rules.",
+      "data_completeness": "partial",
+      "research_gaps": ["Request Handboek BOPA via gemeente@helmond.nl — may contain a formal BOPA designation list", "Check if a separate aanwijzingsbesluit has been published"]
+    },
+    {
+      "id": "leeuwarden",
+      "municipality": "Leeuwarden",
+      "population": 125000,
+      "province": "Friesland",
+      "mandatory_bopa_participation": true,
+      "mandatory_trigger": "binary_list_dec_2021_council_decision",
+      "architecture": "binary_list",
+      "binary_list_system": {
+        "type": "council_designation_list",
+        "description": "Designation list exists — confirmed by CVDR724190 (UOV beleidsregel) which explicitly references 'de lijst van 22 december 2021 waarvoor zowel een bindend advies van de gemeenteraad conform artikel 16.15a sub b onder 1° van de Omgevingswet én participatie zoals bedoeld in artikel 16.55 Ow is vereist.' Council adopted the list December 22, 2021. Effective January 1, 2024. Same combined-list pattern as Nijmegen.",
+        "sources": ["CVDR724190 (Beleidsregel toepassing uitgebreide procedure BOPA — references the list)", "Verordening participatie Omgevingswet gemeente Leeuwarden 2024"],
+        "list_adopted_date": "2021-12-22",
+        "list_effective_date": "2024-01-01",
+        "categories_available": false,
+        "categories_note": "Specific BOPA categories from the December 22, 2021 raadsbesluit have NOT yet been extracted. Priority: find and read the Dec 22, 2021 raadsbesluit to extract the category list."
+      },
+      "broad_trigger": {
+        "applies": true,
+        "description": "Art. 2.1 of the verordening sets a broad trigger: participation applies whenever 'reasonably expectable stakeholders exist who are significantly affected.' This applies even to projects NOT on the designation list.",
+        "two_level_guidance": "Level 1: check designation list → mandatory if on it. Level 2: check if 'reasonably expectable stakeholders' exist → mandatory even if not on the list."
+      },
+      "documents_required": ["eindverslag"],
+      "document_notes": "Eindverslag per Art. 5 of the verordening: overview of process, summary of stakeholder input, list of agreements made, response to input received.",
+      "non_compliance_consequence": "permit_may_be_denied",
+      "prior_framework_exemption": false,
+      "policy_document_type": "Verordening participatie Omgevingswet gemeente Leeuwarden 2024 + Beleidsregel toepassing uitgebreide procedure BOPA",
+      "policy_url": "https://lokaleregelgeving.overheid.nl/CVDR724190",
+      "strictness": "high",
+      "strictness_notes": "Broad trigger (Art. 2.1) means even projects not on the designation list may need participation. Two-level compliance check required.",
+      "product_play": "Leeuwarden requires two-level guidance: (a) on the list → definitely mandatory, (b) off the list → check if stakeholders exist. High complexity for developers.",
+      "data_completeness": "partial",
+      "research_gaps": ["Extract the specific BOPA categories from the December 22, 2021 raadsbesluit", "Confirm CVDR number for the designation list itself"]
+    },
+    {
+      "id": "zaanstad",
+      "municipality": "Zaanstad",
+      "population": 154000,
+      "province": "Noord-Holland",
+      "mandatory_bopa_participation": null,
+      "mandatory_trigger": "disclosure_and_process_expectation",
+      "architecture": "voluntary_guidance",
+      "guidance_system": {
+        "type": "participatieprotocol_disclosure",
+        "description": "No formal aanwijzingsbesluit designating specific BOPA categories under Art. 16.55 lid 7 OW. The protocol enforces the general Art. 16.55 lid 1 OW obligation (applies to ALL municipalities): disclose whether/how/what consultation occurred. Zaanstad's protocol is particularly emphatic: 'Als er sprake is van een afwijking van het omgevingsplan, dan is participatie echt cruciaal.'",
+        "source": "Zaans Participatieprotocol — versie april 2024, geactualiseerd na invoering Omgevingswet",
+        "source_url": "https://openpdc.zaanstad.nl/wp-content/uploads/2024/04/Participatieprotocol-versie-12-04-2024.pdf",
+        "previous_error": "Earlier research captured the wrong document (Re-integratieverordening Participatiewet — social welfare law). Correct document: Zaans Participatieprotocol.",
+        "four_step_process": [
+          { "step": 1, "title": "Breng in Beeld", "description": "Identify all stakeholders (residents, businesses, organisations)" },
+          { "step": 2, "title": "Ga in gesprek", "description": "Have the conversations; make agreements" },
+          { "step": 3, "title": "Delen, uitwerken en toetsen", "description": "Document ideas, concerns, solutions; test back with the group" },
+          { "step": 4, "title": "Pas plannen aan", "description": "Adjust the plan; complete the participatiedocument for the permit application" }
+        ],
+        "disclosure_requirement": "At permit submission: whether (of), how (hoe), what was done with outcomes (wat). Standard Art. 16.55 lid 1 obligation."
+      },
+      "documents_required": ["participatiedocument"],
+      "document_notes": "Participatiedocument — the filled-in result of Stap 4 of the 4-step process.",
+      "non_compliance_consequence": "may_influence_permit_outcome",
+      "prior_framework_exemption": false,
+      "policy_document_type": "Zaans Participatieprotocol (April 2024)",
+      "policy_url": "https://openpdc.zaanstad.nl/wp-content/uploads/2024/04/Participatieprotocol-versie-12-04-2024.pdf",
+      "strictness": "moderate",
+      "strictness_notes": "Strong expectation of participation; no formal legal designation. Participation quality may influence permit outcome but non-participation does not automatically trigger rejection.",
+      "product_play": "Zaanstad developers need a guided tool for the 4-step process and a participatiedocument generator. Pure process guidance value.",
+      "data_completeness": "full",
+      "research_gaps": []
+    },
+    {
+      "id": "deventer",
+      "municipality": "Deventer",
+      "population": 102000,
+      "province": "Overijssel",
+      "mandatory_bopa_participation": null,
+      "mandatory_trigger": "pending_bopa_designation_list",
+      "architecture": "pending_binary_list",
+      "pending_system": {
+        "description": "Participatieverordening Deventer 2026 (Art. 16.3) explicitly commits the council to establishing a BOPA participation designation list — but that list does NOT yet exist as a separate published document. Developers are in legal limbo.",
+        "source": "CVDR759468 — Participatieverordening Deventer 2026",
+        "effective_date": "2026-03-27",
+        "what_exists": "General participation framework: inwonersparticipatie, inspraak, overheidsparticipatie, uitdaagrecht. Detailed participatieplan and participatieverslag requirements. Hardheidsclausule allows deviation in special cases.",
+        "what_is_missing": "The BOPA aanwijzingsbesluit promised in Art. 16.3 — not yet published as of April 20, 2026."
+      },
+      "documents_required": [],
+      "document_notes": "No formal BOPA participation documentation requirement identified yet. Apply national safe minimum until the designation list is published.",
+      "non_compliance_consequence": "unknown_until_list_published",
+      "prior_framework_exemption": false,
+      "policy_document_type": "Participatieverordening Deventer 2026",
+      "policy_url": "https://lokaleregelgeving.overheid.nl/CVDR759468",
+      "strictness": "unknown",
+      "strictness_notes": "Framework committed, BOPA list not yet published. Ambiguity = developer uncertainty = product value once the list appears.",
+      "product_play": "Flag Deventer as 'BOPA participation requirement unclear — check with municipality.' Monitor for the aanwijzingsbesluit.",
+      "data_completeness": "minimal",
+      "research_gaps": ["Monitor lokaleregelgeving.overheid.nl for Deventer's BOPA aanwijzingsbesluit under Art. 16.3 of Participatieverordening 2026"]
+    },
+    {
+      "id": "ede",
+      "municipality": "Ede",
+      "population": 118000,
+      "province": "Gelderland",
+      "mandatory_bopa_participation": false,
+      "mandatory_trigger": "none_explicitly_excluded",
+      "architecture": "voluntary_guidance",
+      "guidance_system": {
+        "type": "explicitly_excluded_from_verordening",
+        "description": "The verordening explicitly excludes omgevingsvergunning (BOPA) applications from its scope. Direct quote: 'De bepalingen uit hoofdstuk 4 van de verordening over overheidsparticipatie zijn niet van toepassing bij initiatieven in de fysieke leefomgeving van gemeente Ede waar een omgevingsvergunning voor nodig is.' Developers directed to separate 'Handreiking Betrek de omgeving' for voluntary guidance.",
+        "source": "CVDR739251 — Participatieverordening Ede",
+        "effective_date": "2025-05-17",
+        "handreiking_note": "Handreiking 'Betrek de omgeving' is the voluntary step-by-step guide. Not legally binding. Content not yet extracted."
+      },
+      "documents_required": [],
+      "document_notes": "No mandatory documentation required under the verordening. Voluntary participation may be documented per the handreiking.",
+      "non_compliance_consequence": "none",
+      "prior_framework_exemption": false,
+      "policy_document_type": "Participatieverordening Ede (CVDR739251)",
+      "policy_url": "https://lokaleregelgeving.overheid.nl/CVDR739251/1",
+      "strictness": "lightest",
+      "strictness_notes": "Explicit exclusion of BOPA applications from the verordening. Probably the lowest-obligation mid-size municipality found after Leiden.",
+      "product_play": "Ede is a 'safe' municipality for complex projects — no mandatory participation trigger. Surface this explicitly to developers who assume mandatory = everywhere.",
+      "data_completeness": "partial",
+      "research_gaps": ["Find and read the Handreiking 'Betrek de omgeving' to understand what Ede's voluntary guidance actually recommends"]
+    },
+    {
+      "id": "dordrecht",
+      "municipality": "Dordrecht",
+      "population": 120000,
+      "province": "Zuid-Holland",
+      "mandatory_bopa_participation": null,
+      "mandatory_trigger": "general_framework_no_bopa_designation",
+      "architecture": "general_discretionary",
+      "discretionary_system": {
+        "type": "praatplaat_afwegingskader",
+        "description": "General participation framework with Omgevingswet applicability. No specific BOPA designation list. Participation level determined case-by-case using the 'Dordtse Participatie Praatplaat' (afwegingskader).",
+        "source": "CVDR756780 — Participatieverordening gemeente Dordrecht",
+        "effective_date": "2026-02-12",
+        "ow_applicability": "Art. 2.2: 'Het bestuursorgaan past bij toepassing van de Omgevingswet, zoveel mogelijk deze verordening toe'",
+        "participation_levels": ["informeren", "raadplegen", "adviseren", "coproduceren"],
+        "afwegingskader": "Dordtse Participatie Praatplaat — a decision framework guiding which participation level is appropriate for a given project"
+      },
+      "documents_required": [],
+      "document_notes": "Documentation expected per general Art. 16.55 lid 1 OW obligation. Format and depth determined by Praatplaat level chosen.",
+      "non_compliance_consequence": "unknown",
+      "prior_framework_exemption": false,
+      "policy_document_type": "Participatieverordening gemeente Dordrecht",
+      "policy_url": "https://lokaleregelgeving.overheid.nl/CVDR756780",
+      "strictness": "moderate",
+      "strictness_notes": "No binary trigger list. Participation level is case-by-case judgment using the Praatplaat. Medium complexity for developers.",
+      "product_play": "Model the Praatplaat decision logic to give developers meaningful guidance. Check for a separate BOPA aanwijzingsbesluit under Art. 16.55 OW.",
+      "data_completeness": "partial",
+      "research_gaps": ["Find whether Dordrecht has published a separate BOPA aanwijzingsbesluit under Art. 16.55 OW", "Map the Dordtse Participatie Praatplaat decision logic"]
+    }
+  ],
+  "no_policy_municipalities": [
+    "Aalten", "Alphen-Chaam", "Altena", "Baarle-Nassau", "Beuningen",
+    "Bladel", "Bunschoten", "Dongen", "Drimmelen", "Geldrop-Mierlo",
+    "Het Hogeland", "Hillegom", "Horst aan de Maas", "Landsmeer", "Leusden",
+    "Losser", "Maashorst", "Ommen", "Oosterhout", "Ooststellingwerf",
+    "Opsterland", "Oss", "Pekela", "Raalte", "Reusel-De Mierden",
+    "Rozendaal", "Scherpenzeel", "Schiermonnikoog", "Veenendaal", "Vlaardingen",
+    "Waadhoeke", "West Maas en Waal", "Westerkwartier", "Zaltbommel", "Zeewolde"
+  ],
+  "national_safe_minimum": {
+    "description": "When no municipal policy exists, apply this national safe minimum based on Art. 16.55 Omgevingswet",
+    "required_actions": [
+      "identify_all_stakeholders_with_a_direct_interest",
+      "inform_them_of_the_project",
+      "give_opportunity_to_provide_input",
+      "document_what_was_done_and_what_input_was_received"
+    ],
+    "documents_required": ["basic_participation_statement"],
+    "warning": "No published policy — use safe minimum and consider proactively contacting the municipality to ask what they expect"
+  }
+}

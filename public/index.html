@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html lang="nl">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Permit Intelligence — Omgevingswet Permit Platform</title>
+  <link rel="stylesheet" href="style.css">
+  <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Crect width='100' height='100' rx='20' fill='%232563eb'/%3E%3Ctext x='50' y='70' font-size='50' text-anchor='middle' fill='white'%3E🏗️%3C/text%3E%3C/svg%3E">
+</head>
+<body>
+  <div class="container">
+    <!-- Header -->
+    <header class="header">
+      <div class="logo">
+        <div class="logo-icon">🏗️</div>
+        <h1>Permit Intelligence</h1>
+      </div>
+      <p class="tagline">Omgevingswet permit requirements • Participation intelligence • Smart templates</p>
+    </header>
+
+    <!-- Main Card -->
+    <div class="card">
+      <div class="card-header">
+        <h2>Analyze Your Project</h2>
+        <p>Enter your project details to get instant permit and participation requirements</p>
+      </div>
+      
+      <div class="card-body">
+        <form id="analyze-form">
+          <div class="form-group">
+            <label for="address">📍 Project Address</label>
+            <input 
+              type="text" 
+              id="address" 
+              name="address" 
+              placeholder="John Daltonstraat 13, 1349DV Almere"
+              required
+            >
+            <small>Full address, postcode only, or city only — we'll find it</small>
+          </div>
+
+          <div class="form-group">
+            <label for="werkzaamheid">🔨 Activity Type</label>
+            <select id="werkzaamheid" name="werkzaamheid" required>
+              <option value="">— Select an activity —</option>
+              <option value="AanbouwPlaatsen">Aanbouw Plaatsen (Extension)</option>
+              <option value="DakkapelPlaatsen">Dakkapel Plaatsen (Dormer Window)</option>
+              <option value="ZonnepaneelPlaatsen">Zonnepaneel Plaatsen (Solar Panels)</option>
+              <option value="BouwWoning">Bouw Woning (New House)</option>
+              <option value="SloopWoning">Sloop Woning (Demolition)</option>
+              <option value="AircoPlaatsen">Airco Plaatsen (Air Conditioning)</option>
+              <option value="AntennePlaatsen">Antenne Plaatsen (Antenna)</option>
+              <option value="KozijnVervangen">Kozijn Vervangen (Window Frame)</option>
+              <option value="DakraamPlaatsen">Dakraam Plaatsen (Skylight)</option>
+              <option value="SchuttingPlaatsen">Schutting Plaatsen (Fence)</option>
+              <option value="CarportPlaatsen">Carport Plaatsen (Carport)</option>
+              <option value="GarageBouwen">Garage Bouwen (Garage)</option>
+            </select>
+          </div>
+
+          <div class="form-group">
+            <label for="housingUnits">🏢 Number of Units <span style="font-weight: 400; text-transform: none;">(optional)</span></label>
+            <input 
+              type="number" 
+              id="housingUnits" 
+              name="housingUnits" 
+              placeholder="e.g., 8"
+              min="1"
+            >
+          </div>
+
+          <button type="submit" id="submit-btn" class="btn">
+            <span class="btn-text">Analyze Project</span>
+            <span class="spinner" style="display: none;"></span>
+          </button>
+        </form>
+
+        <!-- Results Section -->
+        <div id="results" class="results hidden">
+          <div class="result-grid">
+            <!-- Location Card -->
+            <div class="result-card">
+              <h3>📍 Location</h3>
+              <div id="address-result"></div>
+            </div>
+
+            <!-- Permit Card -->
+            <div class="result-card">
+              <h3>📋 Permit Status</h3>
+              <div id="permit-result"></div>
+            </div>
+
+            <!-- Participation Card -->
+            <div class="result-card full-width">
+              <h3>👥 Participation Requirements</h3>
+              <div id="participation-result"></div>
+            </div>
+
+            <!-- Next Steps Card -->
+            <div class="result-card full-width">
+              <h3>📝 Next Steps</h3>
+              <div id="next-steps-result"></div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Error Message -->
+        <div id="error" class="error-message hidden"></div>
+      </div>
+    </div>
+
+    <!-- Footer -->
+    <footer class="footer">
+      <p>
+        Powered by 
+        <a href="https://www.pdok.nl" target="_blank">PDOK</a> • 
+        <a href="https://developer.omgevingswet.overheid.nl" target="_blank">DSO API</a> • 
+        PRE Environment
+      </p>
+      <p style="margin-top: 0.5rem; opacity: 0.7;">
+        © 2026 Permit Intelligence Platform
+      </p>
+    </footer>
+  </div>
+
+  <script src="script.js"></script>
+</body>
+</html>
