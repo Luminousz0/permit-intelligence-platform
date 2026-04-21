@@ -8,6 +8,46 @@ const spinner = document.querySelector('.spinner');
 let currentTemplate = null;
 let currentProjectName = 'participatieverslag';
 
+// --- Address Autocomplete ---
+const addressInput = document.getElementById('address');
+const datalist = document.createElement('datalist');
+datalist.id = 'address-suggestions';
+addressInput.setAttribute('list', 'address-suggestions');
+addressInput.parentNode.appendChild(datalist);
+
+let debounceTimer;
+addressInput.addEventListener('input', function(e) {
+  clearTimeout(debounceTimer);
+  const query = e.target.value;
+
+  // Don't search for very short queries
+  if (query.length < 3) {
+    datalist.innerHTML = '';
+    return;
+  }
+
+  debounceTimer = setTimeout(async () => {
+    try {
+      const response = await fetch(`https://api.pdok.nl/bzk/locatieserver/search/v3_1/suggest?q=${encodeURIComponent(query)}&rows=5`);
+      const data = await response.json();
+      
+      // Clear old suggestions
+      datalist.innerHTML = '';
+      
+      // Populate new suggestions
+      if (data.response && data.response.docs) {
+        data.response.docs.forEach(doc => {
+          const option = document.createElement('option');
+          option.value = doc.weergavenaam;
+          datalist.appendChild(option);
+        });
+      }
+    } catch (error) {
+      console.error("Error fetching address suggestions:", error);
+    }
+  }, 300); // Delay to avoid excessive API calls
+});
+
 form.addEventListener('submit', async (e) => {
   e.preventDefault();
   
