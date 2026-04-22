@@ -3,126 +3,169 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Permit Intelligence — Omgevingswet Permit Platform</title>
+  <title>Permit Intelligence — Omgevingswet</title>
   <link rel="stylesheet" href="style.css">
-  <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Crect width='100' height='100' rx='20' fill='%232563eb'/%3E%3Ctext x='50' y='70' font-size='50' text-anchor='middle' fill='white'%3E🏗️%3C/text%3E%3C/svg%3E">
 </head>
 <body>
-  <div class="container">
-    <!-- Header -->
-    <header class="header">
-      <div class="logo">
-        <div class="logo-icon">🏗️</div>
-        <h1>Permit Intelligence</h1>
-      </div>
-      <p class="tagline">Omgevingswet permit requirements • Participation intelligence • Smart templates</p>
-    </header>
+<div class="container">
+  <header>
+    <div class="logo-wrapper">
+      <div class="logo-icon">P</div>
+      <h1>Permit Intelligence</h1>
+    </div>
+    <p class="tagline">Understand permit requirements · Predict timelines · Master participation</p>
+    
+    <div class="hero-description">
+      <p class="hero-main">
+        Instantly know if you need a permit, how long it will take, and what participation your municipality requires.
+      </p>
+      <p class="hero-sub">
+        Built for Dutch real estate developers navigating the Omgevingswet.
+      </p>
+    </div>
+    
+    <div style="display: flex; align-items: center; justify-content: center; gap: 1.5rem;">
+      <nav><a href="/pricing.html">Pricing</a></nav>
+      <button id="show-auth-btn" class="lang-btn">Login</button>
+    </div>
+    
+    <!-- Language Switcher -->
+    <div class="lang-switcher" style="margin-top:0.5rem;">
+      <button class="lang-btn active" data-lang="en">EN</button>
+      <span style="color:var(--text-tertiary); margin:0 0.25rem;">|</span>
+      <button class="lang-btn" data-lang="nl">NL</button>
+    </div>
+  </header>
 
-    <!-- Main Card -->
-    <div class="card">
-      <div class="card-header">
-        <h2>Analyze Your Project</h2>
-        <p>Enter your project details to get instant permit and participation requirements</p>
-      </div>
-      
-      <div class="card-body">
-        <form id="analyze-form">
-          <div class="form-group">
-            <label for="address">📍 Project Address</label>
-            <input 
-              type="text" 
-              id="address" 
-              name="address" 
-              placeholder="John Daltonstraat 13, 1349DV Almere"
-              required
-            >
-            <small>Full address, postcode only, or city only — we'll find it</small>
-          </div>
+  <div class="card">
+    <!-- Tab Navigation -->
+    <div class="tab-container">
+      <button class="tab-btn active" data-tab="analyze">Analyze Project</button>
+      <button class="tab-btn" data-tab="track">Track Application</button>
+    </div>
 
-          <div class="form-group">
-            <label for="werkzaamheid">🔨 Activity Type</label>
-            <select id="werkzaamheid" name="werkzaamheid" required>
-              <option value="">— Select an activity —</option>
-              <option value="AanbouwPlaatsen">Aanbouw Plaatsen (Extension)</option>
-              <option value="DakkapelPlaatsen">Dakkapel Plaatsen (Dormer Window)</option>
-              <option value="ZonnepaneelPlaatsen">Zonnepaneel Plaatsen (Solar Panels)</option>
-              <option value="BouwWoning">Bouw Woning (New House)</option>
-              <option value="SloopWoning">Sloop Woning (Demolition)</option>
-              <option value="AircoPlaatsen">Airco Plaatsen (Air Conditioning)</option>
-              <option value="AntennePlaatsen">Antenne Plaatsen (Antenna)</option>
-              <option value="KozijnVervangen">Kozijn Vervangen (Window Frame)</option>
-              <option value="DakraamPlaatsen">Dakraam Plaatsen (Skylight)</option>
-              <option value="SchuttingPlaatsen">Schutting Plaatsen (Fence)</option>
-              <option value="CarportPlaatsen">Carport Plaatsen (Carport)</option>
-              <option value="GarageBouwen">Garage Bouwen (Garage)</option>
-            </select>
-          </div>
-
-          <div class="form-group">
-            <label for="housingUnits">🏢 Number of Units <span style="font-weight: 400; text-transform: none;">(optional)</span></label>
-            <input 
-              type="number" 
-              id="housingUnits" 
-              name="housingUnits" 
-              placeholder="e.g., 8"
-              min="1"
-            >
-          </div>
-
-          <button type="submit" id="submit-btn" class="btn">
-            <span class="btn-text">Analyze Project</span>
-            <span class="spinner" style="display: none;"></span>
-          </button>
-        </form>
-
-        <!-- Results Section -->
-        <div id="results" class="results hidden">
-          <div class="result-grid">
-            <!-- Location Card -->
-            <div class="result-card">
-              <h3>📍 Location</h3>
-              <div id="address-result"></div>
-            </div>
-
-            <!-- Permit Card -->
-            <div class="result-card">
-              <h3>📋 Permit Status</h3>
-              <div id="permit-result"></div>
-            </div>
-
-            <!-- Participation Card -->
-            <div class="result-card full-width">
-              <h3>👥 Participation Requirements</h3>
-              <div id="participation-result"></div>
-            </div>
-
-            <!-- Next Steps Card -->
-            <div class="result-card full-width">
-              <h3>📝 Next Steps</h3>
-              <div id="next-steps-result"></div>
-            </div>
-          </div>
+    <!-- Analyze Tab Content -->
+    <div class="tab-content active" id="analyze-tab">
+      <form id="analyze-form">
+        <div class="form-group">
+          <label>Project Address</label>
+          <input type="text" id="address" placeholder="Start typing an address..." list="address-list" autocomplete="off" required>
+          <datalist id="address-list"></datalist>
         </div>
 
-        <!-- Error Message -->
-        <div id="error" class="error-message hidden"></div>
+        <div class="form-group">
+          <label>Activity Type</label>
+          <div class="dropdown-container">
+            <input type="text" id="activity-search" placeholder="Search activities..." autocomplete="off" class="search-input">
+            <div id="activity-dropdown" class="dropdown-content"></div>
+          </div>
+          <input type="hidden" id="werkzaamheid" required>
+          <small><span id="activity-count"></span> verified activities</small>
+        </div>
+
+        <div class="form-group">
+          <label>Units (optional)</label>
+          <input type="number" id="housingUnits" placeholder="e.g., 8" min="1">
+        </div>
+
+        <button type="submit" id="submit-btn" class="btn">Analyze Project</button>
+      </form>
+    </div>
+
+    <!-- Track Tab Content -->
+    <div class="tab-content" id="track-tab">
+      <div class="form-group">
+        <label>Omgevingsloket Case Number</label>
+        <input type="text" id="standalone-case-number" placeholder="e.g., Z/STH26/058701" autocomplete="off">
+        <small>Enter your case number to check status and get direct links</small>
+      </div>
+
+      <button id="standalone-track-btn" class="btn">Track Application</button>
+
+      <div id="standalone-tracker-result" class="tracker-result" style="display:none;">
       </div>
     </div>
 
-    <!-- Footer -->
-    <footer class="footer">
-      <p>
-        Powered by 
-        <a href="https://www.pdok.nl" target="_blank">PDOK</a> • 
-        <a href="https://developer.omgevingswet.overheid.nl" target="_blank">DSO API</a> • 
-        PRE Environment
-      </p>
-      <p style="margin-top: 0.5rem; opacity: 0.7;">
-        © 2026 Permit Intelligence Platform
-      </p>
-    </footer>
+    <!-- Results Section -->
+    <div id="results" class="results" style="display:none;">
+      <div class="result-grid">
+        <div class="result-card"><h3>Location</h3><div id="address-result"></div></div>
+        <div class="result-card"><h3>Permit Status</h3><div id="permit-result"></div></div>
+        
+        <div class="result-card full-width" id="timeline-card">
+          <div class="result-header">
+            <h3>Timeline Prediction</h3>
+            <span class="status-indicator" id="timeline-confidence"></span>
+          </div>
+          <div id="timeline-result"></div>
+        </div>
+        
+        <div class="result-card full-width"><h3>Participation</h3><div id="participation-result"></div></div>
+        <div class="result-card full-width"><h3>Next Steps</h3><div id="next-steps-result"></div></div>
+      </div>
+      <button id="download-btn" class="btn btn-success" style="margin-top:1.5rem;">Download Word Template</button>
+      
+      <!-- Email Report Section -->
+      <div style="display:flex; gap:1rem; margin-top:1rem;">
+        <input type="email" id="report-email" placeholder="Your email" style="flex:2;">
+        <button id="email-report-btn" class="btn" style="flex:1;">Email Report</button>
+      </div>
+    </div>
+    
+    <div id="error" class="error-message" style="display:none;"></div>
   </div>
 
-  <script src="script.js"></script>
+  <!-- Feature Highlights -->
+  <div class="feature-grid">
+    <div class="feature-item">
+      <div class="feature-icon">—</div>
+      <h4>Permit Check</h4>
+      <p>Direct integration with the official Omgevingsloket — instantly know if you need a permit.</p>
+    </div>
+    <div class="feature-item">
+      <div class="feature-icon">—</div>
+      <h4>Timeline Prediction</h4>
+      <p>Municipality-specific estimates based on real processing data. Plan your financing with confidence.</p>
+    </div>
+    <div class="feature-item">
+      <div class="feature-icon">—</div>
+      <h4>Participation Guidance</h4>
+      <p>Clear, actionable steps for your specific municipality. Download ready-to-use participation templates.</p>
+    </div>
+  </div>
+
+  <footer class="footer">
+    <p>Powered by <a href="#">PDOK</a> · <a href="#">DSO API</a><br>© 2026 Permit Intelligence Platform</p>
+  </footer>
+</div>
+
+<!-- Auth Modal -->
+<div id="auth-modal" class="modal-overlay" style="display:none;">
+  <div class="modal-content" style="max-width:400px;">
+    <h3 id="auth-title">Login</h3>
+    <form id="auth-form">
+      <div class="form-group"><label>Email</label><input type="email" id="auth-email" required></div>
+      <div class="form-group"><label>Password</label><input type="password" id="auth-password" required minlength="6"></div>
+      <button type="submit" class="btn" id="auth-submit">Login</button>
+    </form>
+    <p style="text-align:center; margin-top:1rem;"><a href="#" id="toggle-auth-mode">Need an account? Sign up</a></p>
+    <button class="btn" style="background:transparent; color:var(--text-primary); margin-top:0.5rem;" id="auth-close">Cancel</button>
+  </div>
+</div>
+
+<!-- Question Modal -->
+<div id="question-modal" class="modal-overlay" style="display:none;">
+  <div class="modal-content">
+    <h3>Additional Information</h3>
+    <p id="question-text"></p>
+    <div id="question-input"></div>
+    <div class="modal-buttons">
+      <button id="question-next" class="btn">Next</button>
+      <button id="question-cancel" class="btn" style="background:transparent; color:var(--text-primary); box-shadow:none;">Cancel</button>
+    </div>
+  </div>
+</div>
+
+<script src="script.js"></script>
 </body>
 </html>

@@ -1,68 +1,49 @@
 import fs from 'fs';
-import path from 'path';
 
 const API_KEY = '357661e4-a1e1-47f0-a12f-6fe9909627f6';
-const WERKZAAMHEDEN_URL = 'https://service.pre.omgevingswet.overheid.nl/publiek/toepasbare-regels/api/opvragenwerkzaamheden/v1/werkzaamheden?pageSize=300';
+const BASE_URL = 'https://service.pre.omgevingswet.overheid.nl/publiek/toepasbare-regels/api/opvragenwerkzaamheden/v1/werkzaamheden';
 
 async function fetchAllWerkzaamheden() {
-  console.log('Fetching all werkzaamheden from DSO API...');
+  console.log('Fetching all werkzaamheden...');
   
   const allWerkzaamheden: string[] = [];
   let page = 1;
   let hasMore = true;
   
   while (hasMore) {
-    const url = `${WERKZAAMHEDEN_URL}&page=${page}`;
-    console.log(`  Fetching page ${page}...`);
+    const url = `${BASE_URL}?page=${page}&pageSize=100`;
+    console.log(`  Page ${page}...`);
     
     try {
       const response = await fetch(url, {
-        headers: {
-          'x-api-key': API_KEY,
-          'Accept': 'application/json'
-        }
+        headers: { 'x-api-key': API_KEY, 'Accept': 'application/json' }
       });
       
-      if (!response.ok) {
-        throw new Error(`HTTP ${response.status}`);
-      }
+      if (!response.ok) break;
       
       const data = await response.json();
       
       if (data._embedded?.werkzaamheden) {
-        const items = data._embedded.werkzaamheden;
-        items.forEach((item: any) => allWerkzaamheden.push(item.urn));
-        console.log(`    Got ${items.length} items`);
+        data._embedded.werkzaamheden.forEach((w: any) => {
+          allWerkzaamheden.push(w.urn);
+        });
       }
       
-      // Check if there's a next page
       hasMore = !!data._links?.next;
       page++;
       
-      // Small delay to be nice to the API
-      await new Promise(resolve => setTimeout(resolve, 200));
-      
     } catch (error) {
-      console.error(`Error fetching page ${page}:`, error);
+      console.error(`Error on page ${page}:`, error);
       hasMore = false;
     }
   }
   
-  // Sort alphabetically
   allWerkzaamheden.sort();
+  console.log(`✅ Total: ${allWerkzaamheden.length}`);
   
-  console.log(`\n✅ Total werkzaamheden fetched: ${allWerkzaamheden.length}`);
-  
-  // Save to JSON file
-  const outputPath = path.join(__dirname, '../public/werkzaamheden.json');
-  fs.writeFileSync(outputPath, JSON.stringify(allWerkzaamheden, null, 2));
-  console.log(`✅ Saved to ${outputPath}`);
-  
-  // Also save as TypeScript file for backup
-  const tsOutputPath = path.join(__dirname, 'werkzaamheden-list.ts');
-  const tsContent = `// Auto-generated from DSO API\n// Total: ${allWerkzaamheden.length} items\n\nexport const WERKZAAMHEDEN = ${JSON.stringify(allWerkzaamheden, null, 2)} as const;\n`;
-  fs.writeFileSync(tsOutputPath, tsContent);
-  console.log(`✅ Saved TypeScript version to ${tsOutputPath}`);
+  const tsContent = `// Auto-generated from DSO API\nexport const WERKZAAMHEDEN = ${JSON.stringify(allWerkzaamheden, null, 2)} as const;\n`;
+  fs.writeFileSync('src/werkzaamheden-list.ts', tsContent);
+  console.log('✅ Saved to src/werkzaamheden-list.ts');
 }
 
-fetchAllWerkzaamheden().catch(console.error);
+fetchAllWerkzaamheden();

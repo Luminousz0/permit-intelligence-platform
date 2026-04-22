@@ -1,0 +1,34 @@
+{
+  "common": {
+    "analyze": "Analyze Project",
+    "track": "Track Application",
+    "address": "Project Address",
+    "activity": "Activity Type",
+    "units": "Units (optional)",
+    "login": "Login",
+    "signup": "Sign Up",
+    "logout": "Logout",
+    "email": "Email",
+    "password": "Password",
+    "submit": "Submit",
+    "cancel": "Cancel"
+  },
+  "home": {
+    "hero": "Instantly know if you need a permit, how long it will take, and what participation your municipality requires.",
+    "subhero": "Built for Dutch real estate developers navigating the Omgevingswet.",
+    "permit_check": "Permit Check",
+    "permit_check_desc": "Direct integration with the official Omgevingsloket — instantly know if you need a permit.",
+    "timeline": "Timeline Prediction",
+    "timeline_desc": "Municipality-specific estimates based on real processing data. Plan your financing with confidence.",
+    "participation": "Participation Guidance",
+    "participation_desc": "Clear, actionable steps for your specific municipality. Download ready-to-use participation templates."
+  },
+  "results": {
+    "location": "Location",
+    "permit_status": "Permit Status",
+    "timeline_prediction": "Timeline Prediction",
+    "participation": "Participation",
+    "next_steps": "Next Steps",
+    "download_template": "Download Word Template"
+  }
+}

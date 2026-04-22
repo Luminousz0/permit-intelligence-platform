@@ -1,0 +1,34 @@
+{
+  "common": {
+    "analyze": "Project Analyseren",
+    "track": "Aanvraag Volgen",
+    "address": "Projectadres",
+    "activity": "Type Activiteit",
+    "units": "Aantal Eenheden (optioneel)",
+    "login": "Inloggen",
+    "signup": "Registreren",
+    "logout": "Uitloggen",
+    "email": "E-mail",
+    "password": "Wachtwoord",
+    "submit": "Versturen",
+    "cancel": "Annuleren"
+  },
+  "home": {
+    "hero": "Weet direct of u een vergunning nodig heeft, hoe lang het duurt en welke participatie uw gemeente vereist.",
+    "subhero": "Gebouwd voor Nederlandse vastgoedontwikkelaars die navigeren door de Omgevingswet.",
+    "permit_check": "Vergunningcheck",
+    "permit_check_desc": "Directe integratie met het officiële Omgevingsloket — weet direct of u een vergunning nodig heeft.",
+    "timeline": "Tijdlijn Voorspelling",
+    "timeline_desc": "Gemeente-specifieke schattingen op basis van echte verwerkingsdata. Plan uw financiering met vertrouwen.",
+    "participation": "Participatie Begeleiding",
+    "participation_desc": "Duidelijke, uitvoerbare stappen voor uw specifieke gemeente. Download kant-en-klare participatie templates."
+  },
+  "results": {
+    "location": "Locatie",
+    "permit_status": "Vergunningstatus",
+    "timeline_prediction": "Tijdlijn Voorspelling",
+    "participation": "Participatie",
+    "next_steps": "Volgende Stappen",
+    "download_template": "Word Template Downloaden"
+  }
+}
