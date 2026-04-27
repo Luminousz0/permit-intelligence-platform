@@ -1,0 +1,149 @@
+<!doctype html>
+<html lang="nl">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>FAQ — Permit Intelligence</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter+Tight:wght@400;500;600;700&family=Source+Serif+4:ital,opsz,wght@0,8..60,400;0,8..60,500;1,8..60,400&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="styles.css" />
+  <link rel="stylesheet" href="styles-pages.css" />
+</head>
+<body data-aesthetic="hybrid">
+  <div id="root"></div>
+  <script src="https://unpkg.com/react@18.3.1/umd/react.development.js" integrity="sha384-hD6/rw4ppMLGNu3tX5cjIb+uRZ7UkRJ6BPkLpg4hAu/6onKUg4lLsHAs9EBPT82L" crossorigin="anonymous"></script>
+  <script src="https://unpkg.com/react-dom@18.3.1/umd/react-dom.development.js" integrity="sha384-u6aeetuaXnQ38mYT8rp6sbXaQe3NL9t+IBXmnYxwkUI2Hw4bsp2Wvmx4yRQF1uAm" crossorigin="anonymous"></script>
+  <script src="https://unpkg.com/@babel/standalone@7.29.0/babel.min.js" integrity="sha384-m08KidiNqLdpJqLq95G/LEi8Qvjl/xUYll3QILypMoQ65QorJ9Lvtp2RXYGBFj1y" crossorigin="anonymous"></script>
+  <script type="text/babel" src="copy.jsx"></script>
+  <script type="text/babel" src="shared.jsx"></script>
+  <script type="text/babel">
+    const { useState } = React;
+
+    const FAQ_DATA = [
+      {
+        id: "data",
+        title: "Data & bronnen",
+        sub: "Waar komt onze informatie vandaan, hoe vaak wordt het bijgewerkt.",
+        items: [
+          { q: "Wat is de bron van de gemeentelijke beleidsinformatie?", a: "Al het beleid wordt geëxtraheerd uit officiële bronnen: lokaleregelgeving.overheid.nl en officiële gemeente-websites. Elke gemeenteprofiel toont CVDR-nummer en publicatiedatum. Je kunt elk bronnummer direct bij de overheid verifiëren." },
+          { q: "Hoe vaak wordt de database bijgewerkt?", a: "Synchronisatie vindt plaats wanneer gemeenten beleid wijzigen. Wij monitoren publicaties op lokaleregelgeving.overheid.nl wekelijks. Gebruikers blijven zelf verantwoordelijk om actuele vereisten direct bij hun gemeente te bevestigen vóór indiening." },
+          { q: "Wat als mijn gemeente nog niet geprofileerd is?", a: "Momenteel zijn 28 gemeenten volledig in kaart gebracht — primair de grote en middelgrote gemeenten. Voor andere gemeenten is gerichte consultatie beschikbaar: wij doen het beleidsonderzoek voor je en leveren een gemeentespecifiek profiel." },
+          { q: "Hoe gaan jullie om met conflicterend beleid?", a: "Bij tegenstrijdigheden tussen verordening en uitvoeringsbesluit volgen we de hiërarchie: gemeentelijke verordening boven beleidsregel boven werkinstructie. Conflicten worden in het profiel expliciet vermeld." },
+          { q: "Kan beleid wijzigen na een tool-query?", a: "Ja. Gemeenten mogen participatiebeleid wijzigen. De referentietool toont beleid zoals gedocumenteerd op querymoment. Gebruikers blijven verantwoordelijk voor bevestiging vóór indiening." },
+        ],
+      },
+      {
+        id: "scope",
+        title: "Reikwijdte & functionaliteit",
+        sub: "Wat de tool doet — en wat niet.",
+        items: [
+          { q: "Geeft de tool real-time vergunningstatus?", a: "Nee. De referentietool richt zich op participatievereisten vóór indiening. Real-time status-tracking zou koppeling met gemeentelijke vergunningssystemen vereisen — dat is niet beschikbaar." },
+          { q: "Vervangt dit een juridisch adviseur?", a: "Nee. Dit is een referentietool. Voor complexe projecten of juridische vragen blijft consultatie met een gekwalificeerd adviseur aanbevolen. Wij geven geen juridisch advies." },
+          { q: "Werkt dit voor alle Nederlandse gemeenten?", a: "Op dit moment 28 gemeenten met volledige profielen, plus oriënterende informatie voor de overige. We breiden de database voortdurend uit op basis van klantvraag." },
+          { q: "Geldt dit voor alle vergunningstypes?", a: "De tool richt zich op BOPA-aanvragen (buitenplanse omgevingsplanactiviteit), waar de participatieplicht uit Art. 16.55 toepasselijk is. Niet voor alle omgevingsvergunning-types." },
+          { q: "Genereren jullie de documentatie zelf?", a: "Het abonnement biedt templates op basis van geanalyseerde indieningen. Voor volledig verzorgde documentatie is consultatie de juiste route." },
+        ],
+      },
+      {
+        id: "privacy",
+        title: "Privacy & data",
+        sub: "Hoe wij omgaan met jouw informatie.",
+        items: [
+          { q: "Hoe worden persoonlijke en projectgegevens behandeld?", a: "Data wordt bewaard volgens Nederlandse privacywetgeving (AVG). Projectinformatie uit consultatie-opdrachten is vertrouwelijk en wordt niet gedeeld met derden." },
+          { q: "Wordt mijn zoekgeschiedenis opgeslagen?", a: "Geanonimiseerde aggregaten gebruiken we voor productverbetering. Individuele zoekopdrachten worden niet gekoppeld aan persoonsgegevens." },
+          { q: "Kan ik mijn data verwijderen?", a: "Ja. Account-verwijdering binnen 30 dagen via de instellingenpagina, of per e-mail. Consultatie-dossiers worden 7 jaar bewaard wegens fiscale verplichtingen, daarna verwijderd." },
+        ],
+      },
+      {
+        id: "billing",
+        title: "Facturering & abonnement",
+        sub: "Praktische vragen over betaling en opzegging.",
+        items: [
+          { q: "Welke betaalmethoden worden ondersteund?", a: "iDEAL, SEPA-incasso, creditcard. Facturering met BTW voor zakelijke klanten." },
+          { q: "Kan ik maandelijks opzeggen?", a: "Ja. Het abonnement is maandelijks opzegbaar zonder opzegtermijn. Toegang loopt tot het einde van de betaalde periode." },
+          { q: "Bestaat er een jaarbundel met korting?", a: "Ja — €490 per jaar (16% korting). Ideaal voor ontwikkelaars die de tool langdurig willen inzetten." },
+          { q: "Hoe werkt de gratis proefperiode?", a: "14 dagen volledige toegang, geen creditcard vereist. Geen automatische conversie — je beslist actief om abonnement te starten." },
+        ],
+      },
+    ];
+
+    function FAQPage() {
+      const [lang, setLang] = useState("nl");
+      const [active, setActive] = useState("data");
+      const [open, setOpen] = useState({});
+      const t = window.COPY[lang];
+      const accent = window.ACCENT_PRESETS_S.blue;
+
+      const toggle = (id) => setOpen(prev => ({ ...prev, [id]: !prev[id] }));
+
+      return (
+        <>
+          <SubNav lang={lang} setLang={setLang} current="faq.html" accent={accent}
+                  demoLabel={t.nav.demo} tryLabel={t.nav.tryTool} />
+          <PageHeader
+            breadcrumb={[{ label: "Home", href: "index.html" }, { label: "FAQ" }]}
+            eyebrow="Veelgestelde vragen"
+            title="Wat ontwikkelaars meestal vragen."
+            sub="Antwoorden op de meest voorkomende vragen — over data, reikwijdte, privacy en facturering. Specifieke vraag niet beantwoord? Neem contact op."
+          />
+          <section className="longform">
+            <div className="container faq-page-grid">
+              <aside className="longform-toc">
+                <div className="toc-title">Categorieën</div>
+                <ul className="faq-cat-list">
+                  {FAQ_DATA.map(cat => (
+                    <li key={cat.id}>
+                      <a href={`#${cat.id}`}
+                         className={active === cat.id ? "active" : ""}
+                         onClick={() => setActive(cat.id)}>
+                        {cat.title}
+                      </a>
+                    </li>
+                  ))}
+                </ul>
+              </aside>
+              <div>
+                {FAQ_DATA.map(cat => (
+                  <div key={cat.id} id={cat.id} className="faq-section">
+                    <h2>{cat.title}</h2>
+                    <p className="sec-sub">{cat.sub}</p>
+                    <div className="faq-list" style={{ borderTop: "none" }}>
+                      {cat.items.map((it, i) => {
+                        const k = `${cat.id}-${i}`;
+                        const isOpen = open[k];
+                        return (
+                          <div className={`faq-item ${isOpen ? "open" : ""}`} key={k}>
+                            <button type="button" className="faq-q" onClick={() => toggle(k)}>
+                              <span className="faq-q-text">{it.q}</span>
+                              <span className="faq-toggle">{isOpen ? "–" : "+"}</span>
+                            </button>
+                            {isOpen && <div className="faq-a prose">{it.a}</div>}
+                          </div>
+                        );
+                      })}
+                    </div>
+                  </div>
+                ))}
+
+                <div style={{ marginTop: 48, padding: 28, background: "var(--bg-alt)", border: "1px solid var(--hairline)", borderRadius: 12 }}>
+                  <div style={{ fontFamily: "var(--serif)", fontSize: 24, letterSpacing: "-0.02em", marginBottom: 8 }}>
+                    Vraag niet beantwoord?
+                  </div>
+                  <p style={{ fontSize: 15, color: "var(--ink-soft)", margin: "0 0 18px", maxWidth: "50ch" }}>
+                    Specifieke vragen over jouw gemeente of project — we antwoorden binnen 48 uur.
+                  </p>
+                  <a href="diensten.html" className="btn btn-primary" style={{ background: accent.bg, color: accent.fg }}>
+                    Plan een gesprek <span className="arrow">→</span>
+                  </a>
+                </div>
+              </div>
+            </div>
+          </section>
+          <SubFooter t={t} />
+        </>
+      );
+    }
+
+    ReactDOM.createRoot(document.getElementById("root")).render(<FAQPage />);
+  </script>
+</body>
+</html>

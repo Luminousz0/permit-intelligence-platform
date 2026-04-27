@@ -3,6 +3,7 @@ document.addEventListener('DOMContentLoaded', function() {
   // ============================================================
   // GLOBAL VARIABLES
   // ============================================================
+  const API_BASE = window.API_BASE || "";
   let currentLanguage = 'en';
   const translations = { en: {}, nl: {} };
   let allActivities = [], filteredActivities = [], selectedIndex = -1;
@@ -123,7 +124,7 @@ document.addEventListener('DOMContentLoaded', function() {
   // ============================================================
   async function loadActivities() {
     try {
-      const res = await fetch('/api/werkzaamheden');
+      const res = await fetch(`${API_BASE}/api/werkzaamheden`);
       allActivities = await res.json();
       filteredActivities = allActivities;
       activityCount.textContent = allActivities.length;
@@ -204,7 +205,7 @@ document.addEventListener('DOMContentLoaded', function() {
       modal.style.display = 'none'; pendingReq.answers = answers;
       submitBtn.disabled = true; submitBtn.textContent = '...';
       try {
-        const res = await fetch('/api/analyze', { method:'POST', headers:{'Content-Type':'application/json'}, body:JSON.stringify(pendingReq) });
+        const res = await fetch(`${API_BASE}/api/analyze`, { method:'POST', headers:{'Content-Type':'application/json'}, body:JSON.stringify(pendingReq) });
         const data = await res.json();
         if(data.permit.questions_needed) showModal(data.permit.questions, pendingReq);
         else { questionRound=0; displayResults(data); submitBtn.disabled=false; submitBtn.textContent=t('analyze'); }
@@ -222,7 +223,7 @@ document.addEventListener('DOMContentLoaded', function() {
     submitBtn.disabled=true; submitBtn.textContent='...'; resultsDiv.style.display='none'; errDiv.style.display='none';
     const req = { address: addressInput.value, werkzaamheid: werkzaamheidInput.value, housing_units: parseInt(document.getElementById('housingUnits').value)||undefined };
     try {
-      const res = await fetch('/api/analyze', { method:'POST', headers:{'Content-Type':'application/json'}, body:JSON.stringify(req) });
+      const res = await fetch(`${API_BASE}/api/analyze`, { method:'POST', headers:{'Content-Type':'application/json'}, body:JSON.stringify(req) });
       const data = await res.json();
       if(data.permit.questions_needed) showModal(data.permit.questions, req);
       else { displayResults(data); submitBtn.disabled=false; submitBtn.textContent=t('analyze'); }
@@ -237,7 +238,7 @@ document.addEventListener('DOMContentLoaded', function() {
     if(!el) return;
     el.innerHTML = '<p>Calculating...</p>';
     try {
-      const res = await fetch('/api/predict-timeline', { method:'POST', headers:{'Content-Type':'application/json'}, body:JSON.stringify({municipality, projectType, housingUnits}) });
+      const res = await fetch(`${API_BASE}/api/predict-timeline`, { method:'POST', headers:{'Content-Type':'application/json'}, body:JSON.stringify({municipality, projectType, housingUnits}) });
       const d = await res.json();
       const conf = document.getElementById('timeline-confidence');
       if(conf) conf.className = `status-indicator ${d.confidence==='high'?'success':(d.confidence==='medium'?'info':'warning')}`;
@@ -307,7 +308,7 @@ document.addEventListener('DOMContentLoaded', function() {
           if (!caseNumber) { result.innerHTML = `<p>${t('enter_case')}</p>`; return; }
           result.innerHTML = `<p>${t('searching')}</p>`;
           try {
-            const res = await fetch('/api/track-case', { method:'POST', headers:{'Content-Type':'application/json'}, body:JSON.stringify({caseNumber}) });
+            const res = await fetch(`${API_BASE}/api/track-case`, { method:'POST', headers:{'Content-Type':'application/json'}, body:JSON.stringify({caseNumber}) });
             const data = await res.json();
             result.innerHTML = renderTracker(data);
             if (indicator) indicator.className = `status-indicator ${data.progress===100?'success':(data.progress>=50?'info':'warning')}`;
@@ -352,7 +353,7 @@ document.addEventListener('DOMContentLoaded', function() {
         if (!caseNumber) { result.innerHTML = `<p>${t('enter_case')}</p>`; result.style.display = 'block'; return; }
         result.innerHTML = `<p>${t('searching')}</p>`; result.style.display = 'block';
         try {
-          const res = await fetch('/api/track-case', { method:'POST', headers:{'Content-Type':'application/json'}, body:JSON.stringify({caseNumber}) });
+          const res = await fetch(`${API_BASE}/api/track-case`, { method:'POST', headers:{'Content-Type':'application/json'}, body:JSON.stringify({caseNumber}) });
           const data = await res.json();
           result.innerHTML = `<div class="result-card" style="margin-top:0;">${renderTracker(data)}</div>`;
         } catch(e) { result.innerHTML = `<p style="color:#c00">${e.message}</p>`; }
@@ -384,7 +385,7 @@ document.addEventListener('DOMContentLoaded', function() {
     const email = reportEmailInput.value;
     if(!email) return alert('Enter email');
     try {
-      const res = await fetch('/api/email-report', { method:'POST', headers:{'Content-Type':'application/json'}, body:JSON.stringify({email, reportHtml: resultsDiv.innerHTML, subject:'Permit Intelligence Report'}) });
+      const res = await fetch(`${API_BASE}/api/email-report`, { method:'POST', headers:{'Content-Type':'application/json'}, body:JSON.stringify({email, reportHtml: resultsDiv.innerHTML, subject:'Permit Intelligence Report'}) });
       const d = await res.json();
       alert(`Report sent! Preview: ${d.previewUrl}`);
     } catch(err) { alert('Error sending report'); }
@@ -407,7 +408,7 @@ document.addEventListener('DOMContentLoaded', function() {
     e.preventDefault();
     const email = document.getElementById('auth-email').value;
     const password = document.getElementById('auth-password').value;
-    const ep = isLoginMode ? '/api/auth/login' : '/api/auth/register';
+    const ep = isLoginMode ? `${API_BASE}/api/auth/login` : `${API_BASE}/api/auth/register`;
     const res = await fetch(ep, { method:'POST', headers:{'Content-Type':'application/json'}, body:JSON.stringify({email,password}) });
     const d = await res.json();
     if(res.ok) { if(d.token) { localStorage.setItem('authToken', d.token); localStorage.setItem('userEmail', email); } hideAuthModal(); }

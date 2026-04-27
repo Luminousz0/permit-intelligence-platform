@@ -1,0 +1,49 @@
+<!doctype html>
+<html lang="nl">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Regelgeving — Permit Intelligence</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter+Tight:wght@400;500;600;700&family=Source+Serif+4:ital,opsz,wght@0,8..60,400;0,8..60,500;1,8..60,400&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="styles.css" />
+  <link rel="stylesheet" href="styles-pages.css" />
+</head>
+<body data-aesthetic="hybrid">
+  <div id="root"></div>
+
+  <script src="https://unpkg.com/react@18.3.1/umd/react.development.js" integrity="sha384-hD6/rw4ppMLGNu3tX5cjIb+uRZ7UkRJ6BPkLpg4hAu/6onKUg4lLsHAs9EBPT82L" crossorigin="anonymous"></script>
+  <script src="https://unpkg.com/react-dom@18.3.1/umd/react-dom.development.js" integrity="sha384-u6aeetuaXnQ38mYT8rp6sbXaQe3NL9t+IBXmnYxwkUI2Hw4bsp2Wvmx4yRQF1uAm" crossorigin="anonymous"></script>
+  <script src="https://unpkg.com/@babel/standalone@7.29.0/babel.min.js" integrity="sha384-m08KidiNqLdpJqLq95G/LEi8Qvjl/xUYll3QILypMoQ65QorJ9Lvtp2RXYGBFj1y" crossorigin="anonymous"></script>
+
+  <script type="text/babel" src="copy.jsx"></script>
+  <script type="text/babel" src="copy-pages.jsx"></script>
+  <script type="text/babel" src="shared.jsx"></script>
+  <script type="text/babel" src="components-longform.jsx"></script>
+  <script type="text/babel">
+    const { useState } = React;
+    function Page() {
+      const [lang, setLang] = useState("nl");
+      const t = window.COPY[lang];
+      const p = window.PAGES.regelgeving[lang] || window.PAGES.regelgeving.nl;
+      const accent = window.ACCENT_PRESETS_S.blue;
+      return (
+        <>
+          <SubNav lang={lang} setLang={setLang} current="regelgeving.html" accent={accent}
+                  demoLabel={t.nav.demo} tryLabel={t.nav.tryTool} />
+          <PageHeader breadcrumb={p.breadcrumb} eyebrow={p.eyebrow} title={p.title} sub={p.sub} />
+          <section className="longform">
+            <div className="container longform-grid">
+              <TOC items={p.toc} />
+              <div className="longform-body">
+                <LongformBody sections={p.sections} />
+              </div>
+            </div>
+          </section>
+          <SubFooter t={t} />
+        </>
+      );
+    }
+    ReactDOM.createRoot(document.getElementById("root")).render(<Page />);
+  </script>
+</body>
+</html>

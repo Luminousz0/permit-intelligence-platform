@@ -1,0 +1,441 @@
+// Bilingual copy for the Permit Intelligence homepage.
+// nl is primary, en is the toggle.
+
+const COPY = {
+  nl: {
+    nav: {
+      product: "Product",
+      municipalities: "Gemeenten",
+      pricing: "Prijzen",
+      about: "Over ons",
+      tryTool: "Probeer de tool",
+      demo: "Plan een demo",
+    },
+    hero: {
+      eyebrow: "Omgevingswet \u00b7 Participatieverplichting \u00b7 BOPA",
+      // 4 headline variants — switched via Tweaks
+      headlines: [
+        {
+          line1: "Je vergunning hoeft geen",
+          line2: "26 weken te duren.",
+          sub: "De Omgevingswet veranderde Nederlands vergunningstelsel. Participatie\u00advereisten zijn verwarrend. Elke gemeente heeft andere regels. Je verliest weken aan onderzoek en afwijzingen.",
+        },
+        {
+          line1: "342 gemeenten.",
+          line2: "35+ participatieregels.",
+          sub: "\u00c9\u00e9n referentie. We hebben elk gepubliceerd participatiebeleid in Nederland geanalyseerd \u2014 zodat je v\u00f3\u00f3r indiening weet wat je gemeente eist.",
+        },
+        {
+          line1: "Participatieverslag",
+          line2: "afgewezen? Niet meer.",
+          sub: "Onvolledige participatiedocumentatie is de meest voorkomende reden voor BOPA-afwijzing. We laten je zien wat jouw gemeente echt vereist \u2014 met bron, CVDR-nummer en datum.",
+        },
+        {
+          line1: "Omgevingswet-compliance,",
+          line2: "zonder de gokwerk.",
+          sub: "Een professionele referentie voor ontwikkelaars. Officieel beleid uit lokaleregelgeving.overheid.nl, gestructureerd per gemeente, gevalideerd in praktijk.",
+        },
+      ],
+      ctaPrimary: "Probeer de tool",
+      ctaSecondary: "Bekijk hoe het werkt",
+      widgetTitle: "Live check",
+      widgetSub: "Typ een gemeente en projecttype",
+      widgetMuni: "Gemeente",
+      widgetType: "Projecttype",
+      widgetUnits: "Aantal woningen",
+      widgetCheck: "Controleer vereisten",
+      widgetMuniPlaceholder: "Almere",
+      types: [
+        { id: "residential", label: "Woningbouw" },
+        { id: "commercial", label: "Commercieel" },
+        { id: "institutional", label: "Maatschappelijk" },
+        { id: "infrastructure", label: "Infrastructuur" },
+      ],
+    },
+    stats: {
+      title: "De staat van de Omgevingswet",
+      subtitle: "Wat we vandaag weten, op basis van openbaar gepubliceerd beleid.",
+      asOf: "Per april 2026 \u00b7 bron: lokaleregelgeving.overheid.nl + parolo.nl",
+      items: [
+        { value: "342", label: "Nederlandse gemeenten" },
+        { value: "307", label: "met gepubliceerd participatiebeleid" },
+        { value: "35+", label: "verschillende beleidsbenaderingen" },
+        { value: "28", label: "volledig geprofileerd in onze database" },
+      ],
+      legend: [
+        { color: "green", label: "Beleid gepubliceerd" },
+        { color: "amber", label: "Beoordelingsruimte" },
+        { color: "gray", label: "Geen gepubliceerd beleid" },
+      ],
+    },
+    problem: {
+      eyebrow: "Het probleem",
+      title: "De vergunning als black box",
+      paragraphs: [
+        "Je dient een aanvraag in. Dan wacht je. Je weet niet of je 2 of 16 weken in de gemeentelijke beoordeling zit. Je weet niet wat de aanvraag tegenhoudt. Je weet niet wat ontbreekt \u2014 totdat je een afwijzingsbrief krijgt.",
+        "Daar sterven projecten. Niet door slechte plannen. Door onvolledige participatiedocumentatie die niet voldoet aan ongedocumenteerde gemeentelijke verwachtingen.",
+      ],
+      breakdown: {
+        title: "Wat ontwikkelaars vandaag betalen",
+        items: [
+          { label: "Onderzoek per gemeente", cost: "2\u20133 weken", note: "telefoon, e-mail, beleidsstukken doornemen" },
+          { label: "Externe consultant", cost: "\u20ac2\u20135k", note: "per project, per gemeente" },
+          { label: "Vertraging na afwijzing", cost: "6\u20138 weken", note: "herziening + heroverweging" },
+          { label: "Financieringskosten per week", cost: "\u20ac10k", note: "bij gemiddeld ontwikkel\u00adproject" },
+        ],
+      },
+    },
+    how: {
+      eyebrow: "Hoe het werkt",
+      title: "Drie stappen, geen telefoongesprekken.",
+      steps: [
+        {
+          n: "01",
+          title: "Lokaliseer",
+          body: "Voer je adres of gemeente in. Onze koppeling met PDOK Locatieserver identificeert het juiste bestuursorgaan en bestemmingsplan.",
+          tag: "PDOK \u00b7 BAG \u00b7 Gemeente-ID",
+        },
+        {
+          n: "02",
+          title: "Classificeer",
+          body: "Geef projecttype en omvang op (woningen, m\u00b2, hoogte). Het systeem matcht je project tegen het toepasselijke participatiekader van de gemeente.",
+          tag: "BOPA-activiteit \u00b7 drempelwaarden",
+        },
+        {
+          n: "03",
+          title: "Documenteer",
+          body: "Krijg de exacte documentatie\u00advereisten, in gemeente-conform formaat, met directe link naar het bron\u00adbeleid (CVDR-nummer, publicatie\u00addatum).",
+          tag: "Participatieverslag \u00b7 CVDR-bron",
+        },
+      ],
+      try: "Probeer met je eigen project",
+    },
+    proof: {
+      eyebrow: "Validatie",
+      title: "Gebouwd voor ontwikkelaars. Gevalideerd door een ontwikkelaar.",
+      quote: "Getest op mijn lopende project in Almere. De participatieregels klopten precies. Bespaarde me uren bellen met de gemeente.",
+      attribution: "Actieve vastgoedontwikkelaar, Almere",
+      attributionNote: "Naam op verzoek niet vermeld",
+      sources: {
+        title: "Elke regel is bron\u00adgeciteerd",
+        body: "Gemeentelijk beleid wordt rechtstreeks ge\u00ebxtraheerd uit officie\u00eble overheidsbronnen. Elke regel in onze database verwijst naar een CVDR-nummer en publicatiedatum. Je kunt elk antwoord verifi\u00ebren.",
+        list: ["lokaleregelgeving.overheid.nl", "Officie\u00eble gemeente\u00adwebsites", "Gemeenteblad \u00b7 gemeente.overheid.nl", "Parolo beleidsindex"],
+      },
+    },
+    pricing: {
+      eyebrow: "Prijzen",
+      title: "Twee paden. Eerlijke prijs.",
+      subtitle: "Begin gratis met de tool. Schaal op met abonnement of laat ons je documentatie verzorgen.",
+      tiers: [
+        {
+          name: "Tool",
+          price: "\u20ac0",
+          period: "altijd",
+          description: "Toegang tot de referentietool en gemeentelijke database.",
+          features: [
+            "Gemeente\u00adzoekopdrachten",
+            "Beleidsoverzicht per gemeente",
+            "Bron\u00adcitaties (CVDR + datum)",
+            "Tot 5 zoekopdrachten per dag",
+          ],
+          cta: "Probeer nu",
+          accent: false,
+        },
+        {
+          name: "Abonnement",
+          price: "\u20ac49",
+          period: "per maand",
+          description: "Voor ontwikkelaars met meerdere lopende projecten.",
+          features: [
+            "Onbeperkte zoekopdrachten",
+            "Documentatie-templates per gemeente",
+            "Beleidsupdates per e-mail",
+            "Technische vragen \u2014 binnen 48u",
+            "14 dagen gratis proberen",
+          ],
+          cta: "Start gratis proefperiode",
+          accent: true,
+        },
+        {
+          name: "Consultatie",
+          price: "vanaf \u20ac500",
+          period: "per project",
+          description: "Voor complexe of onzekere gemeentelijke vereisten.",
+          features: [
+            "Project\u00adbeoordeling tegen gemeentelijk kader",
+            "Voorbereiding participatiedocumentatie",
+            "Pre-submission review",
+            "Directe toegang tot specialist",
+          ],
+          cta: "Plan een gesprek",
+          accent: false,
+        },
+      ],
+    },
+    faq: {
+      eyebrow: "Veelgestelde vragen",
+      title: "Wat ontwikkelaars meestal vragen.",
+      items: [
+        {
+          q: "Wat is de bron van de gemeentelijke beleidsinformatie?",
+          a: "Al het beleid wordt ge\u00ebxtraheerd uit officie\u00eble bronnen: lokaleregelgeving.overheid.nl en officie\u00eble gemeente\u00adwebsites. Elke gemeenteprofiel toont CVDR-nummer en publicatiedatum.",
+        },
+        {
+          q: "Hoe vaak wordt de database bijgewerkt?",
+          a: "Synchronisatie vindt plaats wanneer gemeenten beleid wijzigen. Gebruikers blijven zelf verantwoordelijk om actuele vereisten direct bij hun gemeente te bevestigen v\u00f3\u00f3r indiening.",
+        },
+        {
+          q: "Wat als mijn gemeente nog niet geprofileerd is?",
+          a: "Momenteel zijn 28 gemeenten volledig in kaart gebracht. Voor andere gemeenten is gerichte consultatie beschikbaar \u2014 we doen het beleidsonderzoek voor je.",
+        },
+        {
+          q: "Vervangt dit een juridisch adviseur?",
+          a: "Nee. Dit is een referentietool. Voor complexe projecten of juridische vragen blijft consultatie met een gekwalificeerd juridisch adviseur aanbevolen.",
+        },
+        {
+          q: "Is mijn projectinformatie vertrouwelijk?",
+          a: "Ja. Project\u00adgegevens uit consultatie\u00adopdrachten worden niet gedeeld met derden. Data wordt bewaard volgens Nederlandse privacywetgeving.",
+        },
+      ],
+      cta: "Volledige FAQ \u2014 20 vragen",
+    },
+    footer: {
+      tagline: "Een professionele referentie voor Omgevingswet-compliance.",
+      cols: [
+        { title: "Product", links: ["Live tool", "Gemeentendatabase", "Documentatie\u00adtemplates", "API (binnenkort)"] },
+        { title: "Bedrijf", links: ["Over ons", "Validatie", "Contact", "Pers"] },
+        { title: "Bronnen", links: ["lokaleregelgeving.overheid.nl", "parolo.nl", "Omgevingsloket", "Wettekst Omgevingswet"] },
+        { title: "Juridisch", links: ["Privacybeleid", "Voorwaarden", "Cookies", "Disclaimer"] },
+      ],
+      legal: "Permit Intelligence B.V. \u00b7 KvK 00000000 \u00b7 Almere, Nederland",
+      disclaimer: "Deze referentie is informatief. Gebruikers blijven verantwoordelijk voor het bevestigen van actuele vereisten bij hun gemeente.",
+    },
+  },
+  en: {
+    nav: {
+      product: "Product",
+      municipalities: "Municipalities",
+      pricing: "Pricing",
+      about: "About",
+      tryTool: "Try the tool",
+      demo: "Schedule a demo",
+    },
+    hero: {
+      eyebrow: "Omgevingswet \u00b7 Participation requirement \u00b7 BOPA",
+      headlines: [
+        {
+          line1: "Your permit doesn\u2019t need to",
+          line2: "take 26 weeks.",
+          sub: "The Omgevingswet changed Dutch permitting. Participation requirements are confusing. Every municipality has different rules. You\u2019re losing weeks to research and rejection.",
+        },
+        {
+          line1: "342 municipalities.",
+          line2: "35+ participation rules.",
+          sub: "One reference. We\u2019ve analysed every published participation policy in the Netherlands \u2014 so you know what your municipality requires before you submit.",
+        },
+        {
+          line1: "Participation report",
+          line2: "rejected? Not anymore.",
+          sub: "Incomplete participation documentation is the most common cause of BOPA rejection. We show you exactly what your municipality needs \u2014 with source, CVDR number, and date.",
+        },
+        {
+          line1: "Omgevingswet compliance,",
+          line2: "without the guesswork.",
+          sub: "A professional reference for developers. Official policy from lokaleregelgeving.overheid.nl, structured per municipality, validated in the field.",
+        },
+      ],
+      ctaPrimary: "Try the live tool",
+      ctaSecondary: "See how it works",
+      widgetTitle: "Live check",
+      widgetSub: "Type a municipality and project type",
+      widgetMuni: "Municipality",
+      widgetType: "Project type",
+      widgetUnits: "Number of units",
+      widgetCheck: "Check requirements",
+      widgetMuniPlaceholder: "Almere",
+      types: [
+        { id: "residential", label: "Residential" },
+        { id: "commercial", label: "Commercial" },
+        { id: "institutional", label: "Institutional" },
+        { id: "infrastructure", label: "Infrastructure" },
+      ],
+    },
+    stats: {
+      title: "The state of the Omgevingswet",
+      subtitle: "What we know today, based on publicly published policy.",
+      asOf: "As of April 2026 \u00b7 source: lokaleregelgeving.overheid.nl + parolo.nl",
+      items: [
+        { value: "342", label: "Dutch municipalities" },
+        { value: "307", label: "with published participation policy" },
+        { value: "35+", label: "distinct policy approaches" },
+        { value: "28", label: "fully profiled in our database" },
+      ],
+      legend: [
+        { color: "green", label: "Policy published" },
+        { color: "amber", label: "Discretionary" },
+        { color: "gray", label: "No published policy" },
+      ],
+    },
+    problem: {
+      eyebrow: "The problem",
+      title: "The permit as a black box",
+      paragraphs: [
+        "You submit an application. Then you wait. You don\u2019t know if it\u2019s been 2 or 16 weeks in municipal review. You don\u2019t know what\u2019s holding it up. You don\u2019t know what\u2019s missing \u2014 until you get a rejection letter.",
+        "That\u2019s where projects die. Not from bad plans. From incomplete participation documentation that fails to meet undocumented municipal expectations.",
+      ],
+      breakdown: {
+        title: "What developers pay today",
+        items: [
+          { label: "Research per municipality", cost: "2\u20133 weeks", note: "phone, email, reading policy" },
+          { label: "External consultant", cost: "\u20ac2\u20135k", note: "per project, per municipality" },
+          { label: "Delay after rejection", cost: "6\u20138 weeks", note: "revision + reconsideration" },
+          { label: "Financing cost per week", cost: "\u20ac10k", note: "on average development project" },
+        ],
+      },
+    },
+    how: {
+      eyebrow: "How it works",
+      title: "Three steps, no phone calls.",
+      steps: [
+        {
+          n: "01",
+          title: "Locate",
+          body: "Enter your address or municipality. Our PDOK Locatieserver integration identifies the correct authority and zoning plan.",
+          tag: "PDOK \u00b7 BAG \u00b7 Municipality ID",
+        },
+        {
+          n: "02",
+          title: "Classify",
+          body: "Provide project type and scale (units, m\u00b2, height). The system matches your project against the applicable participation framework.",
+          tag: "BOPA activity \u00b7 thresholds",
+        },
+        {
+          n: "03",
+          title: "Document",
+          body: "Get exact documentation requirements, in municipality-compliant format, with direct link to source policy (CVDR number, publication date).",
+          tag: "Participation report \u00b7 CVDR source",
+        },
+      ],
+      try: "Try with your own project",
+    },
+    proof: {
+      eyebrow: "Validation",
+      title: "Built for developers. Validated by a developer.",
+      quote: "Tested on my actual project in Almere. The participation rules were exactly right. Saved me hours of calling the municipality.",
+      attribution: "Active real estate developer, Almere",
+      attributionNote: "Name withheld at request",
+      sources: {
+        title: "Every rule is source-cited",
+        body: "Municipal policy is extracted directly from official government sources. Every rule in our database links to a CVDR number and publication date. You can verify any answer.",
+        list: ["lokaleregelgeving.overheid.nl", "Official municipal websites", "Gemeenteblad \u00b7 gemeente.overheid.nl", "Parolo policy index"],
+      },
+    },
+    pricing: {
+      eyebrow: "Pricing",
+      title: "Two paths. Fair pricing.",
+      subtitle: "Start free with the tool. Scale up with subscription, or have us prepare your documentation.",
+      tiers: [
+        {
+          name: "Tool",
+          price: "\u20ac0",
+          period: "always",
+          description: "Access to the reference tool and municipality database.",
+          features: [
+            "Municipality lookups",
+            "Per-municipality policy summary",
+            "Source citations (CVDR + date)",
+            "Up to 5 queries per day",
+          ],
+          cta: "Try now",
+          accent: false,
+        },
+        {
+          name: "Subscription",
+          price: "\u20ac49",
+          period: "per month",
+          description: "For developers managing multiple active projects.",
+          features: [
+            "Unlimited queries",
+            "Documentation templates per municipality",
+            "Policy updates by email",
+            "Technical questions \u2014 within 48h",
+            "14-day free trial",
+          ],
+          cta: "Start free trial",
+          accent: true,
+        },
+        {
+          name: "Consultancy",
+          price: "from \u20ac500",
+          period: "per project",
+          description: "For complex or uncertain municipal requirements.",
+          features: [
+            "Project assessment vs. municipal framework",
+            "Participation documentation prep",
+            "Pre-submission review",
+            "Direct access to specialist",
+          ],
+          cta: "Schedule a call",
+          accent: false,
+        },
+      ],
+    },
+    faq: {
+      eyebrow: "Frequently asked",
+      title: "What developers usually ask.",
+      items: [
+        {
+          q: "What is the source of municipal policy data?",
+          a: "All policy is extracted from official sources: lokaleregelgeving.overheid.nl and official municipal websites. Each profile cites CVDR number and publication date.",
+        },
+        {
+          q: "How often is the database updated?",
+          a: "Sync happens whenever municipalities publish changes. Users remain responsible for confirming current requirements directly with their municipality before submission.",
+        },
+        {
+          q: "What if my municipality isn\u2019t profiled?",
+          a: "28 municipalities are fully profiled today. For others, targeted consultancy is available \u2014 we do the policy research for you.",
+        },
+        {
+          q: "Does this replace legal counsel?",
+          a: "No. This is a reference tool. For complex projects or legal questions, consultation with qualified counsel is recommended.",
+        },
+        {
+          q: "Is my project information confidential?",
+          a: "Yes. Project information from consultancy engagements is not shared with third parties. Data is retained according to Dutch privacy law.",
+        },
+      ],
+      cta: "Full FAQ \u2014 20 questions",
+    },
+    footer: {
+      tagline: "A professional reference for Omgevingswet compliance.",
+      cols: [
+        { title: "Product", links: ["Live tool", "Municipality database", "Documentation templates", "API (soon)"] },
+        { title: "Company", links: ["About", "Validation", "Contact", "Press"] },
+        { title: "Sources", links: ["lokaleregelgeving.overheid.nl", "parolo.nl", "Omgevingsloket", "Omgevingswet text"] },
+        { title: "Legal", links: ["Privacy policy", "Terms", "Cookies", "Disclaimer"] },
+      ],
+      legal: "Permit Intelligence B.V. \u00b7 KvK 00000000 \u00b7 Almere, Netherlands",
+      disclaimer: "This reference is informational. Users remain responsible for confirming current requirements with their municipality.",
+    },
+  },
+};
+
+// Sample municipalities for the live widget. Real product covers 28; we surface a handful.
+const MUNICIPALITIES = [
+  { name: "Almere",       framework: "binary-list",   status: "mandatory",     trigger: "\u22654 woningen of >500 m\u00b2", cvdr: "CVDR685432" },
+  { name: "Amsterdam",    framework: "scoring",        status: "mandatory",     trigger: "Impactscore \u22657 punten",       cvdr: "CVDR701294" },
+  { name: "Rotterdam",    framework: "discretionary",  status: "discretionary", trigger: "Per geval beoordeeld",          cvdr: "CVDR698117" },
+  { name: "Utrecht",      framework: "binary-list",   status: "mandatory",     trigger: "Woningbouw \u22653 eenheden",       cvdr: "CVDR692058" },
+  { name: "Den Haag",     framework: "process-based",  status: "mandatory",     trigger: "Alle BOPA-aanvragen",           cvdr: "CVDR687744" },
+  { name: "Eindhoven",    framework: "scoring",        status: "mandatory",     trigger: "Impact + omvang",                cvdr: "CVDR690225" },
+  { name: "Groningen",    framework: "voluntary",      status: "voluntary",     trigger: "Aanbevolen, niet vereist",       cvdr: "CVDR683910" },
+  { name: "Tilburg",      framework: "discretionary",  status: "discretionary", trigger: "Per geval beoordeeld",          cvdr: "CVDR691803" },
+  { name: "Breda",        framework: "binary-list",   status: "mandatory",     trigger: "Lijst met activiteiten",         cvdr: "CVDR689112" },
+  { name: "Nijmegen",     framework: "voluntary",      status: "voluntary",     trigger: "Aanbevolen, niet vereist",       cvdr: "CVDR684427" },
+  { name: "Apeldoorn",    framework: null,             status: "unprofiled",    trigger: "Geen gepubliceerd beleid",      cvdr: null },
+  { name: "Haarlem",      framework: "binary-list",   status: "mandatory",     trigger: "\u22655 woningen",                  cvdr: "CVDR693501" },
+];
+
+window.COPY = COPY;
+window.MUNICIPALITIES = MUNICIPALITIES;

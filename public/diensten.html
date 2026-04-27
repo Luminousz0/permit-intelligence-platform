@@ -1,0 +1,125 @@
+<!doctype html>
+<html lang="nl">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Diensten — Permit Intelligence</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter+Tight:wght@400;500;600;700&family=Source+Serif+4:ital,opsz,wght@0,8..60,400;0,8..60,500;1,8..60,400&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="styles.css" />
+  <link rel="stylesheet" href="styles-pages.css" />
+</head>
+<body data-aesthetic="hybrid">
+  <div id="root"></div>
+  <script src="https://unpkg.com/react@18.3.1/umd/react.development.js" integrity="sha384-hD6/rw4ppMLGNu3tX5cjIb+uRZ7UkRJ6BPkLpg4hAu/6onKUg4lLsHAs9EBPT82L" crossorigin="anonymous"></script>
+  <script src="https://unpkg.com/react-dom@18.3.1/umd/react-dom.development.js" integrity="sha384-u6aeetuaXnQ38mYT8rp6sbXaQe3NL9t+IBXmnYxwkUI2Hw4bsp2Wvmx4yRQF1uAm" crossorigin="anonymous"></script>
+  <script src="https://unpkg.com/@babel/standalone@7.29.0/babel.min.js" integrity="sha384-m08KidiNqLdpJqLq95G/LEi8Qvjl/xUYll3QILypMoQ65QorJ9Lvtp2RXYGBFj1y" crossorigin="anonymous"></script>
+  <script type="text/babel" src="copy.jsx"></script>
+  <script type="text/babel" src="shared.jsx"></script>
+  <script type="text/babel">
+    const { useState } = React;
+
+    function ServicesPage() {
+      const [lang, setLang] = useState("nl");
+      const t = window.COPY[lang];
+      const accent = window.ACCENT_PRESETS_S.blue;
+
+      return (
+        <>
+          <SubNav lang={lang} setLang={setLang} current="diensten.html" accent={accent}
+                  demoLabel={t.nav.demo} tryLabel={t.nav.tryTool} />
+          <PageHeader
+            breadcrumb={[{ label: "Home", href: "index.html" }, { label: "Diensten" }]}
+            eyebrow="Diensten"
+            title="Twee paden, afhankelijk van je behoefte."
+            sub="Begin gratis met de tool. Schaal op met een abonnement, of laat ons je participatiedocumentatie volledig verzorgen voor complexe of urgente projecten."
+          />
+
+          <section className="services-tiers">
+            <div className="container">
+              <div className="svc-grid">
+                <div className="svc-card">
+                  <div className="svc-eyebrow">Self-service</div>
+                  <h2 className="svc-title">Abonnement</h2>
+                  <p className="svc-desc">Voor ontwikkelaars met meerdere actieve projecten die zelf documentatie willen voorbereiden.</p>
+                  <div className="svc-price-row">
+                    <div className="svc-price">€49</div>
+                    <div className="svc-period">per maand · 14 dagen gratis</div>
+                  </div>
+                  <ul className="svc-features">
+                    <li><span className="check">✓</span>Onbeperkte zoekopdrachten in 28 gemeenten</li>
+                    <li><span className="check">✓</span>Documentatie-templates per gemeente</li>
+                    <li><span className="check">✓</span>Beleidsupdates per e-mail</li>
+                    <li><span className="check">✓</span>Technische vragen — antwoord binnen 48u</li>
+                    <li><span className="check">✓</span>Export naar PDF / Word voor indiening</li>
+                    <li><span className="check">✓</span>Maandelijks opzegbaar</li>
+                  </ul>
+                  <div className="svc-cta-row">
+                    <button type="button" className="btn btn-primary" style={{ background: accent.bg, color: accent.fg }}>
+                      Start gratis proefperiode <span className="arrow">→</span>
+                    </button>
+                  </div>
+                </div>
+
+                <div className="svc-card is-dark">
+                  <div className="svc-eyebrow">Begeleid</div>
+                  <h2 className="svc-title">Consultatie</h2>
+                  <p className="svc-desc">Voor complexe projecten waar onzekerheid duur is. Wij verzorgen de volledige participatie-documentatie tot indiening.</p>
+                  <div className="svc-price-row">
+                    <div className="svc-price">€500–2000</div>
+                    <div className="svc-period">per project</div>
+                  </div>
+                  <ul className="svc-features">
+                    <li><span className="check">✓</span>Project-beoordeling tegen gemeentelijk kader</li>
+                    <li><span className="check">✓</span>Voorbereiding volledige participatiedocumentatie</li>
+                    <li><span className="check">✓</span>Pre-submission review tegen gemeentelijke standaard</li>
+                    <li><span className="check">✓</span>Vooroverleg-begeleiding waar nodig</li>
+                    <li><span className="check">✓</span>Directe toegang tot specialist (Slack / mail)</li>
+                    <li><span className="check">✓</span>Garantie: ontvankelijk of geld terug</li>
+                  </ul>
+                  <div className="svc-cta-row">
+                    <a href="#" className="btn btn-ghost" style={{ borderColor: "oklch(0.5 0.01 250)", color: "var(--bg)" }}>
+                      Plan een gesprek <span className="arrow">→</span>
+                    </a>
+                  </div>
+                </div>
+              </div>
+
+              <div style={{ marginTop: 64 }}>
+                <h2 style={{ fontFamily: "var(--serif)", fontSize: 32, letterSpacing: "-0.02em", margin: "0 0 8px" }}>Welke past?</h2>
+                <p style={{ color: "var(--ink-soft)", maxWidth: "60ch", marginBottom: 32 }}>
+                  Geen verkooppraatje — een eerlijke beslisboom op basis van je situatie.
+                </p>
+
+                <div style={{ display: "grid", gridTemplateColumns: "repeat(2, 1fr)", gap: 16 }}>
+                  <div style={{ padding: 24, border: "1px solid var(--hairline)", borderRadius: 8, background: "var(--bg)" }}>
+                    <div className="mono small" style={{ color: "var(--mute)", letterSpacing: "0.1em", textTransform: "uppercase", marginBottom: 8 }}>Kies abonnement als</div>
+                    <ul style={{ paddingLeft: 18, fontSize: 15, color: "var(--ink-soft)", lineHeight: 1.7 }}>
+                      <li>Je 3+ projecten per jaar doet</li>
+                      <li>Je intern capaciteit hebt voor onderzoek</li>
+                      <li>Je gemeenten relatief stabiel zijn</li>
+                      <li>Je documentatie zelf opstelt</li>
+                    </ul>
+                  </div>
+                  <div style={{ padding: 24, border: "1px solid var(--hairline)", borderRadius: 8, background: "var(--bg)" }}>
+                    <div className="mono small" style={{ color: "var(--mute)", letterSpacing: "0.1em", textTransform: "uppercase", marginBottom: 8 }}>Kies consultatie als</div>
+                    <ul style={{ paddingLeft: 18, fontSize: 15, color: "var(--ink-soft)", lineHeight: 1.7 }}>
+                      <li>Eén project, hoge inzet</li>
+                      <li>Onzekere of nieuwe gemeente</li>
+                      <li>Eerdere afwijzing op participatie</li>
+                      <li>Tijdsdruk: aanvraag binnen 4 weken</li>
+                    </ul>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </section>
+
+          <SubFooter t={t} />
+        </>
+      );
+    }
+
+    ReactDOM.createRoot(document.getElementById("root")).render(<ServicesPage />);
+  </script>
+</body>
+</html>
