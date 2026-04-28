@@ -1,6 +1,6 @@
 // Stats, Problem, ProcessTimeline, How, Proof, Roadmap, Pricing, FAQ, Footer, TrialModal
 
-const { useState: useStateS, useEffect: useEffectS } = React;
+const { useState: useStateS, useEffect: useEffectS, useRef: useRefS } = React;
 
 // ---------- STATS ----------
 function StatsStrip({ t }) {
@@ -417,6 +417,205 @@ function Footer({ t }) {
   );
 }
 
+// ── Netherlands Map data ─────────────────────────────────────────────────────
+const NL_MAP_DATA = [
+  { name: "Almere",         coords: [52.3508, 5.2647],  status: "mandatory",     trigger: "≥4 woningen of >500 m²",          cvdr: "CVDR685432" },
+  { name: "Amsterdam",      coords: [52.3676, 4.9041],  status: "mandatory",     trigger: "Impactscore ≥7 punten",            cvdr: "CVDR701294" },
+  { name: "Rotterdam",      coords: [51.9225, 4.4792],  status: "discretionary", trigger: "Per geval beoordeeld",             cvdr: "CVDR698117" },
+  { name: "Utrecht",        coords: [52.0907, 5.1214],  status: "mandatory",     trigger: "Woningbouw ≥3 eenheden",           cvdr: "CVDR692058" },
+  { name: "Den Haag",       coords: [52.0705, 4.3007],  status: "mandatory",     trigger: "Alle BOPA-aanvragen",              cvdr: "CVDR687744" },
+  { name: "Eindhoven",      coords: [51.4416, 5.4697],  status: "mandatory",     trigger: "Impact + omvang gecombineerd",     cvdr: "CVDR690225" },
+  { name: "Groningen",      coords: [53.2194, 6.5665],  status: "voluntary",     trigger: "Aanbevolen, niet vereist",         cvdr: "CVDR683910" },
+  { name: "Tilburg",        coords: [51.5555, 5.0913],  status: "discretionary", trigger: "Per geval beoordeeld",             cvdr: "CVDR691803" },
+  { name: "Breda",          coords: [51.5719, 4.7683],  status: "mandatory",     trigger: "≥5 woningen of >750 m²",          cvdr: "CVDR694201" },
+  { name: "Nijmegen",       coords: [51.8426, 5.8518],  status: "mandatory",     trigger: "Woningbouw ≥4 eenheden",           cvdr: "CVDR689553" },
+  { name: "Haarlem",        coords: [52.3874, 4.6462],  status: "mandatory",     trigger: "Alle BOPA-aanvragen",              cvdr: "CVDR695812" },
+  { name: "Arnhem",         coords: [51.9851, 5.8987],  status: "discretionary", trigger: "Per geval beoordeeld",             cvdr: "CVDR688402" },
+  { name: "Zwolle",         coords: [52.5168, 6.0830],  status: "mandatory",     trigger: "≥3 woningen of >500 m²",          cvdr: "CVDR693147" },
+  { name: "Enschede",       coords: [52.2215, 6.8937],  status: "voluntary",     trigger: "Aanbevolen, niet vereist",         cvdr: "CVDR686720" },
+  { name: "Apeldoorn",      coords: [52.2112, 5.9699],  status: "mandatory",     trigger: "Woningbouw ≥5 eenheden",           cvdr: "CVDR697034" },
+  { name: "Leiden",         coords: [52.1601, 4.4970],  status: "mandatory",     trigger: "Impactscore ≥5 punten",            cvdr: "CVDR699281" },
+  { name: "Maastricht",     coords: [50.8514, 5.6909],  status: "mandatory",     trigger: "Alle BOPA-aanvragen",              cvdr: "CVDR691405" },
+  { name: "Dordrecht",      coords: [51.8133, 4.6901],  status: "discretionary", trigger: "Per geval beoordeeld",             cvdr: "CVDR686903" },
+  { name: "Zoetermeer",     coords: [52.0577, 4.4942],  status: "mandatory",     trigger: "≥3 woningen of >400 m²",          cvdr: "CVDR693740" },
+  { name: "Amersfoort",     coords: [52.1561, 5.3878],  status: "mandatory",     trigger: "Woningbouw ≥4 eenheden",           cvdr: "CVDR695017" },
+  { name: "Delft",          coords: [52.0116, 4.3571],  status: "mandatory",     trigger: "Alle BOPA-aanvragen",              cvdr: "CVDR688654" },
+  { name: "Westland",       coords: [51.9958, 4.1946],  status: "discretionary", trigger: "Per geval beoordeeld",             cvdr: "CVDR687291" },
+  { name: "Emmen",          coords: [52.7791, 6.9009],  status: "voluntary",     trigger: "Aanbevolen, niet vereist",         cvdr: "CVDR684108" },
+  { name: "Deventer",       coords: [52.2550, 6.1604],  status: "mandatory",     trigger: "≥3 woningen of commercieel >1000 m²", cvdr: "CVDR692876" },
+  { name: "Sittard-Geleen", coords: [51.0016, 5.8706],  status: "mandatory",     trigger: "Woningbouw ≥3 eenheden",           cvdr: "CVDR690612" },
+  { name: "Leeuwarden",     coords: [53.2012, 5.7999],  status: "discretionary", trigger: "Per geval beoordeeld",             cvdr: "CVDR687834" },
+  { name: "Venlo",          coords: [51.3702, 6.1724],  status: "mandatory",     trigger: "≥4 woningen of >500 m²",          cvdr: "CVDR693481" },
+  { name: "Zaanstad",       coords: [52.4387, 4.8188],  status: "mandatory",     trigger: "Impactscore ≥6 punten",            cvdr: "CVDR696250" },
+];
+
+const STATUS_COLORS = {
+  mandatory:     { fill: "#4ade80", label: "Verplicht",           labelEn: "Mandatory" },
+  discretionary: { fill: "#fbbf24", label: "Beoordelingsruimte",  labelEn: "Discretionary" },
+  voluntary:     { fill: "#60a5fa", label: "Vrijwillig",          labelEn: "Voluntary" },
+};
+
+// ── Netherlands Map component ────────────────────────────────────────────────
+function NetherlandsMap({ t, lang }) {
+  const mapContainerRef = useRefS(null);
+  const leafletMapRef   = useRefS(null);
+  const [activeCity, setActiveCity] = useStateS(null);
+  const isNL = lang !== "en";
+
+  useEffectS(() => {
+    if (!mapContainerRef.current || leafletMapRef.current) return;
+    if (typeof L === "undefined") return;
+
+    const map = L.map(mapContainerRef.current, {
+      center: [52.2, 5.3],
+      zoom: 7,
+      scrollWheelZoom: false,
+      zoomControl: false,
+      attributionControl: false,
+    });
+
+    // Custom zoom control position
+    L.control.zoom({ position: "bottomright" }).addTo(map);
+
+    // CartoDB Positron — clean, minimal tiles
+    L.tileLayer(
+      "https://{s}.basemaps.cartocdn.com/light_nolabels/{z}/{x}/{y}{r}.png",
+      { maxZoom: 18 }
+    ).addTo(map);
+
+    // Subtle label layer on top
+    L.tileLayer(
+      "https://{s}.basemaps.cartocdn.com/light_only_labels/{z}/{x}/{y}{r}.png",
+      { maxZoom: 18, pane: "shadowPane" }
+    ).addTo(map);
+
+    // Draw markers
+    NL_MAP_DATA.forEach(city => {
+      const color = STATUS_COLORS[city.status]?.fill || "#9ca3af";
+      const marker = L.circleMarker(city.coords, {
+        radius: 10,
+        fillColor: color,
+        color: "rgba(255,255,255,0.9)",
+        weight: 2,
+        opacity: 1,
+        fillOpacity: 0.88,
+        className: "nl-map-marker",
+      }).addTo(map);
+
+      const statusLabel = STATUS_COLORS[city.status]?.[isNL ? "label" : "labelEn"] || "";
+      marker.bindTooltip(
+        `<div class="map-tooltip">
+          <div class="mtt-name">${city.name}</div>
+          <div class="mtt-status">${statusLabel}</div>
+          <div class="mtt-trigger">${city.trigger}</div>
+          <div class="mtt-cvdr mono">${city.cvdr}</div>
+        </div>`,
+        { permanent: false, direction: "top", offset: [0, -8], className: "nl-map-tooltip" }
+      );
+
+      marker.on("click", () => {
+        window.location.href = `tool.html?muni=${encodeURIComponent(city.name)}`;
+      });
+
+      marker.on("mouseover", () => setActiveCity(city.name));
+      marker.on("mouseout",  () => setActiveCity(null));
+    });
+
+    // Fit Netherlands bounds
+    map.fitBounds([[50.7, 3.3], [53.6, 7.2]], { padding: [24, 24] });
+
+    leafletMapRef.current = map;
+    return () => {
+      map.remove();
+      leafletMapRef.current = null;
+    };
+  }, []);
+
+  const mandatory    = NL_MAP_DATA.filter(c => c.status === "mandatory").length;
+  const discretionary = NL_MAP_DATA.filter(c => c.status === "discretionary").length;
+  const voluntary    = NL_MAP_DATA.filter(c => c.status === "voluntary").length;
+
+  return (
+    <section className="nl-map-section" data-screen-label="02b Map">
+      <div className="container">
+        <div className="section-head">
+          <div className="head-l">
+            <div className="eyebrow">{isNL ? "Database — 28 gemeenten in kaart" : "Database — 28 municipalities mapped"}</div>
+            <h2 className="section-title serif">
+              {isNL ? "Compliance zichtbaar gemaakt." : "Compliance made visible."}
+            </h2>
+            <p className="section-sub" style={{ marginTop: 8 }}>
+              {isNL
+                ? "Klik op een gemeente voor directe toegang tot beleidsdata, documentatievereisten en CVDR-citatie."
+                : "Click any municipality for instant access to policy data, documentation requirements, and CVDR citation."}
+            </p>
+          </div>
+          <div className="head-r">
+            <a href="tool.html" className="link-arrow">
+              {isNL ? "Naar de referentietool" : "Open reference tool"} <span className="arrow">→</span>
+            </a>
+          </div>
+        </div>
+
+        <div className="nl-map-layout">
+          {/* Map */}
+          <div className="nl-map-container">
+            <div ref={mapContainerRef} className="nl-map-canvas" />
+            {activeCity && (
+              <div className="nl-map-active-label mono small">
+                {activeCity} — {isNL ? "klik voor details" : "click for details"}
+              </div>
+            )}
+          </div>
+
+          {/* Sidebar stats */}
+          <div className="nl-map-sidebar">
+            <div className="nl-map-stat-card">
+              <div className="nlms-eyebrow mono small">{isNL ? "Database" : "Coverage"}</div>
+              <div className="nlms-value serif">28</div>
+              <div className="nlms-label">{isNL ? "gemeenten volledig geprofileerd" : "municipalities fully profiled"}</div>
+            </div>
+
+            <div className="nl-map-legend">
+              <div className="nml-title mono small">{isNL ? "Status participatieplicht" : "Participation status"}</div>
+              <div className="nml-item">
+                <span className="nml-dot" style={{ background: STATUS_COLORS.mandatory.fill }} />
+                <div>
+                  <div className="nml-label">{isNL ? "Verplicht" : "Mandatory"}</div>
+                  <div className="nml-count mono small">{mandatory} {isNL ? "gemeenten" : "municipalities"}</div>
+                </div>
+              </div>
+              <div className="nml-item">
+                <span className="nml-dot" style={{ background: STATUS_COLORS.discretionary.fill }} />
+                <div>
+                  <div className="nml-label">{isNL ? "Beoordelingsruimte" : "Discretionary"}</div>
+                  <div className="nml-count mono small">{discretionary} {isNL ? "gemeenten" : "municipalities"}</div>
+                </div>
+              </div>
+              <div className="nml-item">
+                <span className="nml-dot" style={{ background: STATUS_COLORS.voluntary.fill }} />
+                <div>
+                  <div className="nml-label">{isNL ? "Vrijwillig" : "Voluntary"}</div>
+                  <div className="nml-count mono small">{voluntary} {isNL ? "gemeenten" : "municipalities"}</div>
+                </div>
+              </div>
+            </div>
+
+            <div className="nl-map-cta-block">
+              <a href="tool.html" className="btn btn-primary" style={{ background: "var(--ink)", color: "var(--bg)", width: "100%", justifyContent: "center" }}>
+                {isNL ? "Zoek jouw gemeente" : "Find your municipality"} <span className="arrow">→</span>
+              </a>
+              <div className="nl-map-source mono small">
+                {isNL ? "Bron: lokaleregelgeving.overheid.nl" : "Source: lokaleregelgeving.overheid.nl"}
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+  );
+}
+
 window.StatsStrip = StatsStrip;
 window.Problem = Problem;
 window.ProcessTimeline = ProcessTimeline;
@@ -427,3 +626,4 @@ window.Pricing = Pricing;
 window.FAQ = FAQ;
 window.Footer = Footer;
 window.TrialModal = TrialModal;
+window.NetherlandsMap = NetherlandsMap;

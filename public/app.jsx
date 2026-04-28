@@ -168,6 +168,7 @@ function App() {
           <Hero lang={lang} t={t} headlineIdx={headlineIdx} accent={accent} onScrollHow={onScrollHow} />
         )}
         {tweaks.showStats && <StatsStrip t={t} />}
+        <NetherlandsMap t={t} lang={lang} />
         {tweaks.showProblem && <Problem t={t} />}
         {tweaks.showProcess && <ProcessTimeline t={t} />}
         {tweaks.showHow && <HowItWorks t={t} accent={accent} />}

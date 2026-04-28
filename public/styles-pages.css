@@ -204,26 +204,12 @@
   align-items: start;
 }
 .tool-input {
-  background: var(--bg);
-  border: 1px solid var(--hairline-strong);
-  border-radius: 12px;
-  padding: 24px;
+  background: transparent;
   position: sticky;
   top: 88px;
 }
-.tool-input h3 {
-  font-size: 14px;
-  margin: 0 0 4px;
-  color: var(--ink);
-  font-weight: 600;
-}
-.tool-input .input-sub {
-  font-size: 13px;
-  color: var(--mute);
-  margin-bottom: 18px;
-}
-.tool-input .field { margin-bottom: 14px; }
-.tool-fields-row { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-bottom: 14px; }
+.tool-input .field { margin-bottom: 12px; }
+.tool-fields-row { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-bottom: 0; }
 .tool-fields-row .field { margin-bottom: 0; }
 
 .tool-output {
