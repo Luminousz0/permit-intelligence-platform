@@ -1,15 +1,16 @@
 {
   "_meta": {
     "description": "Municipality Participation Database — Layer 3 backbone for the Permit Intelligence Platform",
-    "version": "2.0.0",
-    "last_updated": "2026-04-20",
-    "profiled_count": 28,
+    "version": "2.1.0",
+    "last_updated": "2026-04-29",
+    "profiled_count": 41,
     "total_dutch_municipalities": 342,
     "source_notes": [
       "Data sourced from Parolo index, lokaleregelgeving.overheid.nl, and individual municipality portals",
       "All policies apply to BOPA (Buitenplanse Omgevingsactiviteit) applications under the Omgevingswet",
       "Legal basis: Art. 16.55 Omgevingswet + Art. 7.4 Omgevingsregeling",
-      "v2.0.0 (2026-04-20): +10 municipalities (Delft, Amersfoort, Venlo, Zoetermeer, Helmond, Leeuwarden, Zaanstad, Deventer, Ede, Dordrecht). Corrections: Tilburg (Impactscan), Apeldoorn (binary_list), Nijmegen (binary_list resolved), Enschede (7-category list mapped), Utrecht (process_mandatory)."
+      "v2.0.0 (2026-04-20): +10 municipalities (Delft, Amersfoort, Venlo, Zoetermeer, Helmond, Leeuwarden, Zaanstad, Deventer, Ede, Dordrecht). Corrections: Tilburg (Impactscan), Apeldoorn (binary_list), Nijmegen (binary_list resolved), Enschede (7-category list mapped), Utrecht (process_mandatory).",
+      "v2.1.0 (2026-04-29): +13 municipalities. Reconciliation: Sittard-Geleen, Westland, Emmen (added from frontend). New: Haarlemmermeer, Alkmaar, Alphen aan den Rijn, Hengelo, Gouda, Roosendaal, Lelystad, Purmerend, Hoorn, Nissewaard."
     ],
     "architecture_types": [
       "blanket_mandatory",
@@ -1140,6 +1141,351 @@
       "product_play": "Model the Praatplaat decision logic to give developers meaningful guidance. Check for a separate BOPA aanwijzingsbesluit under Art. 16.55 OW.",
       "data_completeness": "partial",
       "research_gaps": ["Find whether Dordrecht has published a separate BOPA aanwijzingsbesluit under Art. 16.55 OW", "Map the Dordtse Participatie Praatplaat decision logic"]
+    }
+    ,
+    {
+      "id": "sittard-geleen",
+      "municipality": "Sittard-Geleen",
+      "population": 93000,
+      "province": "Limburg",
+      "mandatory_bopa_participation": true,
+      "mandatory_trigger": "binary_list_housing_threshold",
+      "architecture": "binary_list",
+      "binary_list_system": {
+        "type": "threshold_based",
+        "description": "Mandatory participation for housing developments of ≥3 units that conflict with the omgevingsplan. Standard BOPA condition applies.",
+        "source": "CVDR690612",
+        "list_effective_date": "2024-01-01",
+        "categories": [
+          { "id": 1, "activity": "Woningbouw", "threshold": "≥ 3 woningen", "mandatory": true }
+        ]
+      },
+      "documents_required": ["participatieverslag"],
+      "document_notes": "4-part required format: stakeholders, aanpak, resultaten, verwerking.",
+      "non_compliance_consequence": "permit_may_be_denied",
+      "prior_framework_exemption": false,
+      "policy_document_type": "Aanwijzingsbesluit verplichte participatie BOPA",
+      "policy_url": "https://lokaleregelgeving.overheid.nl/CVDR690612",
+      "strictness": "moderate",
+      "strictness_notes": "Standard binary-list approach with clear housing threshold. No scoring system.",
+      "data_completeness": "partial",
+      "research_gaps": ["Extract full category list beyond housing trigger"]
+    },
+    {
+      "id": "westland",
+      "municipality": "Westland",
+      "population": 111000,
+      "province": "Zuid-Holland",
+      "mandatory_bopa_participation": null,
+      "mandatory_trigger": "case_by_case",
+      "architecture": "general_discretionary",
+      "discretionary_system": {
+        "type": "vooroverleg_based",
+        "description": "Strongly agricultural municipality (greenhouse region). No formal BOPA designation list published. Participation level determined via mandatory pre-consultation (vooroverleg) with municipal team. Agri-specific context means many projects are evaluated individually.",
+        "source": "CVDR687291",
+        "effective_date": "2024-01-01"
+      },
+      "documents_required": ["participation_description"],
+      "document_notes": "As determined per project in vooroverleg.",
+      "non_compliance_consequence": "permit_may_be_denied",
+      "prior_framework_exemption": false,
+      "policy_document_type": "Participatiebeleid Gemeente Westland",
+      "policy_url": "https://lokaleregelgeving.overheid.nl/CVDR687291",
+      "strictness": "moderate",
+      "strictness_notes": "Case-by-case approach. Agricultural area means many projects have unique contexts — vooroverleg is essential.",
+      "data_completeness": "partial",
+      "research_gaps": ["Confirm whether a formal BOPA aanwijzingsbesluit exists", "Exact participation requirements for standard residential vs agricultural projects"]
+    },
+    {
+      "id": "emmen",
+      "municipality": "Emmen",
+      "population": 106000,
+      "province": "Drenthe",
+      "mandatory_bopa_participation": false,
+      "mandatory_trigger": "none_voluntary_guidance",
+      "architecture": "voluntary_guidance",
+      "guidance_system": {
+        "type": "disclosure_based",
+        "description": "No formal BOPA designation list. Participation strongly encouraged but not designated as mandatory under Art. 16.55 lid 7 OW. Developer must still comply with the national Art. 16.55 lid 1 obligation: disclose at submission whether, how, and with what result participation occurred.",
+        "source": "CVDR684108",
+        "effective_date": "2024-01-01"
+      },
+      "documents_required": ["participation_disclosure"],
+      "document_notes": "Disclosure at submission: whether (of), how (hoe), and what was done with outcomes (wat).",
+      "non_compliance_consequence": "may_influence_permit_outcome",
+      "prior_framework_exemption": false,
+      "policy_document_type": "Participatiebeleid Gemeente Emmen",
+      "policy_url": "https://lokaleregelgeving.overheid.nl/CVDR684108",
+      "strictness": "light",
+      "strictness_notes": "Voluntary framework. Disclosure obligation is national baseline, not Emmen-specific.",
+      "data_completeness": "partial",
+      "research_gaps": ["Confirm no BOPA aanwijzingsbesluit exists under Art. 16.55 lid 7", "Any upcoming policy change"]
+    },
+    {
+      "id": "haarlemmermeer",
+      "municipality": "Haarlemmermeer",
+      "population": 165000,
+      "province": "Noord-Holland",
+      "mandatory_bopa_participation": true,
+      "mandatory_trigger": "binary_list_housing_and_scale",
+      "architecture": "binary_list",
+      "binary_list_system": {
+        "type": "threshold_based",
+        "description": "Mandatory participation for projects conflicting with the omgevingsplan that meet size or housing count thresholds. Dense peri-urban municipality with significant housing development pressure.",
+        "source": "CVDR706812",
+        "list_effective_date": "2024-01-01",
+        "categories": [
+          { "id": 1, "activity": "Woningbouw", "threshold": "≥ 5 woningen", "mandatory": true },
+          { "id": 2, "activity": "Overige bouw", "threshold": "> 750 m² BVO", "mandatory": true }
+        ]
+      },
+      "documents_required": ["participatieverslag"],
+      "document_notes": "Must cover: stakeholder identification, approach used, feedback received, and how feedback shaped the plan.",
+      "non_compliance_consequence": "permit_may_be_denied",
+      "prior_framework_exemption": false,
+      "policy_document_type": "Aanwijzingsbesluit verplichte participatie BOPA — Gemeente Haarlemmermeer",
+      "policy_url": "https://lokaleregelgeving.overheid.nl/CVDR706812",
+      "strictness": "high",
+      "strictness_notes": "Housing pressure municipality. Low threshold (5 units) means most residential BOPAs trigger mandatory participation.",
+      "data_completeness": "partial",
+      "research_gaps": ["Confirm full category list from CVDR706812", "Verify exact BVO threshold for non-residential"]
+    },
+    {
+      "id": "alkmaar",
+      "municipality": "Alkmaar",
+      "population": 110000,
+      "province": "Noord-Holland",
+      "mandatory_bopa_participation": true,
+      "mandatory_trigger": "all_bopas",
+      "architecture": "blanket_mandatory",
+      "blanket_system": {
+        "type": "all_bopa_applications",
+        "description": "All applications conflicting with the omgevingsplan (BOPAs) require participation. Municipality provides a step-by-step guideline to structure the process.",
+        "source": "CVDR708245",
+        "effective_date": "2024-01-01"
+      },
+      "documents_required": ["participatieverslag"],
+      "document_notes": "Process verslag: stepwise account of who was involved, what was discussed, and how input influenced the plan.",
+      "non_compliance_consequence": "permit_may_be_denied",
+      "prior_framework_exemption": false,
+      "policy_document_type": "Participatieverordening Alkmaar",
+      "policy_url": "https://lokaleregelgeving.overheid.nl/CVDR708245",
+      "strictness": "high",
+      "strictness_notes": "Blanket trigger — every BOPA requires participation. No threshold exceptions found.",
+      "data_completeness": "partial",
+      "research_gaps": ["Verify whether a scale-based intensity system exists within the blanket requirement"]
+    },
+    {
+      "id": "alphen-aan-den-rijn",
+      "municipality": "Alphen aan den Rijn",
+      "population": 113000,
+      "province": "Zuid-Holland",
+      "mandatory_bopa_participation": true,
+      "mandatory_trigger": "binary_list_housing_and_scale",
+      "architecture": "binary_list",
+      "binary_list_system": {
+        "type": "threshold_based",
+        "description": "Mandatory participation for housing developments of ≥4 units or other construction over 500m² BVO that conflict with the omgevingsplan.",
+        "source": "CVDR704938",
+        "list_effective_date": "2024-01-01",
+        "categories": [
+          { "id": 1, "activity": "Woningbouw", "threshold": "≥ 4 woningen", "mandatory": true },
+          { "id": 2, "activity": "Overige bouw", "threshold": "> 500 m² BVO", "mandatory": true }
+        ]
+      },
+      "documents_required": ["participatieverslag"],
+      "document_notes": "Participatieverslag covering approach, stakeholders, feedback received, and how it was processed.",
+      "non_compliance_consequence": "permit_may_be_denied",
+      "prior_framework_exemption": false,
+      "policy_document_type": "Aanwijzingsbesluit verplichte participatie — Gemeente Alphen aan den Rijn",
+      "policy_url": "https://lokaleregelgeving.overheid.nl/CVDR704938",
+      "strictness": "high",
+      "strictness_notes": "Clear binary thresholds. Low housing trigger (4 units) captures most residential developments.",
+      "data_completeness": "partial",
+      "research_gaps": ["Confirm full category list from CVDR704938", "Any additional triggers beyond housing/scale"]
+    },
+    {
+      "id": "hengelo",
+      "municipality": "Hengelo",
+      "population": 81000,
+      "province": "Overijssel",
+      "mandatory_bopa_participation": false,
+      "mandatory_trigger": "none_voluntary_guidance",
+      "architecture": "voluntary_guidance",
+      "guidance_system": {
+        "type": "disclosure_based",
+        "description": "No formal BOPA designation list found. Participation recommended and encouraged but not designated mandatory under Art. 16.55 lid 7 OW. Developer must still provide the national Art. 16.55 lid 1 disclosure at submission.",
+        "source": "CVDR695403",
+        "effective_date": "2024-01-01"
+      },
+      "documents_required": ["participation_disclosure"],
+      "document_notes": "Standard disclosure: whether, how, and with what result participation occurred.",
+      "non_compliance_consequence": "may_influence_permit_outcome",
+      "prior_framework_exemption": false,
+      "policy_document_type": "Participatiebeleid Gemeente Hengelo",
+      "policy_url": "https://lokaleregelgeving.overheid.nl/CVDR695403",
+      "strictness": "light",
+      "strictness_notes": "Voluntary framework. Similar to Emmen — national baseline disclosure only.",
+      "data_completeness": "partial",
+      "research_gaps": ["Confirm no BOPA aanwijzingsbesluit exists", "Check for any upcoming policy changes"]
+    },
+    {
+      "id": "gouda",
+      "municipality": "Gouda",
+      "population": 74000,
+      "province": "Zuid-Holland",
+      "mandatory_bopa_participation": null,
+      "mandatory_trigger": "case_by_case",
+      "architecture": "general_discretionary",
+      "discretionary_system": {
+        "type": "vooroverleg_assessment",
+        "description": "No formal BOPA designation list published. Participation level determined per project in mandatory pre-consultation with the municipal project team. Historic city centre context means many projects are sensitive regardless of scale.",
+        "source": "CVDR697208",
+        "effective_date": "2024-01-01"
+      },
+      "documents_required": ["participation_report"],
+      "document_notes": "Format and scope determined per project in vooroverleg.",
+      "non_compliance_consequence": "permit_may_be_denied",
+      "prior_framework_exemption": false,
+      "policy_document_type": "Participatiebeleid Gemeente Gouda",
+      "policy_url": "https://lokaleregelgeving.overheid.nl/CVDR697208",
+      "strictness": "moderate",
+      "strictness_notes": "Case-by-case in historic context. Sensitive urban fabric means participation expectations run high even without formal designation.",
+      "data_completeness": "partial",
+      "research_gaps": ["Confirm no formal BOPA aanwijzingsbesluit", "Map the vooroverleg process and what triggers stronger participation requirements"]
+    },
+    {
+      "id": "roosendaal",
+      "municipality": "Roosendaal",
+      "population": 77000,
+      "province": "Noord-Brabant",
+      "mandatory_bopa_participation": true,
+      "mandatory_trigger": "binary_list_housing_and_scale",
+      "architecture": "binary_list",
+      "binary_list_system": {
+        "type": "threshold_based",
+        "description": "Mandatory participation for housing developments of ≥3 units or other construction over 500m² BVO that conflict with the omgevingsplan.",
+        "source": "CVDR700182",
+        "list_effective_date": "2024-01-01",
+        "categories": [
+          { "id": 1, "activity": "Woningbouw", "threshold": "≥ 3 woningen", "mandatory": true },
+          { "id": 2, "activity": "Overige bouw", "threshold": "> 500 m² BVO", "mandatory": true }
+        ]
+      },
+      "documents_required": ["participatieverslag"],
+      "document_notes": "Must describe approach, involved parties, feedback received, and how feedback shaped the plan.",
+      "non_compliance_consequence": "permit_may_be_denied",
+      "prior_framework_exemption": false,
+      "policy_document_type": "Aanwijzingsbesluit verplichte participatie BOPA — Gemeente Roosendaal",
+      "policy_url": "https://lokaleregelgeving.overheid.nl/CVDR700182",
+      "strictness": "high",
+      "strictness_notes": "Low housing threshold (3 units) means most residential developments trigger mandatory participation.",
+      "data_completeness": "partial",
+      "research_gaps": ["Confirm full category list from CVDR700182", "Verify whether commercial/institutional thresholds exist beyond the 500m² rule"]
+    },
+    {
+      "id": "lelystad",
+      "municipality": "Lelystad",
+      "population": 82000,
+      "province": "Flevoland",
+      "mandatory_bopa_participation": null,
+      "mandatory_trigger": "case_by_case",
+      "architecture": "general_discretionary",
+      "discretionary_system": {
+        "type": "vooroverleg_assessment",
+        "description": "No formal BOPA designation list found. Participation requirements determined case-by-case through mandatory pre-consultation. Planned city with ongoing large-scale development means many projects involve complex participation expectations.",
+        "source": "CVDR696745",
+        "effective_date": "2024-01-01"
+      },
+      "documents_required": ["participation_description"],
+      "document_notes": "Format and depth determined per project in vooroverleg.",
+      "non_compliance_consequence": "permit_may_be_denied",
+      "prior_framework_exemption": false,
+      "policy_document_type": "Participatiebeleid Gemeente Lelystad",
+      "policy_url": "https://lokaleregelgeving.overheid.nl/CVDR696745",
+      "strictness": "moderate",
+      "strictness_notes": "Case-by-case. Large ongoing urban development projects often have de facto participation expectations regardless of formal obligation.",
+      "data_completeness": "partial",
+      "research_gaps": ["Confirm no formal BOPA aanwijzingsbesluit", "Review participation protocol for large-scale housing projects"]
+    },
+    {
+      "id": "purmerend",
+      "municipality": "Purmerend",
+      "population": 85000,
+      "province": "Noord-Holland",
+      "mandatory_bopa_participation": true,
+      "mandatory_trigger": "binary_list_housing_and_scale",
+      "architecture": "binary_list",
+      "binary_list_system": {
+        "type": "threshold_based",
+        "description": "Mandatory participation for housing developments of ≥4 units or other construction over 600m² BVO conflicting with the omgevingsplan.",
+        "source": "CVDR702847",
+        "list_effective_date": "2024-01-01",
+        "categories": [
+          { "id": 1, "activity": "Woningbouw", "threshold": "≥ 4 woningen", "mandatory": true },
+          { "id": 2, "activity": "Overige bouw", "threshold": "> 600 m² BVO", "mandatory": true }
+        ]
+      },
+      "documents_required": ["participatieverslag"],
+      "document_notes": "Covers who was involved, the approach used, results, and how feedback influenced plan modifications.",
+      "non_compliance_consequence": "permit_may_be_denied",
+      "prior_framework_exemption": false,
+      "policy_document_type": "Aanwijzingsbesluit verplichte participatie BOPA — Gemeente Purmerend",
+      "policy_url": "https://lokaleregelgeving.overheid.nl/CVDR702847",
+      "strictness": "high",
+      "strictness_notes": "Standard binary-list. Growing municipality with active housing programme.",
+      "data_completeness": "partial",
+      "research_gaps": ["Confirm full category list from CVDR702847"]
+    },
+    {
+      "id": "hoorn",
+      "municipality": "Hoorn",
+      "population": 73000,
+      "province": "Noord-Holland",
+      "mandatory_bopa_participation": false,
+      "mandatory_trigger": "none_voluntary_guidance",
+      "architecture": "voluntary_guidance",
+      "guidance_system": {
+        "type": "disclosure_based",
+        "description": "No formal BOPA designation list found. Participation encouraged, with Art. 16.55 lid 1 national disclosure obligation applying at submission. Historic harbour city — participation culture high even where not legally required.",
+        "source": "CVDR694007",
+        "effective_date": "2024-01-01"
+      },
+      "documents_required": ["participation_disclosure"],
+      "document_notes": "Standard disclosure at submission: whether, how, and with what results.",
+      "non_compliance_consequence": "may_influence_permit_outcome",
+      "prior_framework_exemption": false,
+      "policy_document_type": "Participatiebeleid Gemeente Hoorn",
+      "policy_url": "https://lokaleregelgeving.overheid.nl/CVDR694007",
+      "strictness": "light",
+      "strictness_notes": "Voluntary framework. Disclosure at submission is national baseline.",
+      "data_completeness": "partial",
+      "research_gaps": ["Confirm no formal BOPA aanwijzingsbesluit", "Check for upcoming policy changes given housing pressure in the region"]
+    },
+    {
+      "id": "nissewaard",
+      "municipality": "Nissewaard",
+      "population": 86000,
+      "province": "Zuid-Holland",
+      "mandatory_bopa_participation": false,
+      "mandatory_trigger": "none_voluntary_guidance",
+      "architecture": "voluntary_guidance",
+      "guidance_system": {
+        "type": "disclosure_based",
+        "description": "No formal BOPA designation list found. Participation encouraged under the municipality's general participation framework. Developer must provide the Art. 16.55 lid 1 national disclosure at permit submission.",
+        "source": "CVDR692304",
+        "effective_date": "2024-01-01"
+      },
+      "documents_required": ["participation_disclosure"],
+      "document_notes": "Standard disclosure at submission: whether, how, and with what result.",
+      "non_compliance_consequence": "may_influence_permit_outcome",
+      "prior_framework_exemption": false,
+      "policy_document_type": "Participatiebeleid Gemeente Nissewaard",
+      "policy_url": "https://lokaleregelgeving.overheid.nl/CVDR692304",
+      "strictness": "light",
+      "strictness_notes": "Voluntary framework. National baseline disclosure obligation applies.",
+      "data_completeness": "partial",
+      "research_gaps": ["Confirm no formal BOPA aanwijzingsbesluit under Art. 16.55 lid 7", "Review any recent policy updates"]
     }
   ],
   "no_policy_municipalities": [

@@ -10,10 +10,13 @@ const {
 
 // ── PDOK name normalisation (PDOK returns official names that differ from ours) ──
 const PDOK_NAME_MAP = {
-  "'s-gravenhage": "Den Haag",
-  "s-gravenhage":  "Den Haag",
-  "haarlemmermeer": null,         // not in our DB yet
-  "gemeente amsterdam": "Amsterdam",
+  "'s-gravenhage":        "Den Haag",
+  "s-gravenhage":         "Den Haag",
+  "haarlemmermeer":       "Haarlemmermeer",
+  "gemeente amsterdam":   "Amsterdam",
+  "'s-hertogenbosch":     "'s-Hertogenbosch",
+  "s-hertogenbosch":      "'s-Hertogenbosch",
+  "alphen aan den rijn":  "Alphen aan den Rijn",
 };
 function normalizeMuniName(raw) {
   if (!raw) return "";
@@ -474,6 +477,137 @@ const FULL_MUNI_DATA = {
     ],
     method: "Inhoudelijke beoordeling van participatieproces en -resultaten.",
     timeline: "8 weken reguliere procedure / 26 weken uitgebreide procedure",
+  },
+  // ── Reconciled from JSON database ────────────────────────────────────────────
+  "'s-Hertogenbosch": {
+    framework: "Procesgebaseerd", status: "mandatory", statusLabel: "Verplicht",
+    trigger: "Alle BOPA-aanvragen (omgevingsdialoog)", cvdr: "CVDR694802", updated: "12 maart 2026",
+    province: "Noord-Brabant", population: "160.000", contact: "omgevingsloket@s-hertogenbosch.nl",
+    documents: [
+      { title: "Bossche omgevingsdialoog-verslag", desc: "Verplicht; beschrijft dialoogproces en uitkomsten met direct omwonenden en stakeholders." },
+    ],
+    method: "Procesconformiteit; flexibel format — aantoonbare dialoog met omgeving is minimum.",
+    timeline: "8 weken reguliere procedure / 26 weken uitgebreide procedure",
+  },
+  Helmond: {
+    framework: "Vrijwillig + disclosure", status: "voluntary", statusLabel: "Vrijwillig",
+    trigger: "Aanbevolen; disclosure bij indiening", cvdr: "CVDR703561", updated: "20 januari 2026",
+    province: "Noord-Brabant", population: "95.000", contact: "gemeente@helmond.nl",
+    documents: [
+      { title: "Participatie-disclosure", desc: "Verplicht vermelden of, hoe en met welk resultaat participatie heeft plaatsgevonden." },
+    ],
+    method: "Disclosure-plicht op basis van Art. 16.55 lid 1 OW; geen vaste proceseis.",
+    timeline: "8 weken reguliere procedure",
+  },
+  Ede: {
+    framework: "Vrijwillig + disclosure", status: "voluntary", statusLabel: "Vrijwillig",
+    trigger: "Geen verplichte trigger — BOPA expliciet uitgesloten van verordening", cvdr: "CVDR739251", updated: "17 mei 2025",
+    province: "Gelderland", population: "118.000", contact: "omgevingsloket@ede.nl",
+    documents: [],
+    method: "Omgevingsvergunning (BOPA) aanvragen zijn expliciet uitgesloten van de participatieverordening. Vrijwillige 'Handreiking Betrek de omgeving' beschikbaar.",
+    timeline: "8 weken reguliere procedure",
+  },
+  // ── 10 new municipalities ─────────────────────────────────────────────────────
+  Haarlemmermeer: {
+    framework: "Activiteitenlijst", status: "mandatory", statusLabel: "Verplicht",
+    trigger: "≥5 woningen of >750 m²", cvdr: "CVDR706812", updated: "4 februari 2026",
+    province: "Noord-Holland", population: "165.000", contact: "omgevingsloket@haarlemmermeer.nl",
+    documents: [
+      { title: "Participatieverslag", desc: "Verplicht; beschrijft aanpak, betrokken stakeholders, reacties en verwerking in plan." },
+    ],
+    method: "Beoordeling op compleetheid van participatiedocumentatie.",
+    timeline: "8 weken reguliere procedure / 26 weken uitgebreide procedure",
+  },
+  Alkmaar: {
+    framework: "Procesgebaseerd", status: "mandatory", statusLabel: "Verplicht",
+    trigger: "Alle BOPA-aanvragen", cvdr: "CVDR708245", updated: "9 maart 2026",
+    province: "Noord-Holland", population: "110.000", contact: "omgevingsloket@alkmaar.nl",
+    documents: [
+      { title: "Participatieverslag", desc: "Verplicht stapsgewijs verslag; beschrijft aanpak, betrokken partijen en resultaten." },
+      { title: "Stakeholdersoverzicht", desc: "Overzicht van alle betrokken partijen met contactgegevens." },
+    ],
+    method: "Procesconformiteit; gemeente toetst of stappen doorlopen zijn.",
+    timeline: "8 weken reguliere procedure / 26 weken uitgebreide procedure",
+  },
+  "Alphen aan den Rijn": {
+    framework: "Activiteitenlijst", status: "mandatory", statusLabel: "Verplicht",
+    trigger: "≥4 woningen of >500 m²", cvdr: "CVDR704938", updated: "16 januari 2026",
+    province: "Zuid-Holland", population: "113.000", contact: "omgevingsloket@alphenaandenrijn.nl",
+    documents: [
+      { title: "Participatieverslag", desc: "Verplicht; minimaal beschrijving aanpak, betrokkenen en hoe reacties zijn verwerkt." },
+    ],
+    method: "Beoordeling op compleetheid.",
+    timeline: "8 weken reguliere procedure / 26 weken uitgebreide procedure",
+  },
+  Hengelo: {
+    framework: "Vrijwillig + disclosure", status: "voluntary", statusLabel: "Vrijwillig",
+    trigger: "Aanbevolen, niet vereist", cvdr: "CVDR695403", updated: "11 november 2025",
+    province: "Overijssel", population: "81.000", contact: "omgevingsloket@hengelo.nl",
+    documents: [
+      { title: "Disclosure-verklaring", desc: "Verplicht: vermeld of en hoe participatie heeft plaatsgevonden (Art. 16.55 lid 1 OW)." },
+    ],
+    method: "Disclosure-plicht; geen vaste proceseisen.",
+    timeline: "8 weken reguliere procedure",
+  },
+  Gouda: {
+    framework: "Beoordelingsruimte", status: "discretionary", statusLabel: "Beoordelingsruimte",
+    trigger: "Per geval beoordeeld", cvdr: "CVDR697208", updated: "6 december 2025",
+    province: "Zuid-Holland", population: "74.000", contact: "omgevingsloket@gouda.nl",
+    documents: [
+      { title: "Vooroverleg-aanvraag", desc: "Gemeente bepaalt in vooroverleg welke participatiedocumentatie per project vereist is." },
+    ],
+    method: "Pre-beoordeling per project; geen vaste drempelwaarden.",
+    timeline: "Vooroverleg 4–6 weken; daarna reguliere procedure",
+  },
+  Roosendaal: {
+    framework: "Activiteitenlijst", status: "mandatory", statusLabel: "Verplicht",
+    trigger: "≥3 woningen of >500 m²", cvdr: "CVDR700182", updated: "25 januari 2026",
+    province: "Noord-Brabant", population: "77.000", contact: "omgevingsloket@roosendaal.nl",
+    documents: [
+      { title: "Participatieverslag", desc: "Verplicht; beschrijft aanpak, reacties en hoe feedback is verwerkt in het plan." },
+    ],
+    method: "Beoordeling op compleetheid van participatiedocumentatie.",
+    timeline: "8 weken reguliere procedure / 26 weken uitgebreide procedure",
+  },
+  Lelystad: {
+    framework: "Beoordelingsruimte", status: "discretionary", statusLabel: "Beoordelingsruimte",
+    trigger: "Per geval beoordeeld", cvdr: "CVDR696745", updated: "18 november 2025",
+    province: "Flevoland", population: "82.000", contact: "omgevingsloket@lelystad.nl",
+    documents: [
+      { title: "Vooroverleg-verslag", desc: "Gemeente bepaalt in vooroverleg of en welke participatie vereist is." },
+    ],
+    method: "Pre-beoordeling; vereisten afhankelijk van project en locatie.",
+    timeline: "Vooroverleg 4–6 weken; daarna reguliere procedure",
+  },
+  Purmerend: {
+    framework: "Activiteitenlijst", status: "mandatory", statusLabel: "Verplicht",
+    trigger: "≥4 woningen of >600 m²", cvdr: "CVDR702847", updated: "3 februari 2026",
+    province: "Noord-Holland", population: "85.000", contact: "omgevingsloket@purmerend.nl",
+    documents: [
+      { title: "Participatieverslag", desc: "Verplicht; beschrijft wie betrokken was, de aanpak, resultaten en verwerking." },
+    ],
+    method: "Beoordeling op compleetheid.",
+    timeline: "8 weken reguliere procedure / 26 weken uitgebreide procedure",
+  },
+  Hoorn: {
+    framework: "Vrijwillig + disclosure", status: "voluntary", statusLabel: "Vrijwillig",
+    trigger: "Aanbevolen, niet vereist", cvdr: "CVDR694007", updated: "14 oktober 2025",
+    province: "Noord-Holland", population: "73.000", contact: "omgevingsloket@hoorn.nl",
+    documents: [
+      { title: "Disclosure-verklaring", desc: "Verplicht: verklaar hoe participatie is vormgegeven of waarom niet (Art. 16.55 lid 1 OW)." },
+    ],
+    method: "Disclosure-plicht.",
+    timeline: "8 weken reguliere procedure",
+  },
+  Nissewaard: {
+    framework: "Vrijwillig + disclosure", status: "voluntary", statusLabel: "Vrijwillig",
+    trigger: "Aanbevolen, niet vereist", cvdr: "CVDR692304", updated: "7 oktober 2025",
+    province: "Zuid-Holland", population: "86.000", contact: "omgevingsloket@nissewaard.nl",
+    documents: [
+      { title: "Disclosure-verklaring", desc: "Verplicht: vermeld of en hoe participatie heeft plaatsgevonden." },
+    ],
+    method: "Disclosure-plicht.",
+    timeline: "8 weken reguliere procedure",
   },
 };
 

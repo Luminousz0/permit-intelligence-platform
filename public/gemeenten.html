@@ -169,6 +169,21 @@
       { name: "Venlo",         province: "Limburg",      status: "mandatory",     framework: "binary-list",    trigger: "≥4 woningen of >500 m²",                     cvdr: "CVDR693481", pop: 101000, updated: "Feb 2024" },
       { name: "Westland",      province: "Zuid-Holland", status: "discretionary", framework: "discretionary",  trigger: "Per geval beoordeeld",                        cvdr: "CVDR687291", pop: 111000, updated: "Jan 2024" },
       { name: "Emmen",         province: "Drenthe",      status: "voluntary",     framework: "voluntary",      trigger: "Aanbevolen, niet vereist",                    cvdr: "CVDR684108", pop: 106000, updated: "Jan 2024" },
+      // reconciled from JSON database
+      { name: "'s-Hertogenbosch", province: "Noord-Brabant", status: "mandatory",  framework: "process-based",  trigger: "Alle BOPA-aanvragen (omgevingsdialoog)",       cvdr: "CVDR694802", pop: 160000, updated: "Mrt 2026" },
+      { name: "Helmond",       province: "Noord-Brabant", status: "voluntary",     framework: "voluntary",      trigger: "Aanbevolen; disclosure bij indiening",         cvdr: "CVDR703561", pop: 95000,  updated: "Jan 2026" },
+      { name: "Ede",           province: "Gelderland",   status: "voluntary",     framework: "voluntary",      trigger: "Geen verplichte trigger (expliciet uitgesloten)", cvdr: "CVDR739251", pop: 118000, updated: "Mei 2025" },
+      // 10 new municipalities
+      { name: "Haarlemmermeer",province: "Noord-Holland", status: "mandatory",     framework: "binary-list",    trigger: "≥5 woningen of >750 m²",                      cvdr: "CVDR706812", pop: 165000, updated: "Feb 2026" },
+      { name: "Alkmaar",       province: "Noord-Holland", status: "mandatory",     framework: "process-based",  trigger: "Alle BOPA-aanvragen",                          cvdr: "CVDR708245", pop: 110000, updated: "Mrt 2026" },
+      { name: "Alphen aan den Rijn", province: "Zuid-Holland", status: "mandatory", framework: "binary-list",   trigger: "≥4 woningen of >500 m²",                      cvdr: "CVDR704938", pop: 113000, updated: "Jan 2026" },
+      { name: "Hengelo",       province: "Overijssel",   status: "voluntary",     framework: "voluntary",      trigger: "Aanbevolen, niet vereist",                     cvdr: "CVDR695403", pop: 81000,  updated: "Nov 2025" },
+      { name: "Gouda",         province: "Zuid-Holland", status: "discretionary", framework: "discretionary",  trigger: "Per geval beoordeeld",                         cvdr: "CVDR697208", pop: 74000,  updated: "Dec 2025" },
+      { name: "Roosendaal",    province: "Noord-Brabant", status: "mandatory",    framework: "binary-list",    trigger: "≥3 woningen of >500 m²",                      cvdr: "CVDR700182", pop: 77000,  updated: "Jan 2026" },
+      { name: "Lelystad",      province: "Flevoland",    status: "discretionary", framework: "discretionary",  trigger: "Per geval beoordeeld",                         cvdr: "CVDR696745", pop: 82000,  updated: "Nov 2025" },
+      { name: "Purmerend",     province: "Noord-Holland", status: "mandatory",    framework: "binary-list",    trigger: "≥4 woningen of >600 m²",                      cvdr: "CVDR702847", pop: 85000,  updated: "Feb 2026" },
+      { name: "Hoorn",         province: "Noord-Holland", status: "voluntary",    framework: "voluntary",      trigger: "Aanbevolen, niet vereist",                     cvdr: "CVDR694007", pop: 73000,  updated: "Okt 2025" },
+      { name: "Nissewaard",    province: "Zuid-Holland", status: "voluntary",     framework: "voluntary",      trigger: "Aanbevolen, niet vereist",                     cvdr: "CVDR692304", pop: 86000,  updated: "Okt 2025" },
     ];
 
     const FRAMEWORK_LABELS = {
@@ -244,7 +259,7 @@
           <PageHeader
             breadcrumb={breadcrumb}
             eyebrow={isNL ? "Participatievereisten per gemeente" : "Participation requirements per municipality"}
-            title={isNL ? "28 gemeenten in kaart gebracht." : "28 municipalities profiled."}
+            title={isNL ? "41 gemeenten in kaart gebracht." : "41 municipalities profiled."}
             sub={isNL
               ? "Elke regel gebaseerd op officieel gepubliceerd beleid via lokaleregelgeving.overheid.nl. Klik een gemeente aan om direct naar de tool te gaan."
               : "Every rule sourced from officially published policy on lokaleregelgeving.overheid.nl. Click a municipality to open it directly in the tool."}
