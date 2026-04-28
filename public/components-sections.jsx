@@ -447,6 +447,20 @@ const NL_MAP_DATA = [
   { name: "Leeuwarden",     coords: [53.2012, 5.7999],  status: "discretionary", trigger: "Per geval beoordeeld",             cvdr: "CVDR687834" },
   { name: "Venlo",          coords: [51.3702, 6.1724],  status: "mandatory",     trigger: "≥4 woningen of >500 m²",          cvdr: "CVDR693481" },
   { name: "Zaanstad",       coords: [52.4387, 4.8188],  status: "mandatory",     trigger: "Impactscore ≥6 punten",            cvdr: "CVDR696250" },
+  // ── 13 new municipalities (added April 2026) ────────────────────────────────
+  { name: "'s-Hertogenbosch", coords: [51.6921, 5.3050], status: "mandatory",     trigger: "Alle BOPA-aanvragen (omgevingsdialoog)", cvdr: "CVDR694802" },
+  { name: "Helmond",        coords: [51.4753, 5.6633],  status: "voluntary",     trigger: "Aanbevolen; disclosure bij indiening", cvdr: "CVDR703561" },
+  { name: "Ede",            coords: [52.0399, 5.6618],  status: "voluntary",     trigger: "Geen verplichte trigger (expliciet uitgesloten)", cvdr: "CVDR739251" },
+  { name: "Haarlemmermeer", coords: [52.4432, 4.6897],  status: "mandatory",     trigger: "≥5 woningen of >750 m²",          cvdr: "CVDR706812" },
+  { name: "Alkmaar",        coords: [52.6372, 4.7396],  status: "mandatory",     trigger: "Alle BOPA-aanvragen",              cvdr: "CVDR708245" },
+  { name: "Alphen aan den Rijn", coords: [52.1395, 4.6577], status: "mandatory", trigger: "≥4 woningen of >500 m²",          cvdr: "CVDR704938" },
+  { name: "Hengelo",        coords: [52.2629, 6.7952],  status: "voluntary",     trigger: "Aanbevolen, niet vereist",         cvdr: "CVDR695403" },
+  { name: "Gouda",          coords: [51.9848, 4.7108],  status: "discretionary", trigger: "Per geval beoordeeld",             cvdr: "CVDR697208" },
+  { name: "Roosendaal",     coords: [51.5300, 4.4749],  status: "mandatory",     trigger: "≥3 woningen of >500 m²",          cvdr: "CVDR700182" },
+  { name: "Lelystad",       coords: [52.5083, 5.4764],  status: "discretionary", trigger: "Per geval beoordeeld",             cvdr: "CVDR696745" },
+  { name: "Purmerend",      coords: [52.5089, 5.1853],  status: "mandatory",     trigger: "≥4 woningen of >600 m²",          cvdr: "CVDR702847" },
+  { name: "Hoorn",          coords: [52.6428, 5.0572],  status: "voluntary",     trigger: "Aanbevolen, niet vereist",         cvdr: "CVDR694007" },
+  { name: "Nissewaard",     coords: [51.8375, 4.1464],  status: "voluntary",     trigger: "Aanbevolen, niet vereist",         cvdr: "CVDR692304" },
 ];
 
 const STATUS_COLORS = {
