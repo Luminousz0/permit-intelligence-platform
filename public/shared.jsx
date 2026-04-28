@@ -9,18 +9,18 @@ const ACCENT_PRESETS_S = {
 
 const SUBNAV = {
   nl: [
-    { href: "index.html",      label: "Home" },
+    { href: "index.html",       label: "Home" },
     { href: "regelgeving.html", label: "Regelgeving" },
     { href: "tool.html",        label: "Referentietool" },
-    { href: "validatie.html",   label: "Validatie" },
+    { href: "gemeenten.html",   label: "Gemeenten" },
     { href: "diensten.html",    label: "Diensten" },
     { href: "faq.html",         label: "FAQ" },
   ],
   en: [
-    { href: "index.html",      label: "Home" },
+    { href: "index.html",       label: "Home" },
     { href: "regelgeving.html", label: "Regulatory" },
     { href: "tool.html",        label: "Reference tool" },
-    { href: "validatie.html",   label: "Credentials" },
+    { href: "gemeenten.html",   label: "Municipalities" },
     { href: "diensten.html",    label: "Services" },
     { href: "faq.html",         label: "FAQ" },
   ],
@@ -49,7 +49,13 @@ function SubNav({ lang, setLang, current, accent, demoLabel, tryLabel }) {
             <span className="lang-sep">/</span>
             <span className={lang === "en" ? "active" : ""}>EN</span>
           </button>
-          <a href="diensten.html" className="nav-cta-ghost">{demoLabel}</a>
+          <button
+            type="button"
+            className="nav-cta-ghost"
+            onClick={() => window.openCalendly ? window.openCalendly("subnav") : (window.location.href = "diensten.html")}
+          >
+            {demoLabel}
+          </button>
           <a href="tool.html" className="nav-cta" style={{ background: accent.bg, color: accent.fg }}>
             {tryLabel}
           </a>

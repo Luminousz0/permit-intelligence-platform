@@ -1,0 +1,384 @@
+<!doctype html>
+<html lang="nl">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Gemeentendatabase — Permit Intelligence</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter+Tight:wght@400;500;600;700&family=Source+Serif+4:ital,opsz,wght@0,8..60,400;0,8..60,500;1,8..60,400&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="styles.css" />
+  <link rel="stylesheet" href="styles-pages.css" />
+  <link href="https://assets.calendly.com/assets/external/widget.css" rel="stylesheet" />
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-740YX0W0GE"></script>
+  <script src="config.js"></script>
+  <script src="analytics.js"></script>
+  <script async src="https://assets.calendly.com/assets/external/widget.js"></script>
+  <style>
+    .db-filter-bar {
+      display: flex;
+      gap: 12px;
+      flex-wrap: wrap;
+      margin-bottom: 32px;
+      align-items: center;
+    }
+    .db-search {
+      flex: 1;
+      min-width: 200px;
+    }
+    .db-filter-btn {
+      font-family: var(--mono);
+      font-size: 11px;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      padding: 7px 14px;
+      border: 1px solid var(--hairline);
+      border-radius: 6px;
+      background: transparent;
+      color: var(--ink-soft);
+      cursor: pointer;
+      transition: all 0.15s;
+    }
+    .db-filter-btn:hover,
+    .db-filter-btn.active { background: var(--ink); color: var(--bg); border-color: var(--ink); }
+    .db-filter-btn.f-mandatory.active  { background: var(--green); border-color: var(--green); color: oklch(0.15 0.04 145); }
+    .db-filter-btn.f-discretionary.active { background: var(--amber); border-color: var(--amber); color: oklch(0.3 0.06 75); }
+    .db-filter-btn.f-voluntary.active  { background: var(--blue-soft); border-color: var(--blue-soft); color: oklch(0.3 0.05 250); }
+
+    .db-table-wrap { overflow-x: auto; }
+    .db-table {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 14px;
+    }
+    .db-table th {
+      font-family: var(--mono);
+      font-size: 10px;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+      color: var(--mute);
+      text-align: left;
+      padding: 12px 16px;
+      border-bottom: 2px solid var(--hairline);
+      white-space: nowrap;
+      cursor: pointer;
+      user-select: none;
+    }
+    .db-table th:hover { color: var(--ink); }
+    .db-table th .sort-arrow { margin-left: 4px; opacity: 0.4; }
+    .db-table th.sorted .sort-arrow { opacity: 1; }
+    .db-table td {
+      padding: 14px 16px;
+      border-bottom: 1px solid var(--hairline);
+      vertical-align: top;
+    }
+    .db-table tr:last-child td { border-bottom: none; }
+    .db-table tr:hover td { background: var(--bg-alt); }
+    .db-table .city-name { font-weight: 500; color: var(--ink); }
+    .db-table .trigger-text { color: var(--ink-soft); max-width: 240px; font-size: 13px; }
+    .db-table .cvdr-link {
+      font-family: var(--mono);
+      font-size: 11px;
+      color: var(--blue);
+      text-decoration: underline;
+      text-underline-offset: 2px;
+    }
+    .db-table .province-tag {
+      font-family: var(--mono);
+      font-size: 11px;
+      color: var(--mute);
+    }
+    .status-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      font-size: 12px;
+      font-family: var(--mono);
+      letter-spacing: 0.05em;
+      white-space: nowrap;
+    }
+    .status-dot {
+      width: 7px; height: 7px;
+      border-radius: 50%;
+      flex-shrink: 0;
+    }
+    .dot-mandatory    { background: var(--green); }
+    .dot-discretionary { background: var(--amber); }
+    .dot-voluntary    { background: var(--blue-soft); }
+    .dot-unprofiled   { background: var(--gray-soft); }
+    .db-count {
+      font-family: var(--mono);
+      font-size: 12px;
+      color: var(--mute);
+      margin-bottom: 16px;
+    }
+    .db-cta-row {
+      display: flex;
+      gap: 16px;
+      align-items: center;
+      flex-wrap: wrap;
+      margin-top: 48px;
+      padding: 32px;
+      border: 1px solid var(--hairline);
+      border-radius: 12px;
+      background: var(--bg-alt);
+    }
+    .db-cta-text { flex: 1; }
+    .db-cta-text strong { font-family: var(--serif); font-size: 18px; display: block; margin-bottom: 6px; }
+    .db-cta-text p { font-size: 14px; color: var(--ink-soft); margin: 0; }
+    @media (max-width: 768px) { .db-cta-row { flex-direction: column; } }
+  </style>
+</head>
+<body data-aesthetic="hybrid">
+  <div id="root"></div>
+
+  <script src="https://unpkg.com/react@18.3.1/umd/react.development.js" integrity="sha384-hD6/rw4ppMLGNu3tX5cjIb+uRZ7UkRJ6BPkLpg4hAu/6onKUg4lLsHAs9EBPT82L" crossorigin="anonymous"></script>
+  <script src="https://unpkg.com/react-dom@18.3.1/umd/react-dom.development.js" integrity="sha384-u6aeetuaXnQ38mYT8rp6sbXaQe3NL9t+IBXmnYxwkUI2Hw4bsp2Wvmx4yRQF1uAm" crossorigin="anonymous"></script>
+  <script src="https://unpkg.com/@babel/standalone@7.29.0/babel.min.js" integrity="sha384-m08KidiNqLdpJqLq95G/LEi8Qvjl/xUYll3QILypMoQ65QorJ9Lvtp2RXYGBFj1y" crossorigin="anonymous"></script>
+
+  <script type="text/babel" src="copy.jsx"></script>
+  <script type="text/babel" src="shared.jsx"></script>
+  <script type="text/babel">
+    const { useState, useMemo } = React;
+
+    // Full 28-municipality database
+    const DB = [
+      { name: "Almere",        province: "Flevoland",    status: "mandatory",     framework: "binary-list",    trigger: "≥4 woningen of >500 m²",                     cvdr: "CVDR685432", pop: 229000, updated: "Jan 2024" },
+      { name: "Amsterdam",     province: "Noord-Holland", status: "mandatory",     framework: "impact-scoring", trigger: "Impactscore ≥7 punten",                       cvdr: "CVDR701294", pop: 921000, updated: "Mrt 2024" },
+      { name: "Rotterdam",     province: "Zuid-Holland", status: "discretionary", framework: "discretionary",  trigger: "Per geval beoordeeld",                        cvdr: "CVDR698117", pop: 663000, updated: "Feb 2024" },
+      { name: "Den Haag",      province: "Zuid-Holland", status: "mandatory",     framework: "process-based",  trigger: "Alle BOPA-aanvragen",                         cvdr: "CVDR687744", pop: 549000, updated: "Jan 2024" },
+      { name: "Utrecht",       province: "Utrecht",      status: "mandatory",     framework: "binary-list",    trigger: "Woningbouw ≥3 eenheden",                      cvdr: "CVDR692058", pop: 368000, updated: "Jan 2024" },
+      { name: "Eindhoven",     province: "Noord-Brabant",status: "mandatory",     framework: "impact-scoring", trigger: "Impact + omvang gecombineerd",                 cvdr: "CVDR690225", pop: 245000, updated: "Feb 2024" },
+      { name: "Groningen",     province: "Groningen",    status: "voluntary",     framework: "voluntary",      trigger: "Aanbevolen, niet vereist",                    cvdr: "CVDR683910", pop: 233000, updated: "Jan 2024" },
+      { name: "Tilburg",       province: "Noord-Brabant",status: "discretionary", framework: "discretionary",  trigger: "Per geval beoordeeld",                        cvdr: "CVDR691803", pop: 226000, updated: "Apr 2024" },
+      { name: "Breda",         province: "Noord-Brabant",status: "mandatory",     framework: "binary-list",    trigger: "≥5 woningen of >750 m²",                     cvdr: "CVDR694201", pop: 186000, updated: "Jan 2024" },
+      { name: "Nijmegen",      province: "Gelderland",   status: "mandatory",     framework: "binary-list",    trigger: "Woningbouw ≥4 eenheden",                      cvdr: "CVDR689553", pop: 178000, updated: "Mrt 2024" },
+      { name: "Haarlem",       province: "Noord-Holland", status: "mandatory",     framework: "binary-list",    trigger: "Alle BOPA-aanvragen",                         cvdr: "CVDR695812", pop: 164000, updated: "Jan 2024" },
+      { name: "Arnhem",        province: "Gelderland",   status: "discretionary", framework: "discretionary",  trigger: "Per geval beoordeeld",                        cvdr: "CVDR688402", pop: 163000, updated: "Feb 2024" },
+      { name: "Zaanstad",      province: "Noord-Holland", status: "mandatory",     framework: "impact-scoring", trigger: "Impactscore ≥6 punten",                       cvdr: "CVDR696250", pop: 159000, updated: "Jan 2024" },
+      { name: "Amersfoort",    province: "Utrecht",      status: "mandatory",     framework: "binary-list",    trigger: "Woningbouw ≥4 eenheden",                      cvdr: "CVDR695017", pop: 157000, updated: "Feb 2024" },
+      { name: "Apeldoorn",     province: "Gelderland",   status: "mandatory",     framework: "binary-list",    trigger: "Woningbouw ≥5 eenheden",                      cvdr: "CVDR697034", pop: 164000, updated: "Mrt 2024" },
+      { name: "Zwolle",        province: "Overijssel",   status: "mandatory",     framework: "binary-list",    trigger: "≥3 woningen of >500 m²",                     cvdr: "CVDR693147", pop: 131000, updated: "Jan 2024" },
+      { name: "Leiden",        province: "Zuid-Holland", status: "mandatory",     framework: "impact-scoring", trigger: "Impactscore ≥5 punten",                       cvdr: "CVDR699281", pop: 124000, updated: "Apr 2024" },
+      { name: "Maastricht",    province: "Limburg",      status: "mandatory",     framework: "blanket",        trigger: "Alle BOPA-aanvragen",                         cvdr: "CVDR691405", pop: 122000, updated: "Jan 2024" },
+      { name: "Dordrecht",     province: "Zuid-Holland", status: "discretionary", framework: "discretionary",  trigger: "Per geval beoordeeld",                        cvdr: "CVDR686903", pop: 118000, updated: "Feb 2024" },
+      { name: "Zoetermeer",    province: "Zuid-Holland", status: "mandatory",     framework: "binary-list",    trigger: "≥3 woningen of >400 m²",                     cvdr: "CVDR693740", pop: 125000, updated: "Jan 2024" },
+      { name: "Delft",         province: "Zuid-Holland", status: "mandatory",     framework: "blanket",        trigger: "Alle BOPA-aanvragen",                         cvdr: "CVDR688654", pop: 103000, updated: "Jan 2024" },
+      { name: "Enschede",      province: "Overijssel",   status: "voluntary",     framework: "voluntary",      trigger: "Aanbevolen, niet vereist",                    cvdr: "CVDR686720", pop: 159000, updated: "Jan 2024" },
+      { name: "Deventer",      province: "Overijssel",   status: "mandatory",     framework: "binary-list",    trigger: "≥3 woningen of commercieel >1.000 m²",        cvdr: "CVDR692876", pop: 100000, updated: "Feb 2024" },
+      { name: "Sittard-Geleen",province: "Limburg",      status: "mandatory",     framework: "binary-list",    trigger: "Woningbouw ≥3 eenheden",                      cvdr: "CVDR690612", pop: 93000,  updated: "Mar 2024" },
+      { name: "Leeuwarden",    province: "Friesland",    status: "discretionary", framework: "discretionary",  trigger: "Per geval beoordeeld",                        cvdr: "CVDR687834", pop: 123000, updated: "Jan 2024" },
+      { name: "Venlo",         province: "Limburg",      status: "mandatory",     framework: "binary-list",    trigger: "≥4 woningen of >500 m²",                     cvdr: "CVDR693481", pop: 101000, updated: "Feb 2024" },
+      { name: "Westland",      province: "Zuid-Holland", status: "discretionary", framework: "discretionary",  trigger: "Per geval beoordeeld",                        cvdr: "CVDR687291", pop: 111000, updated: "Jan 2024" },
+      { name: "Emmen",         province: "Drenthe",      status: "voluntary",     framework: "voluntary",      trigger: "Aanbevolen, niet vereist",                    cvdr: "CVDR684108", pop: 106000, updated: "Jan 2024" },
+    ];
+
+    const FRAMEWORK_LABELS = {
+      "blanket":       "Algeheel verplicht",
+      "binary-list":   "Activiteitenlijst",
+      "impact-scoring":"Impactscore",
+      "process-based": "Procesverplicht",
+      "discretionary": "Beoordelingsruimte",
+      "voluntary":     "Vrijwillig",
+    };
+
+    const STATUS_LABELS = {
+      mandatory:     "Verplicht",
+      discretionary: "Beoordelingsruimte",
+      voluntary:     "Vrijwillig",
+    };
+
+    function StatusBadge({ status }) {
+      return (
+        <span className="status-badge">
+          <span className={`status-dot dot-${status}`}></span>
+          {STATUS_LABELS[status] || status}
+        </span>
+      );
+    }
+
+    function GemeentenPage() {
+      const [lang, setLang] = useState("nl");
+      const [query, setQuery] = useState("");
+      const [statusFilter, setStatusFilter] = useState("all");
+      const [sortKey, setSortKey] = useState("name");
+      const [sortAsc, setSortAsc] = useState(true);
+      const t = window.COPY[lang];
+      const accent = window.ACCENT_PRESETS_S.blue;
+
+      const filtered = useMemo(() => {
+        let rows = DB;
+        if (query.trim()) {
+          const q = query.trim().toLowerCase();
+          rows = rows.filter(r =>
+            r.name.toLowerCase().includes(q) || r.province.toLowerCase().includes(q)
+          );
+        }
+        if (statusFilter !== "all") {
+          rows = rows.filter(r => r.status === statusFilter);
+        }
+        rows = [...rows].sort((a, b) => {
+          const va = a[sortKey] ?? "";
+          const vb = b[sortKey] ?? "";
+          if (typeof va === "number") return sortAsc ? va - vb : vb - va;
+          return sortAsc
+            ? String(va).localeCompare(String(vb), "nl")
+            : String(vb).localeCompare(String(va), "nl");
+        });
+        return rows;
+      }, [query, statusFilter, sortKey, sortAsc]);
+
+      const toggleSort = (key) => {
+        if (sortKey === key) setSortAsc(!sortAsc);
+        else { setSortKey(key); setSortAsc(true); }
+      };
+
+      const isNL = lang !== "en";
+
+      const breadcrumb = isNL
+        ? [{ label: "Home", href: "index.html" }, { label: "Gemeentendatabase" }]
+        : [{ label: "Home", href: "index.html" }, { label: "Municipality database" }];
+
+      return (
+        <>
+          <SubNav lang={lang} setLang={setLang} current="gemeenten.html" accent={accent}
+                  demoLabel={t.nav.demo} tryLabel={t.nav.tryTool} />
+          <PageHeader
+            breadcrumb={breadcrumb}
+            eyebrow={isNL ? "Participatievereisten per gemeente" : "Participation requirements per municipality"}
+            title={isNL ? "28 gemeenten in kaart gebracht." : "28 municipalities profiled."}
+            sub={isNL
+              ? "Elke regel gebaseerd op officieel gepubliceerd beleid via lokaleregelgeving.overheid.nl. Klik een gemeente aan om direct naar de tool te gaan."
+              : "Every rule sourced from officially published policy on lokaleregelgeving.overheid.nl. Click a municipality to open it directly in the tool."}
+          />
+
+          <section style={{ padding: "0 0 clamp(64px, 9vw, 120px)" }}>
+            <div className="container">
+              {/* Filter bar */}
+              <div className="db-filter-bar">
+                <input
+                  type="text"
+                  className="field-input db-search"
+                  placeholder={isNL ? "Zoek gemeente of provincie…" : "Search municipality or province…"}
+                  value={query}
+                  onChange={e => setQuery(e.target.value)}
+                />
+                {["all", "mandatory", "discretionary", "voluntary"].map(s => (
+                  <button
+                    key={s}
+                    className={`db-filter-btn f-${s} ${statusFilter === s ? "active" : ""}`}
+                    onClick={() => setStatusFilter(s)}
+                  >
+                    {s === "all"           ? (isNL ? "Alle" : "All")
+                    : s === "mandatory"    ? (isNL ? "Verplicht" : "Mandatory")
+                    : s === "discretionary"? (isNL ? "Beoordelingsruimte" : "Discretionary")
+                    :                        (isNL ? "Vrijwillig" : "Voluntary")}
+                  </button>
+                ))}
+              </div>
+
+              <div className="db-count">
+                {isNL
+                  ? `${filtered.length} van ${DB.length} gemeenten getoond`
+                  : `Showing ${filtered.length} of ${DB.length} municipalities`}
+              </div>
+
+              <div className="db-table-wrap">
+                <table className="db-table">
+                  <thead>
+                    <tr>
+                      <th onClick={() => toggleSort("name")} className={sortKey === "name" ? "sorted" : ""}>
+                        {isNL ? "Gemeente" : "Municipality"} <span className="sort-arrow">{sortKey === "name" ? (sortAsc ? "↑" : "↓") : "↕"}</span>
+                      </th>
+                      <th onClick={() => toggleSort("province")} className={sortKey === "province" ? "sorted" : ""}>
+                        {isNL ? "Provincie" : "Province"} <span className="sort-arrow">{sortKey === "province" ? (sortAsc ? "↑" : "↓") : "↕"}</span>
+                      </th>
+                      <th onClick={() => toggleSort("status")} className={sortKey === "status" ? "sorted" : ""}>
+                        Status <span className="sort-arrow">{sortKey === "status" ? (sortAsc ? "↑" : "↓") : "↕"}</span>
+                      </th>
+                      <th>{isNL ? "Kader" : "Framework"}</th>
+                      <th>{isNL ? "Trigger" : "Trigger"}</th>
+                      <th>CVDR</th>
+                      <th onClick={() => toggleSort("updated")} className={sortKey === "updated" ? "sorted" : ""}>
+                        {isNL ? "Bijgewerkt" : "Updated"} <span className="sort-arrow">{sortKey === "updated" ? (sortAsc ? "↑" : "↓") : "↕"}</span>
+                      </th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    {filtered.map((row) => (
+                      <tr key={row.name}>
+                        <td>
+                          <a
+                            className="city-name"
+                            href={`tool.html?gemeente=${encodeURIComponent(row.name)}`}
+                            style={{ color: "var(--ink)", borderBottom: "1px solid var(--hairline-strong)", paddingBottom: "1px" }}
+                          >
+                            {row.name}
+                          </a>
+                        </td>
+                        <td><span className="province-tag">{row.province}</span></td>
+                        <td><StatusBadge status={row.status} /></td>
+                        <td style={{ fontSize: 13, color: "var(--ink-soft)" }}>{FRAMEWORK_LABELS[row.framework] || row.framework}</td>
+                        <td><span className="trigger-text">{row.trigger}</span></td>
+                        <td>
+                          {row.cvdr ? (
+                            <a
+                              className="cvdr-link"
+                              href={`https://lokaleregelgeving.overheid.nl/CVDR/${row.cvdr.replace("CVDR","")}`}
+                              target="_blank"
+                              rel="noopener noreferrer"
+                            >
+                              {row.cvdr}
+                            </a>
+                          ) : <span style={{ color: "var(--mute)" }}>—</span>}
+                        </td>
+                        <td style={{ fontSize: 12, color: "var(--mute)", fontFamily: "var(--mono)" }}>{row.updated}</td>
+                      </tr>
+                    ))}
+                    {filtered.length === 0 && (
+                      <tr>
+                        <td colSpan={7} style={{ textAlign: "center", color: "var(--mute)", padding: "40px 16px" }}>
+                          {isNL ? "Geen resultaten voor deze zoekopdracht." : "No results for this search."}
+                        </td>
+                      </tr>
+                    )}
+                  </tbody>
+                </table>
+              </div>
+
+              {/* Bottom CTA */}
+              <div className="db-cta-row">
+                <div className="db-cta-text">
+                  <strong className="serif">{isNL ? "Gemeente staat er niet bij?" : "Municipality not listed?"}</strong>
+                  <p>{isNL
+                    ? "We breiden de database voortdurend uit. Voor niet-geprofileerde gemeenten is gerichte consultatie beschikbaar — wij doen het beleidsonderzoek."
+                    : "We're continuously expanding the database. For unprofiled municipalities, targeted consultancy is available — we do the policy research."}</p>
+                </div>
+                <button
+                  type="button"
+                  className="btn btn-primary"
+                  style={{ background: accent.bg, color: accent.fg, flexShrink: 0 }}
+                  onClick={() => {
+                    if (window.openCalendly) window.openCalendly("gemeenten");
+                    if (window.trackEvent) window.trackEvent("demo_cta_click", "conversion", "gemeenten");
+                  }}
+                >
+                  {isNL ? "Plan consultatie" : "Schedule consultation"} <span className="arrow">→</span>
+                </button>
+              </div>
+
+              <p style={{ marginTop: 24, fontSize: 12, color: "var(--mute)", fontFamily: "var(--mono)" }}>
+                {isNL
+                  ? "Bron: lokaleregelgeving.overheid.nl · gemeente.overheid.nl · parolo.nl · Per april 2026. Gebruikers blijven verantwoordelijk voor bevestiging bij de gemeente vóór indiening."
+                  : "Source: lokaleregelgeving.overheid.nl · gemeente.overheid.nl · parolo.nl · As of April 2026. Users remain responsible for confirming requirements with their municipality before submission."}
+              </p>
+            </div>
+          </section>
+
+          <SubFooter t={t} />
+        </>
+      );
+    }
+
+    ReactDOM.createRoot(document.getElementById("root")).render(<GemeentenPage />);
+  </script>
+</body>
+</html>

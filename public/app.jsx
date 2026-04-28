@@ -1,6 +1,6 @@
 // Top nav + main app shell with a much-expanded Tweaks panel.
 
-const { useState: useStateApp, useEffect: useEffectApp, useRef: useRefApp } = React;
+const { useState: useStateApp, useEffect: useEffectApp, useRef: useRefApp, useCallback: useCallbackApp } = React;
 
 const ACCENT_PRESETS = {
   orange:  { bg: "oklch(0.68 0.16 50)",  fg: "#fff",            name: "Oranje" },
@@ -35,15 +35,15 @@ const HOME_NAV = {
   nl: [
     { href: "regelgeving.html", label: "Regelgeving" },
     { href: "tool.html",        label: "Referentietool" },
+    { href: "gemeenten.html",   label: "Gemeenten" },
     { href: "diensten.html",    label: "Diensten" },
-    { href: "validatie.html",   label: "Validatie" },
     { href: "faq.html",         label: "FAQ" },
   ],
   en: [
     { href: "regelgeving.html", label: "Regulatory" },
     { href: "tool.html",        label: "Reference tool" },
+    { href: "gemeenten.html",   label: "Municipalities" },
     { href: "diensten.html",    label: "Services" },
-    { href: "validatie.html",   label: "Credentials" },
     { href: "faq.html",         label: "FAQ" },
   ],
 };
@@ -57,7 +57,7 @@ function Logo({ glyph }) {
   );
 }
 
-function Nav({ lang, setLang, t, accent, sticky, glyph }) {
+function Nav({ lang, setLang, t, accent, sticky, glyph, onTrialOpen }) {
   return (
     <header className="nav" data-sticky={sticky ? "yes" : "no"}>
       <div className="container nav-inner">
@@ -74,10 +74,21 @@ function Nav({ lang, setLang, t, accent, sticky, glyph }) {
             <span className="lang-sep">/</span>
             <span className={lang === "en" ? "active" : ""}>EN</span>
           </button>
-          <a href="diensten.html" className="nav-cta-ghost">{t.nav.demo}</a>
-          <a href="tool.html" className="nav-cta" style={{ background: accent.bg, color: accent.fg }}>
+          <button
+            type="button"
+            className="nav-cta-ghost"
+            onClick={() => window.openCalendly ? window.openCalendly("nav") : (window.location.href = "diensten.html")}
+          >
+            {t.nav.demo}
+          </button>
+          <button
+            type="button"
+            className="nav-cta"
+            style={{ background: accent.bg, color: accent.fg }}
+            onClick={() => { if (onTrialOpen) onTrialOpen(); }}
+          >
             {t.nav.tryTool}
-          </a>
+          </button>
         </div>
       </div>
     </header>
@@ -86,6 +97,10 @@ function Nav({ lang, setLang, t, accent, sticky, glyph }) {
 
 function App() {
   const [tweaks, setTweak] = useTweaks(window.TWEAK_DEFAULTS);
+  const [trialOpen, setTrialOpen] = useStateApp(false);
+  const openTrial = useCallbackApp(() => setTrialOpen(true), []);
+  const closeTrial = useCallbackApp(() => setTrialOpen(false), []);
+
   const lang = tweaks.lang;
   const setLang = (v) => setTweak("lang", v);
   const t = window.COPY[lang];
@@ -147,19 +162,23 @@ function App() {
   return (
     <>
       <Nav lang={lang} setLang={setLang} t={t} accent={accent}
-           sticky={tweaks.stickyNav} glyph={tweaks.logoGlyph} />
+           sticky={tweaks.stickyNav} glyph={tweaks.logoGlyph} onTrialOpen={openTrial} />
       <main>
         {tweaks.showHero && (
           <Hero lang={lang} t={t} headlineIdx={headlineIdx} accent={accent} onScrollHow={onScrollHow} />
         )}
         {tweaks.showStats && <StatsStrip t={t} />}
         {tweaks.showProblem && <Problem t={t} />}
+        {tweaks.showProcess && <ProcessTimeline t={t} />}
         {tweaks.showHow && <HowItWorks t={t} accent={accent} />}
         {tweaks.showProof && <Proof t={t} />}
-        {tweaks.showPricing && <Pricing t={t} accent={accent} />}
+        {tweaks.showRoadmap && <Roadmap t={t} />}
+        {tweaks.showPricing && <Pricing t={t} accent={accent} onTrialOpen={openTrial} />}
         {tweaks.showFaq && <FAQ t={t} />}
         <Footer t={t} />
       </main>
+
+      {trialOpen && <TrialModal lang={lang} accent={accent} onClose={closeTrial} />}
 
       <TweaksPanel title="Tweaks">
         {/* ─── Esthetiek ─────────────────────────── */}
@@ -270,8 +289,10 @@ function App() {
           <TweakToggle label="Hero" value={tweaks.showHero} onChange={(v) => setTweak("showHero", v)} />
           <TweakToggle label="Statistieken" value={tweaks.showStats} onChange={(v) => setTweak("showStats", v)} />
           <TweakToggle label="Probleem" value={tweaks.showProblem} onChange={(v) => setTweak("showProblem", v)} />
+          <TweakToggle label="Vergunningsproces" value={tweaks.showProcess} onChange={(v) => setTweak("showProcess", v)} />
           <TweakToggle label="Hoe het werkt" value={tweaks.showHow} onChange={(v) => setTweak("showHow", v)} />
           <TweakToggle label="Proof" value={tweaks.showProof} onChange={(v) => setTweak("showProof", v)} />
+          <TweakToggle label="Roadmap" value={tweaks.showRoadmap} onChange={(v) => setTweak("showRoadmap", v)} />
           <TweakToggle label="Prijzen" value={tweaks.showPricing} onChange={(v) => setTweak("showPricing", v)} />
           <TweakToggle label="FAQ" value={tweaks.showFaq} onChange={(v) => setTweak("showFaq", v)} />
         </TweakSection>

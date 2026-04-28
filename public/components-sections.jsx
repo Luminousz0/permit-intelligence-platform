@@ -1,6 +1,6 @@
-// Stats, Problem, How, Proof, Pricing, FAQ, Footer
+// Stats, Problem, ProcessTimeline, How, Proof, Roadmap, Pricing, FAQ, Footer, TrialModal
 
-const { useState: useStateS } = React;
+const { useState: useStateS, useEffect: useEffectS } = React;
 
 // ---------- STATS ----------
 function StatsStrip({ t }) {
@@ -30,7 +30,7 @@ function StatsStrip({ t }) {
             </span>
           ))}
           <span className="legend-spacer"></span>
-          <a className="legend-link" href="tool.html">{t.stats.viewDb}</a>
+          <a className="legend-link" href="gemeenten.html">{t.stats.viewDb}</a>
         </div>
       </div>
     </section>
@@ -138,8 +138,188 @@ function Proof({ t }) {
   );
 }
 
+// ---------- PROCESS TIMELINE ----------
+function ProcessTimeline({ t }) {
+  return (
+    <section className="process" data-screen-label="03b Process">
+      <div className="container">
+        <div className="section-head">
+          <div className="head-l">
+            <div className="eyebrow">{t.process.eyebrow}</div>
+            <h2 className="section-title serif">{t.process.title}</h2>
+            <p className="section-sub">{t.process.sub}</p>
+          </div>
+        </div>
+        <div className="process-timeline">
+          {t.process.stages.map((stage, i) => (
+            <div className={`process-stage ${stage.isBlackBox ? "is-blackbox" : ""}`} key={i}>
+              <div className="stage-n">{stage.n}</div>
+              <div className="stage-label serif">{stage.label}</div>
+              <div className="stage-body">{stage.body}</div>
+              <div className="stage-timing">{stage.timing}</div>
+            </div>
+          ))}
+        </div>
+        <div className="process-blackbox-label">
+          ▪ {t.process.blackBoxLabel}
+        </div>
+        <div className="process-gov-stat">{t.process.govStat}</div>
+      </div>
+    </section>
+  );
+}
+
+// ---------- ROADMAP ----------
+function Roadmap({ t }) {
+  return (
+    <section className="roadmap" data-screen-label="05b Roadmap">
+      <div className="container">
+        <div className="section-head center">
+          <div className="eyebrow">{t.roadmap.eyebrow}</div>
+          <h2 className="section-title serif">{t.roadmap.title}</h2>
+          <p className="section-sub">{t.roadmap.sub}</p>
+        </div>
+        <div className="roadmap-layers">
+          {t.roadmap.layers.map((layer, i) => (
+            <div className={`roadmap-layer layer-${layer.status}`} key={i}>
+              <div className="layer-n">{layer.n}</div>
+              <div className="layer-body">
+                <div className="layer-header">
+                  <div className="layer-label">{layer.label}</div>
+                  <span className={`layer-status status-${layer.status}`}>{layer.statusLabel}</span>
+                </div>
+                <div className="layer-text">{layer.body}</div>
+              </div>
+            </div>
+          ))}
+        </div>
+      </div>
+    </section>
+  );
+}
+
+// ---------- TRIAL MODAL ----------
+function TrialModal({ lang, accent, onClose }) {
+  const [name, setName] = useStateS("");
+  const [email, setEmail] = useStateS("");
+  const [status, setStatus] = useStateS("idle"); // idle | loading | success | error
+
+  // Close on Escape
+  useEffectS(() => {
+    const handler = (e) => { if (e.key === "Escape") onClose(); };
+    document.addEventListener("keydown", handler);
+    return () => document.removeEventListener("keydown", handler);
+  }, [onClose]);
+
+  const submit = async (e) => {
+    e.preventDefault();
+    setStatus("loading");
+    try {
+      const base = window.API_BASE || "";
+      const resp = await fetch(base + "/api/trial-signup", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ name, email }),
+      });
+      if (resp.ok) {
+        setStatus("success");
+        if (window.trackEvent) window.trackEvent("trial_signup", "conversion", email);
+      } else {
+        setStatus("error");
+      }
+    } catch (_) {
+      setStatus("error");
+    }
+  };
+
+  const isNL = lang !== "en";
+  const L = {
+    title:         isNL ? "Start je gratis proefperiode" : "Start your free trial",
+    sub:           isNL ? "14 dagen gratis. Geen creditcard nodig." : "14 days free. No credit card required.",
+    namePh:        isNL ? "Naam (optioneel)" : "Name (optional)",
+    emailPh:       isNL ? "E-mailadres" : "Email address",
+    cta:           isNL ? "Account aanmaken" : "Create account",
+    loading:       isNL ? "Verwerken\u2026" : "Processing\u2026",
+    fine:          isNL ? "Geen creditcard. Geen automatische verlenging." : "No credit card. No auto-renewal.",
+    errorMsg:      isNL ? "Er ging iets mis. Probeer opnieuw." : "Something went wrong. Please try again.",
+    successTitle:  isNL ? "Gelukt \u2014 we nemen contact op." : "Done \u2014 we\u2019ll be in touch.",
+    successBody:   isNL ? "Bevestiging volgt op " : "Confirmation coming to ",
+  };
+
+  return (
+    <div
+      className="modal-overlay"
+      onClick={(e) => { if (e.target === e.currentTarget) onClose(); }}
+    >
+      <div className="modal-box">
+        <button className="modal-close" type="button" onClick={onClose} aria-label="Sluiten">×</button>
+
+        {status === "success" ? (
+          <div className="modal-success">
+            <div className="modal-success-icon">✓</div>
+            <h3 className="serif modal-title">{L.successTitle}</h3>
+            <p>{L.successBody}<strong>{email}</strong></p>
+          </div>
+        ) : (
+          <>
+            <h3 className="serif modal-title">{L.title}</h3>
+            <p className="modal-sub">{L.sub}</p>
+            <form onSubmit={submit} className="modal-form">
+              <input
+                type="text"
+                placeholder={L.namePh}
+                value={name}
+                onChange={(e) => setName(e.target.value)}
+                className="field-input"
+                autoComplete="name"
+              />
+              <input
+                type="email"
+                placeholder={L.emailPh}
+                value={email}
+                onChange={(e) => setEmail(e.target.value)}
+                className="field-input"
+                required
+                autoComplete="email"
+                autoFocus
+              />
+              {status === "error" && (
+                <div className="modal-error">{L.errorMsg}</div>
+              )}
+              <button
+                type="submit"
+                className="btn btn-primary modal-submit"
+                style={{ background: accent.bg, color: accent.fg, borderColor: accent.bg }}
+                disabled={status === "loading"}
+              >
+                {status === "loading" ? L.loading : L.cta}
+                {status !== "loading" && <span className="arrow">\u2192</span>}
+              </button>
+            </form>
+            <hr className="modal-divider" />
+            <p className="modal-fine">{L.fine}</p>
+          </>
+        )}
+      </div>
+    </div>
+  );
+}
+
 // ---------- PRICING ----------
-function Pricing({ t, accent }) {
+function Pricing({ t, accent, onTrialOpen }) {
+  const handleCta = (tier) => {
+    if (tier.type === "trial") {
+      if (onTrialOpen) onTrialOpen();
+      if (window.trackEvent) window.trackEvent("trial_cta_click", "conversion", tier.name);
+    } else if (tier.type === "demo") {
+      if (window.openCalendly) window.openCalendly("pricing");
+      else if (window.trackEvent) window.trackEvent("demo_cta_click", "conversion", tier.name);
+    } else {
+      // free tier — go straight to tool
+      window.location.href = "tool.html";
+    }
+  };
+
   return (
     <section className="pricing" data-screen-label="06 Pricing" id="pricing">
       <div className="container">
@@ -167,6 +347,7 @@ function Pricing({ t, accent }) {
                 type="button"
                 className={`tier-cta ${tier.accent ? "tier-cta-primary" : ""}`}
                 style={tier.accent ? { background: accent.bg, color: accent.fg, borderColor: accent.bg } : {}}
+                onClick={() => handleCta(tier)}
               >
                 {tier.cta} <span className="arrow">→</span>
               </button>
@@ -238,8 +419,11 @@ function Footer({ t }) {
 
 window.StatsStrip = StatsStrip;
 window.Problem = Problem;
+window.ProcessTimeline = ProcessTimeline;
 window.HowItWorks = HowItWorks;
 window.Proof = Proof;
+window.Roadmap = Roadmap;
 window.Pricing = Pricing;
 window.FAQ = FAQ;
 window.Footer = Footer;
+window.TrialModal = TrialModal;

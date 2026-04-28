@@ -109,4 +109,31 @@ app.post('/api/predict-timeline', async (req, res) => {
   }
 });
 
+// Trial signup — collect email, notify Ashwin
+app.post('/api/trial-signup', async (req, res) => {
+  const { email, name, company } = req.body;
+  if (!email) return res.status(400).json({ error: 'Email required' });
+
+  console.log(`📋 Trial signup: ${name || '—'} <${email}> ${company ? `(${company})` : ''}`);
+
+  const html = `
+    <h2 style="font-family:sans-serif">Nieuwe trial aanmelding</h2>
+    <table style="font-family:sans-serif;font-size:15px;border-collapse:collapse">
+      <tr><td style="padding:6px 16px 6px 0;color:#888">Naam</td><td><strong>${name || '—'}</strong></td></tr>
+      <tr><td style="padding:6px 16px 6px 0;color:#888">Email</td><td><strong>${email}</strong></td></tr>
+      <tr><td style="padding:6px 16px 6px 0;color:#888">Bedrijf</td><td>${company || '—'}</td></tr>
+      <tr><td style="padding:6px 16px 6px 0;color:#888">Tijdstip</td><td>${new Date().toLocaleString('nl-NL', { timeZone: 'Europe/Amsterdam' })}</td></tr>
+    </table>
+  `;
+
+  try {
+    await sendReportEmail('asramcharan@gmail.com', `Nieuwe trial signup: ${email}`, html);
+  } catch (err) {
+    console.error('Email notification failed:', err);
+    // Don't fail the request — signup was received
+  }
+
+  res.json({ success: true });
+});
+
 app.listen(PORT, () => console.log(`Server running at http://localhost:${PORT}`));
