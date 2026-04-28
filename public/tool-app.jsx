@@ -294,6 +294,7 @@ function ToolPage({ lang, setLang }) {
 
   const data = FULL_MUNI_DATA[muni];
   const t = window.COPY[lang];
+  const tt = t.tool;
   const accent = window.ACCENT_PRESETS_S.blue;
 
   return (
@@ -301,21 +302,21 @@ function ToolPage({ lang, setLang }) {
       <SubNav lang={lang} setLang={setLang} current="tool.html" accent={accent}
               demoLabel={t.nav.demo} tryLabel={t.nav.tryTool} />
       <PageHeader
-        breadcrumb={[{ label: "Home", href: "index.html" }, { label: "Referentietool" }]}
-        eyebrow="Referentietool"
-        title="Bekijk de vereisten voor jouw gemeente."
-        sub="Selecteer een gemeente en projecttype. Krijg direct toepasselijke regels, documentatie-vereisten en bron-citatie."
+        breadcrumb={[{ label: "Home", href: "index.html" }, { label: tt.breadcrumbLabel }]}
+        eyebrow={tt.eyebrow}
+        title={tt.title}
+        sub={tt.sub}
       />
       <section className="tool-shell">
         <div className="container tool-grid">
           <aside className="tool-input">
-            <h3>Zoekopdracht</h3>
-            <div className="input-sub">28 gemeenten beschikbaar in database</div>
+            <h3>{tt.queryTitle}</h3>
+            <div className="input-sub">{tt.dbCount}</div>
 
             <label className="field">
-              <span className="field-label">Gemeente</span>
+              <span className="field-label">{tt.muniLabel}</span>
               <input type="text" value={query} onChange={(e) => setQuery(e.target.value)}
-                     placeholder="Zoek gemeente..." className="field-input" />
+                     placeholder={tt.muniPlaceholder} className="field-input" />
             </label>
 
             <div style={{ maxHeight: 180, overflowY: "auto", border: "1px solid var(--hairline)", borderRadius: 6, marginBottom: 14 }}>
@@ -334,54 +335,55 @@ function ToolPage({ lang, setLang }) {
                   </span>
                 </button>
               ))}
-              {filtered.length === 0 && <div style={{ padding: 16, fontSize: 13, color: "var(--mute)" }}>Geen match</div>}
+              {filtered.length === 0 && (
+                <div style={{ padding: 16, fontSize: 13, color: "var(--mute)" }}>{tt.noMatch}</div>
+              )}
             </div>
 
             <div className="tool-fields-row">
               <label className="field">
-                <span className="field-label">Projecttype</span>
+                <span className="field-label">{tt.typeLabel}</span>
                 <select value={type} onChange={(e) => setType(e.target.value)} className="field-input">
-                  <option value="residential">Woningbouw</option>
-                  <option value="commercial">Commercieel</option>
-                  <option value="institutional">Maatschappelijk</option>
-                  <option value="infrastructure">Infrastructuur</option>
+                  {t.hero.types.map(opt => (
+                    <option key={opt.id} value={opt.id}>{opt.label}</option>
+                  ))}
                 </select>
               </label>
               <label className="field">
-                <span className="field-label">Aantal</span>
+                <span className="field-label">{tt.countLabel}</span>
                 <input type="number" value={units} onChange={(e) => setUnits(Number(e.target.value) || 0)}
                        className="field-input" min={1} />
               </label>
             </div>
 
-            <div className="tool-disclaimer">
-              Resultaat is gebaseerd op gepubliceerd beleid op querydatum. Bevestig actuele vereisten direct bij de gemeente vóór indiening.
-            </div>
+            <div className="tool-disclaimer">{tt.disclaimer}</div>
           </aside>
 
           <div className="tool-output">
             <div className="tool-output-head">
               <div>
                 <div className="muni-name serif">{muni}</div>
-                <div className="muni-meta">{data.province} · {data.population} inwoners · CVDR {data.cvdr.replace("CVDR", "")} · bijgewerkt {data.updated}</div>
+                <div className="muni-meta">
+                  {data.province} · {data.population} {tt.residentsSuffix} · CVDR {data.cvdr.replace("CVDR", "")} · {tt.updatedPrefix} {data.updated}
+                </div>
               </div>
               <div className={`muni-status-pill is-${data.status}`}>
-                <StatusDot status={data.status} />
+                <StatusDot status={data.status} lang={lang} />
               </div>
             </div>
 
             <div className="tool-output-section">
-              <div className="tos-label">Beleidsbenadering</div>
+              <div className="tos-label">{tt.policyHeader}</div>
               <div className="tos-body"><strong>{data.framework}.</strong> {data.method}</div>
               <ul className="tos-kv-list" style={{ marginTop: 16 }}>
-                <li><span className="k">Trigger</span><span className="v">{data.trigger}</span></li>
-                <li><span className="k">Doorlooptijd</span><span className="v">{data.timeline}</span></li>
-                <li><span className="k">Contact</span><span className="v mono">{data.contact}</span></li>
+                <li><span className="k">{tt.triggerLabel}</span><span className="v">{data.trigger}</span></li>
+                <li><span className="k">{tt.timelineLabel}</span><span className="v">{data.timeline}</span></li>
+                <li><span className="k">{tt.contactLabel}</span><span className="v mono">{data.contact}</span></li>
               </ul>
             </div>
 
             <div className="tool-output-section">
-              <div className="tos-label">Vereiste documentatie</div>
+              <div className="tos-label">{tt.docsHeader}</div>
               <ul className="tos-doc-list">
                 {data.documents.map((d, i) => (
                   <li key={i}>
@@ -393,19 +395,26 @@ function ToolPage({ lang, setLang }) {
             </div>
 
             <div className="tool-output-section">
-              <div className="tos-label">Bronnen</div>
+              <div className="tos-label">{tt.sourcesHeader}</div>
               <ul className="tos-kv-list">
-                <li><span className="k">CVDR-nummer</span><span className="v mono">{data.cvdr}</span></li>
-                <li><span className="k">Publicatie</span><span className="v">{data.updated}</span></li>
-                <li><span className="k">Origineel</span><span className="v"><a href="#" style={{ color: "var(--ink)", borderBottom: "1px solid var(--hairline-strong)" }}>↗ lokaleregelgeving.overheid.nl</a></span></li>
+                <li><span className="k">{tt.cvdrLabel}</span><span className="v mono">{data.cvdr}</span></li>
+                <li><span className="k">{tt.pubLabel}</span><span className="v">{data.updated}</span></li>
+                <li>
+                  <span className="k">{tt.sourceLabel}</span>
+                  <span className="v">
+                    <a href="https://lokaleregelgeving.overheid.nl" target="_blank" rel="noreferrer"
+                       style={{ color: "var(--ink)", borderBottom: "1px solid var(--hairline-strong)" }}>
+                      ↗ lokaleregelgeving.overheid.nl
+                    </a>
+                  </span>
+                </li>
               </ul>
             </div>
 
             <div className="tool-output-section" style={{ background: "var(--bg-alt)" }}>
-              <div className="tos-label">Documentatie genereren</div>
+              <div className="tos-label">{tt.generateHeader}</div>
               <div className="tos-body" style={{ marginBottom: 14 }}>
-                Genereer een participatieverslag-template aangepast aan {muni}'s vereisten en jouw projectkenmerken.
-                Klaar om in te vullen — bevat alle secties die {muni} vereist.
+                {tt.generateBodyPre} {muni}{tt.generateBodyPost}
               </div>
               <button type="button" className="btn btn-primary"
                       style={{ background: accent.bg, color: accent.fg }}
@@ -414,7 +423,7 @@ function ToolPage({ lang, setLang }) {
                         const filename = `participatieverslag-${muni.toLowerCase().replace(/\s+/g, "-")}.doc`;
                         downloadTemplate(content, filename);
                       }}>
-                Genereer &amp; download template <span className="arrow">↓</span>
+                {tt.generateBtn} <span className="arrow">↓</span>
               </button>
             </div>
           </div>

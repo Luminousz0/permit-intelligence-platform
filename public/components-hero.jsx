@@ -34,18 +34,26 @@ window.MUNICIPALITIES = [
   { name: "Zaanstad",    status: "mandatory",     trigger: "Impactscore ≥6 punten",            cvdr: "CVDR696250" },
 ];
 
-function StatusDot({ status }) {
-  const map = {
-    mandatory: { color: "var(--ink)", label: "Verplicht", bg: "var(--green)" },
-    discretionary: { color: "var(--ink)", label: "Beoordelingsruimte", bg: "var(--amber)" },
-    voluntary: { color: "var(--ink)", label: "Vrijwillig", bg: "var(--blue-soft)" },
-    unprofiled: { color: "var(--mute)", label: "Niet geprofileerd", bg: "var(--gray-soft)" },
+function StatusDot({ status, lang }) {
+  const resolvedLang = lang || "nl";
+  const labels = (window.COPY && window.COPY[resolvedLang] && window.COPY[resolvedLang].hero.statusLabels) || {
+    mandatory: "Verplicht",
+    discretionary: "Beoordelingsruimte",
+    voluntary: "Vrijwillig",
+    unprofiled: "Niet geprofileerd",
   };
-  const m = map[status] || map.unprofiled;
+  const colors = {
+    mandatory:    { color: "var(--ink)",  bg: "var(--green)" },
+    discretionary:{ color: "var(--ink)",  bg: "var(--amber)" },
+    voluntary:    { color: "var(--ink)",  bg: "var(--blue-soft)" },
+    unprofiled:   { color: "var(--mute)", bg: "var(--gray-soft)" },
+  };
+  const c = colors[status] || colors.unprofiled;
+  const label = labels[status] || labels.unprofiled;
   return (
     <span style={{ display: "inline-flex", alignItems: "center", gap: 8 }}>
-      <span style={{ width: 8, height: 8, borderRadius: 999, background: m.bg, display: "inline-block" }}></span>
-      <span style={{ fontSize: 13, color: m.color, letterSpacing: 0.1 }}>{m.label}</span>
+      <span style={{ width: 8, height: 8, borderRadius: 999, background: c.bg, display: "inline-block" }}></span>
+      <span style={{ fontSize: 13, color: c.color, letterSpacing: 0.1 }}>{label}</span>
     </span>
   );
 }
@@ -128,19 +136,19 @@ function HeroWidget({ lang, t, accent }) {
         {result ? (
           <>
             <div className="result-row">
-              <div className="result-key">Gemeente</div>
+              <div className="result-key">{lang === "en" ? "Municipality" : "Gemeente"}</div>
               <div className="result-val mono">{result.name}</div>
             </div>
             <div className="result-row">
               <div className="result-key">Status</div>
-              <div className="result-val"><StatusDot status={result.status} /></div>
+              <div className="result-val"><StatusDot status={result.status} lang={lang} /></div>
             </div>
             <div className="result-row">
               <div className="result-key">Trigger</div>
               <div className="result-val">{result.trigger}</div>
             </div>
             <div className="result-row">
-              <div className="result-key">Bron</div>
+              <div className="result-key">{lang === "en" ? "Source" : "Bron"}</div>
               <div className="result-val mono small">
                 {result.cvdr || "—"} {result.cvdr && <span className="src-link">↗ lokaleregelgeving.overheid.nl</span>}
               </div>
@@ -148,8 +156,8 @@ function HeroWidget({ lang, t, accent }) {
           </>
         ) : (
           <div className="result-empty">
-            <div className="empty-line">Geen match gevonden in onze database van 28 gemeenten.</div>
-            <div className="empty-sub">Probeer: Almere, Amsterdam, Utrecht, Rotterdam, Den Haag, Eindhoven…</div>
+            <div className="empty-line">{t.widgetNoMatch}</div>
+            <div className="empty-sub">{t.widgetNoMatchSub}</div>
           </div>
         )}
       </div>
@@ -172,7 +180,7 @@ function Hero({ lang, t, headlineIdx, accent, onScrollHow }) {
           <p className="hero-sub">{h.sub}</p>
           <div className="hero-ctas">
             <a
-              href="app.html"
+              href="tool.html"
               className="btn btn-primary"
               style={{ background: accent.bg, color: accent.fg, borderColor: accent.bg }}
             >
@@ -184,11 +192,11 @@ function Hero({ lang, t, headlineIdx, accent, onScrollHow }) {
             </button>
           </div>
           <div className="hero-foot">
-            <span className="foot-item"><span className="dot live"></span>Tool live in productie</span>
+            <span className="foot-item"><span className="dot live"></span>{t.hero.footLive}</span>
             <span className="foot-sep">·</span>
-            <span className="foot-item">28 gemeenten geprofileerd</span>
+            <span className="foot-item">{t.hero.footMunicipalities}</span>
             <span className="foot-sep">·</span>
-            <span className="foot-item">Bron: lokaleregelgeving.overheid.nl</span>
+            <span className="foot-item">{t.hero.footSource}</span>
           </div>
         </div>
 

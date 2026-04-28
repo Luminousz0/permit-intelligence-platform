@@ -31,9 +31,26 @@ const BG_PRESETS = {
   pure:    { bg: "#ffffff",                alt: "oklch(0.96 0 0)",       name: "Pure" },
 };
 
+const HOME_NAV = {
+  nl: [
+    { href: "regelgeving.html", label: "Regelgeving" },
+    { href: "tool.html",        label: "Referentietool" },
+    { href: "diensten.html",    label: "Diensten" },
+    { href: "validatie.html",   label: "Validatie" },
+    { href: "faq.html",         label: "FAQ" },
+  ],
+  en: [
+    { href: "regelgeving.html", label: "Regulatory" },
+    { href: "tool.html",        label: "Reference tool" },
+    { href: "diensten.html",    label: "Services" },
+    { href: "validatie.html",   label: "Credentials" },
+    { href: "faq.html",         label: "FAQ" },
+  ],
+};
+
 function Logo({ glyph }) {
   return (
-    <a href="#" className="logo">
+    <a href="index.html" className="logo">
       <span className="logo-mark"><span className="logo-glyph">{glyph || "PI"}</span></span>
       <span className="logo-text serif">Permit Intelligence</span>
     </a>
@@ -46,11 +63,9 @@ function Nav({ lang, setLang, t, accent, sticky, glyph }) {
       <div className="container nav-inner">
         <Logo glyph={glyph} />
         <nav className="nav-links">
-          <a href="regelgeving.html">Regelgeving</a>
-          <a href="tool.html">Referentietool</a>
-          <a href="diensten.html">{t.nav.pricing}</a>
-          <a href="validatie.html">Validatie</a>
-          <a href="faq.html">FAQ</a>
+          {HOME_NAV[lang].map(l => (
+            <a key={l.href} href={l.href}>{l.label}</a>
+          ))}
         </nav>
         <div className="nav-right">
           <button type="button" className="lang-toggle mono small"

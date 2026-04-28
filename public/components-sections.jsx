@@ -30,7 +30,7 @@ function StatsStrip({ t }) {
             </span>
           ))}
           <span className="legend-spacer"></span>
-          <a className="legend-link" href="#">Volledige database bekijken →</a>
+          <a className="legend-link" href="tool.html">{t.stats.viewDb}</a>
         </div>
       </div>
     </section>
@@ -52,7 +52,7 @@ function Problem({ t }) {
         <div className="cost-card">
           <div className="cost-head">
             <div className="cost-title">{t.problem.breakdown.title}</div>
-            <div className="cost-tag mono small">huidige situatie</div>
+            <div className="cost-tag mono small">{t.problem.breakdown.costTag}</div>
           </div>
           <div className="cost-list">
             {t.problem.breakdown.items.map((it, i) => (
@@ -66,8 +66,8 @@ function Problem({ t }) {
             ))}
           </div>
           <div className="cost-foot">
-            <span className="cost-foot-label">Totaal verlies per afgewezen project</span>
-            <span className="cost-foot-value serif">€60–80k</span>
+            <span className="cost-foot-label">{t.problem.breakdown.totalLossLabel}</span>
+            <span className="cost-foot-value serif">{t.problem.breakdown.totalLossValue}</span>
           </div>
         </div>
       </div>
@@ -86,7 +86,7 @@ function HowItWorks({ t, accent }) {
             <h2 className="section-title serif">{t.how.title}</h2>
           </div>
           <div className="head-r">
-            <a href="https://web-production-6de23.up.railway.app" target="_blank" rel="noreferrer" className="link-arrow">
+            <a href="tool.html" className="link-arrow">
               {t.how.try} <span className="arrow">→</span>
             </a>
           </div>
@@ -151,7 +151,7 @@ function Pricing({ t, accent }) {
         <div className="tiers">
           {t.pricing.tiers.map((tier, i) => (
             <div className={`tier ${tier.accent ? "tier-accent" : ""}`} key={i}>
-              {tier.accent && <div className="tier-flag mono">aanbevolen</div>}
+              {tier.accent && <div className="tier-flag mono">{tier.recommended}</div>}
               <div className="tier-name">{tier.name}</div>
               <div className="tier-price-row">
                 <div className="tier-price serif">{tier.price}</div>
