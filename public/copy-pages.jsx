@@ -94,6 +94,97 @@ const PAGES = {
         },
       ],
     },
+    en: {
+      breadcrumb: [{ label: "Home", href: "index.html" }, { label: "Regulatory" }],
+      eyebrow: "Regulatory framework",
+      title: "The Omgevingswet and the practice of participation",
+      sub: "What the law requires, how municipalities implement it, and why 35+ different frameworks exist for one obligation.",
+      toc: [
+        { id: "wet",       label: "1. The Omgevingswet (2024)" },
+        { id: "artikel",   label: "2. Article 16.55" },
+        { id: "varianten", label: "3. Implementation variants" },
+        { id: "vergelijk", label: "4. Municipality comparison" },
+        { id: "gevolgen",  label: "5. Practical consequences" },
+      ],
+      sections: [
+        {
+          id: "wet",
+          h: "The Omgevingswet (January 1, 2024)",
+          body: [
+            { p: "On January 1, 2024, the Omgevingswet entered into force. It consolidated 26 separate laws on space, environment, construction, and water into one legal framework. The goal: fewer rules, more coherence, faster decision-making." },
+            { p: "For developers, the practical changes were fundamental. The permit was renamed \u201eomgevingsvergunning\u201d and one portal (Omgevingsloket) replaced the old DSO application streams. The new structure also introduced a requirement that did not previously exist: participation." },
+            { callout: { label: "Core change", text: "For BOPA applications (non-zoning Omgevingsplan Activity), applicants are required to demonstrably involve stakeholders in their plan before submission." } },
+          ],
+        },
+        {
+          id: "artikel",
+          h: "Article 16.55 \u2014 what the law says",
+          body: [
+            { p: "Article 16.55 section 7 of the Omgevingswet requires that the applicant indicate whether, and if so how, stakeholders have been involved in a BOPA application. This is called the \u201eparticipation report.\u201d" },
+            { p: "Crucial: the law establishes the requirement, but leaves the implementation to municipalities. Each municipality determines which activities require participation, in what form documentation must be, and what counts as \u201csufficient\u201d involvement." },
+            { source: "Omgevingswet art. 16.55, section 7 \u00b7 wetten.overheid.nl" },
+            { h3: "What this means for the applicant" },
+            { ul: [
+              "The participation requirement is an admissibility condition \u2014 incomplete documentation leads to rejection as incomplete.",
+              "What is \u201csufficient\u201d varies by municipality. A report that suffices in Almere may be incomplete in Amsterdam.",
+              "The Council of State has issued multiple rulings since 2024 in which participation reports were deemed insufficient.",
+            ] },
+          ],
+        },
+        {
+          id: "varianten",
+          h: "Implementation variants per municipality",
+          body: [
+            { p: "As of April 2026, 307 of the 342 Dutch municipalities have published participation policies. Our analysis identifies six distinct policy approaches \u2014 totaling 35+ unique implementations when you count thresholds and exceptions." },
+            { table: {
+              head: ["#", "Policy approach", "Count", "What this means for you"],
+              rows: [
+                ["01", { name: "Mandatory for all", desc: "All BOPA applications require participation" }, "2", "No room for interpretation. Document always."],
+                ["02", { name: "Activity list", desc: "Specific project types trigger the requirement" }, "9", "Check if your project is on the list."],
+                ["03", { name: "Impact scoring", desc: "Points system based on impact" }, "2", "Score your project first; documentation follows from threshold."],
+                ["04", { name: "Process-based", desc: "Mandatory process, not project-dependent" }, "1", "Follow the process requirements exactly."],
+                ["05", { name: "Discretionary", desc: "Municipality decides per case" }, "9", "Pre-consultation with municipality necessary."],
+                ["06", { name: "Voluntary + disclosure", desc: "Not mandatory, but disclose how you handled it" }, "4", "Lower threshold, but disclosure obligation remains."],
+                ["07", { name: "No published policy", desc: "Municipality has not established a framework" }, "35", "Direct contact with municipality for expectations."],
+              ],
+            } },
+          ],
+        },
+        {
+          id: "vergelijk",
+          h: "Comparison: major municipalities",
+          body: [
+            { p: "The table below compares six representative municipalities on key differences. Complete profiles are available in the reference tool." },
+            { compTable: {
+              head: ["Municipality", "Approach", "Threshold", "Format", "Assessment", "Source"],
+              rows: [
+                ["Almere",    "Activity list", "\u22654 units or >500 m\u00b2", "Free format", "Completeness", "CVDR685432"],
+                ["Amsterdam", "Impact scoring", "Score \u22657 points", "Mandatory form", "Substantive", "CVDR701294"],
+                ["Rotterdam", "Discretionary", "Per case", "Free format", "Pre-assessment", "CVDR698117"],
+                ["Utrecht",   "Activity list", "\u22653 units", "Mandatory form", "Completeness", "CVDR692058"],
+                ["The Hague", "Process-based", "All BOPA", "Fixed process", "Process-compliant", "CVDR687744"],
+                ["Eindhoven", "Impact scoring", "Impact + scale", "Mandatory form", "Substantive", "CVDR690225"],
+              ],
+            } },
+            { source: "Source: lokaleregelgeving.overheid.nl as of April 2026" },
+          ],
+        },
+        {
+          id: "gevolgen",
+          h: "Practical consequences",
+          body: [
+            { p: "For developers active in multiple municipalities, this variation means that one standard process does not work. What is an acceptable application in one municipality leads to rejection elsewhere." },
+            { ul: [
+              "Pre-consultation with the municipality is often necessary to establish applicable requirements.",
+              "A participation report that one municipality approves may be insufficient elsewhere.",
+              "Delays occur when initial documentation is rejected as non-compliant.",
+              "Across multiple projects, you must manage multiple frameworks in parallel.",
+            ] },
+            { callout: { label: "Our position", text: "This reference tool catalogs municipal policies from official sources. It does not replace pre-consultation or legal advice \u2014 it makes visible what is otherwise scattered across hundreds of documents." } },
+          ],
+        },
+      ],
+    },
   },
   validatie: {
     nl: {
@@ -182,6 +273,91 @@ const PAGES = {
             { callout: {
               label: "Disclaimer",
               text: "Beleidswijzigingen die plaatsvinden na een tool-query moeten direct met de gemeente worden geverifieerd. Wij maken geen claims over juridische geldigheid of toereikendheid van documentatie voor specifieke projecten.",
+            } },
+          ],
+        },
+      ],
+    },
+    en: {
+      breadcrumb: [{ label: "Home", href: "index.html" }, { label: "Validation" }],
+      eyebrow: "Validation",
+      title: "How the tool is tested and what it guarantees",
+      sub: "Data sources, methodology, field testing, and our responsibility to you.",
+      toc: [
+        { id: "data",   label: "1. Data sources" },
+        { id: "methodo", label: "2. Methodology" },
+        { id: "veld",   label: "3. Field validation" },
+        { id: "infra",  label: "4. Infrastructure" },
+        { id: "limieten", label: "5. Limitations" },
+      ],
+      stats: [
+        { v: "307", l: "Municipalities with published policy" },
+        { v: "35+", l: "Distinct policy approaches" },
+        { v: "28", l: "Fully profiled" },
+        { v: "100%", l: "Source-cited" },
+      ],
+      sections: [
+        {
+          id: "data",
+          h: "Data sources",
+          body: [
+            { p: "All data is extracted from official government sources: lokaleregelgeving.overheid.nl and official municipal websites. Each profile cites the CVDR number and publication date. You can verify any source directly." },
+            { h3: "Municipalities" },
+            { p: "28 municipalities are fully profiled. These represent the primary development markets in the Netherlands. Profiles are continuously updated as municipalities publish policy changes." },
+          ],
+        },
+        {
+          id: "methodo",
+          h: "Methodology",
+          body: [
+            { p: "Each municipality's participation requirements are extracted from official policy documents and structured into a standardized profile." },
+            { ul: [
+              "Official source documents (municipal bylaws, regulatory rules, decision frameworks) are collected",
+              "Requirements are categorized by project type, scale threshold, and process",
+              "Extracted rules are cross-checked against source documents",
+              "Profiles are timestamped and linked to official publication numbers (CVDR)",
+            ] },
+          ],
+        },
+        {
+          id: "veld",
+          h: "Field validation",
+          body: [
+            { p: "The reference tool has been validated in collaboration with an active real estate developer with ongoing projects in multiple municipalities. Validation confirmed the accuracy of extracted requirements and the practical utility of tool output." },
+            { callout: {
+              label: "Validation result",
+              text: "\u201cTested on my actual project in Almere. The participation rules were exactly right. Saved me hours of calling the municipality.\u201d \u2014 Active real estate developer, Almere (name withheld at request).",
+            } },
+            { p: "Further validation through structured feedback from a broader customer group is planned for Q2 2026." },
+          ],
+        },
+        {
+          id: "infra",
+          h: "Technical infrastructure",
+          body: [
+            { p: "The application runs on production hosting with continuous integration from the source repository. Tool queries are executed against a synchronized municipal policy database." },
+            { ul: [
+              "PDOK Locatieserver integration for address and municipality identification",
+              "BAG (Dutch national address and building registry) for property and zoning context",
+              "Continuous integration from version control; all changes are logged and traceable",
+              "TLS encryption and uptime monitoring in production",
+            ] },
+          ],
+        },
+        {
+          id: "limieten",
+          h: "Limitations & responsibility",
+          body: [
+            { p: "This reference tool provides information based on documented municipal policy at the time of query. Users remain responsible for:" },
+            { ul: [
+              "Confirming current requirements directly with the applicable municipality before submission",
+              "Reviewing complete official policy documents (links are provided)",
+              "Consulting a legal advisor for complex projects or regulatory questions",
+              "Verifying that their specific project characteristics align with documented requirements",
+            ] },
+            { callout: {
+              label: "Disclaimer",
+              text: "Policy changes that occur after a tool query must be verified directly with the municipality. We make no claims about legal validity or sufficiency of documentation for specific projects.",
             } },
           ],
         },

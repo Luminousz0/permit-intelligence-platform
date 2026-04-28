@@ -28,10 +28,15 @@
           <SubNav lang={lang} setLang={setLang} current="diensten.html" accent={accent}
                   demoLabel={t.nav.demo} tryLabel={t.nav.tryTool} />
           <PageHeader
-            breadcrumb={[{ label: "Home", href: "index.html" }, { label: "Diensten" }]}
-            eyebrow="Diensten"
-            title="Twee paden, afhankelijk van je behoefte."
-            sub="Begin gratis met de tool. Schaal op met een abonnement, of laat ons je participatiedocumentatie volledig verzorgen voor complexe of urgente projecten."
+            breadcrumb={[
+              { label: "Home", href: "index.html" },
+              { label: lang === "en" ? "Services" : "Diensten" }
+            ]}
+            eyebrow={lang === "en" ? "Services" : "Diensten"}
+            title={lang === "en" ? "Two paths, depending on your needs." : "Twee paden, afhankelijk van je behoefte."}
+            sub={lang === "en"
+              ? "Start free with the tool. Scale up with a subscription, or have us fully handle your participation documentation for complex or urgent projects."
+              : "Begin gratis met de tool. Schaal op met een abonnement, of laat ons je participatiedocumentatie volledig verzorgen voor complexe of urgente projecten."}
           />
 
           <section className="services-tiers">

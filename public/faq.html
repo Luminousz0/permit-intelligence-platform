@@ -80,10 +80,15 @@
           <SubNav lang={lang} setLang={setLang} current="faq.html" accent={accent}
                   demoLabel={t.nav.demo} tryLabel={t.nav.tryTool} />
           <PageHeader
-            breadcrumb={[{ label: "Home", href: "index.html" }, { label: "FAQ" }]}
-            eyebrow="Veelgestelde vragen"
-            title="Wat ontwikkelaars meestal vragen."
-            sub="Antwoorden op de meest voorkomende vragen — over data, reikwijdte, privacy en facturering. Specifieke vraag niet beantwoord? Neem contact op."
+            breadcrumb={[
+              { label: "Home", href: "index.html" },
+              { label: "FAQ" }
+            ]}
+            eyebrow={lang === "en" ? "Frequently asked" : "Veelgestelde vragen"}
+            title={lang === "en" ? "What developers usually ask." : "Wat ontwikkelaars meestal vragen."}
+            sub={lang === "en"
+              ? "Answers to the most common questions — about data, scope, privacy, and billing. Your specific question not answered? Get in touch."
+              : "Antwoorden op de meest voorkomende vragen — over data, reikwijdte, privacy en facturering. Specifieke vraag niet beantwoord? Neem contact op."}
           />
           <section className="longform">
             <div className="container faq-page-grid">
