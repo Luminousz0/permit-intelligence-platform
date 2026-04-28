@@ -540,7 +540,7 @@ function NetherlandsMap({ t, lang }) {
       <div className="container">
         <div className="section-head">
           <div className="head-l">
-            <div className="eyebrow">{isNL ? "Database — 28 gemeenten in kaart" : "Database — 28 municipalities mapped"}</div>
+            <div className="eyebrow">{isNL ? "Database — 41 gemeenten in kaart" : "Database — 41 municipalities mapped"}</div>
             <h2 className="section-title serif">
               {isNL ? "Compliance zichtbaar gemaakt." : "Compliance made visible."}
             </h2>

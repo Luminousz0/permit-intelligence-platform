@@ -193,7 +193,7 @@ const PAGES = {
       title: "Hoe deze referentie tot stand komt.",
       sub: "Elke regel heeft een bron. Elk bron heeft een datum. Je kunt elk antwoord verifi\u00ebren bij de oorspronkelijke gemeente.",
       stats: [
-        { v: "28", l: "gemeenten volledig geprofileerd" },
+        { v: "41", l: "gemeenten volledig geprofileerd" },
         { v: "212", l: "bron\u00addocumenten gecatalogiseerd" },
         { v: "1", l: "praktijkvalidatie met actieve ontwikkelaar" },
       ],
@@ -293,7 +293,7 @@ const PAGES = {
       stats: [
         { v: "307", l: "Municipalities with published policy" },
         { v: "35+", l: "Distinct policy approaches" },
-        { v: "28", l: "Fully profiled" },
+        { v: "41", l: "Fully profiled" },
         { v: "100%", l: "Source-cited" },
       ],
       sections: [
@@ -303,7 +303,7 @@ const PAGES = {
           body: [
             { p: "All data is extracted from official government sources: lokaleregelgeving.overheid.nl and official municipal websites. Each profile cites the CVDR number and publication date. You can verify any source directly." },
             { h3: "Municipalities" },
-            { p: "28 municipalities are fully profiled. These represent the primary development markets in the Netherlands. Profiles are continuously updated as municipalities publish policy changes." },
+            { p: "41 municipalities are fully profiled. These represent the primary development markets in the Netherlands. Profiles are continuously updated as municipalities publish policy changes." },
           ],
         },
         {

@@ -180,7 +180,7 @@ function downloadTemplate(content, filename) {
   URL.revokeObjectURL(url);
 }
 
-// ── Full 28-municipality database ─────────────────────────────────────────────
+// ── Full 41-municipality database ─────────────────────────────────────────────
 const FULL_MUNI_DATA = {
   Almere: {
     framework: "Activiteitenlijst", status: "mandatory", statusLabel: "Verplicht",

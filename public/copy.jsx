@@ -45,7 +45,7 @@ const COPY = {
       widgetUnits: "Aantal woningen",
       widgetCheck: "Controleer vereisten",
       widgetMuniPlaceholder: "Almere",
-      widgetNoMatch: "Geen match gevonden in onze database van 28 gemeenten.",
+      widgetNoMatch: "Geen match gevonden in onze database van 41 gemeenten.",
       widgetNoMatchSub: "Probeer: Almere, Amsterdam, Utrecht, Rotterdam, Den Haag, Eindhoven\u2026",
       statusLabels: {
         mandatory: "Verplicht",
@@ -54,7 +54,7 @@ const COPY = {
         unprofiled: "Niet geprofileerd",
       },
       footLive: "Tool live in productie",
-      footMunicipalities: "28 gemeenten geprofileerd",
+      footMunicipalities: "41 gemeenten geprofileerd",
       footSource: "Bron: lokaleregelgeving.overheid.nl",
       types: [
         { id: "residential", label: "Woningbouw" },
@@ -72,7 +72,7 @@ const COPY = {
         { value: "342", label: "Nederlandse gemeenten" },
         { value: "307", label: "met gepubliceerd participatiebeleid" },
         { value: "35+", label: "verschillende beleidsbenaderingen" },
-        { value: "28", label: "volledig geprofileerd in onze database" },
+        { value: "41", label: "volledig geprofileerd in onze database" },
       ],
       legend: [
         { color: "green", label: "Beleid gepubliceerd" },
@@ -215,7 +215,7 @@ const COPY = {
           label: "Participatiedocumentatie",
           status: "live",
           statusLabel: "Live nu",
-          body: "28 gemeenten geprofileerd. Toepasselijke regels, documentatie-templates en CVDR-citatie \u2014 direct beschikbaar. Gevalideerd op een actief project in Almere.",
+          body: "41 gemeenten geprofileerd. Toepasselijke regels, documentatie-templates en CVDR-citatie \u2014 direct beschikbaar. Gevalideerd op een actief project in Almere.",
         },
         {
           n: "02",
@@ -247,7 +247,7 @@ const COPY = {
         },
         {
           q: "Wat als mijn gemeente nog niet geprofileerd is?",
-          a: "Momenteel zijn 28 gemeenten volledig in kaart gebracht. Voor andere gemeenten is gerichte consultatie beschikbaar \u2014 we doen het beleidsonderzoek voor je.",
+          a: "Momenteel zijn 41 gemeenten volledig in kaart gebracht. Voor andere gemeenten is gerichte consultatie beschikbaar \u2014 we doen het beleidsonderzoek voor je.",
         },
         {
           q: "Vervangt dit een juridisch adviseur?",
@@ -266,7 +266,7 @@ const COPY = {
       sub: "Selecteer een gemeente en projecttype. Krijg direct toepasselijke regels, documentatie-vereisten en bron-citatie.",
       breadcrumbLabel: "Referentietool",
       queryTitle: "Zoekopdracht",
-      dbCount: "28 gemeenten beschikbaar in database",
+      dbCount: "41 gemeenten beschikbaar in database",
       muniLabel: "Gemeente",
       muniPlaceholder: "Zoek gemeente\u2026",
       noMatch: "Geen match",
@@ -343,7 +343,7 @@ const COPY = {
       widgetUnits: "Number of units",
       widgetCheck: "Check requirements",
       widgetMuniPlaceholder: "Almere",
-      widgetNoMatch: "No match found in our database of 28 municipalities.",
+      widgetNoMatch: "No match found in our database of 41 municipalities.",
       widgetNoMatchSub: "Try: Almere, Amsterdam, Utrecht, Rotterdam, Den Haag, Eindhoven\u2026",
       statusLabels: {
         mandatory: "Mandatory",
@@ -352,7 +352,7 @@ const COPY = {
         unprofiled: "Not profiled",
       },
       footLive: "Tool live in production",
-      footMunicipalities: "28 municipalities profiled",
+      footMunicipalities: "41 municipalities profiled",
       footSource: "Source: lokaleregelgeving.overheid.nl",
       types: [
         { id: "residential", label: "Residential" },
@@ -370,7 +370,7 @@ const COPY = {
         { value: "342", label: "Dutch municipalities" },
         { value: "307", label: "with published participation policy" },
         { value: "35+", label: "distinct policy approaches" },
-        { value: "28", label: "fully profiled in our database" },
+        { value: "41", label: "fully profiled in our database" },
       ],
       legend: [
         { color: "green", label: "Policy published" },
@@ -513,7 +513,7 @@ const COPY = {
           label: "Participation documentation",
           status: "live",
           statusLabel: "Live now",
-          body: "28 municipalities profiled. Applicable rules, documentation templates, CVDR citation \u2014 instantly available. Validated on an active project in Almere.",
+          body: "41 municipalities profiled. Applicable rules, documentation templates, CVDR citation \u2014 instantly available. Validated on an active project in Almere.",
         },
         {
           n: "02",
@@ -545,7 +545,7 @@ const COPY = {
         },
         {
           q: "What if my municipality isn\u2019t profiled?",
-          a: "28 municipalities are fully profiled today. For others, targeted consultancy is available \u2014 we do the policy research for you.",
+          a: "41 municipalities are fully profiled today. For others, targeted consultancy is available \u2014 we do the policy research for you.",
         },
         {
           q: "Does this replace legal counsel?",
@@ -564,7 +564,7 @@ const COPY = {
       sub: "Select a municipality and project type. Get applicable rules, documentation requirements, and source citations \u2014 instantly.",
       breadcrumbLabel: "Reference tool",
       queryTitle: "Search",
-      dbCount: "28 municipalities available in database",
+      dbCount: "41 municipalities available in database",
       muniLabel: "Municipality",
       muniPlaceholder: "Search municipality\u2026",
       noMatch: "No match",
@@ -601,7 +601,7 @@ const COPY = {
   },
 };
 
-// Sample municipalities for the live widget. Real product covers 28; we surface a handful.
+// Sample municipalities for the live widget. Real product covers 41; we surface a handful.
 const MUNICIPALITIES = [
   { name: "Almere",       framework: "binary-list",   status: "mandatory",     trigger: "\u22654 woningen of >500 m\u00b2", cvdr: "CVDR685432" },
   { name: "Amsterdam",    framework: "scoring",        status: "mandatory",     trigger: "Impactscore \u22657 punten",       cvdr: "CVDR701294" },
