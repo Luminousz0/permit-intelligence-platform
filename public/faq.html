@@ -18,7 +18,7 @@
   <script type="text/babel">
     const { useState } = React;
 
-    const FAQ_DATA = [
+    const FAQ_DATA_NL = [
       {
         id: "data",
         title: "Data & bronnen",
@@ -66,11 +66,62 @@
       },
     ];
 
+    const FAQ_DATA_EN = [
+      {
+        id: "data",
+        title: "Data & sources",
+        sub: "Where our information comes from, how often it's updated.",
+        items: [
+          { q: "What is the source of municipal policy data?", a: "All policy is extracted from official sources: lokaleregelgeving.overheid.nl and official municipal websites. Each profile shows CVDR number and publication date. You can verify any source directly with the government." },
+          { q: "How often is the database updated?", a: "Synchronization occurs when municipalities change policy. We monitor lokaleregelgeving.overheid.nl weekly. Users remain responsible for confirming current requirements directly with their municipality before submission." },
+          { q: "What if my municipality isn't profiled yet?", a: "Currently 28 municipalities are fully mapped — primarily large and mid-sized municipalities. For others, targeted consultancy is available: we research the policy for you and deliver a municipality-specific profile." },
+          { q: "How do you handle conflicting policy?", a: "When contradictions exist between bylaws and implementation decrees, we follow the hierarchy: municipal bylaw above policy rule above work instruction. Conflicts are explicitly noted in the profile." },
+          { q: "Can policy change after a tool query?", a: "Yes. Municipalities may change participation policy. The reference tool shows policy as documented at query time. Users remain responsible for verification before submission." },
+        ],
+      },
+      {
+        id: "scope",
+        title: "Scope & functionality",
+        sub: "What the tool does — and what it doesn't.",
+        items: [
+          { q: "Does the tool provide real-time permit status?", a: "No. The reference tool focuses on participation requirements before submission. Real-time status tracking would require integration with municipal permit systems — which is not available." },
+          { q: "Does this replace a legal advisor?", a: "No. This is a reference tool. For complex projects or legal questions, consultation with a qualified advisor remains recommended. We do not provide legal advice." },
+          { q: "Does this work for all Dutch municipalities?", a: "Currently 28 municipalities with full profiles, plus orientation information for others. We continuously expand the database based on customer demand." },
+          { q: "Does this apply to all permit types?", a: "The tool focuses on BOPA applications (non-zoning Omgevingsplan Activity), where the participation requirement from Art. 16.55 applies. Not for all permit types." },
+          { q: "Do you generate documentation yourselves?", a: "The subscription offers templates based on analyzed submissions. For fully handled documentation, consultancy is the right path." },
+        ],
+      },
+      {
+        id: "privacy",
+        title: "Privacy & data",
+        sub: "How we handle your information.",
+        items: [
+          { q: "How is personal and project data handled?", a: "Data is retained under Dutch privacy law (GDPR). Project information from consultancy engagements is confidential and not shared with third parties." },
+          { q: "Is my search history saved?", a: "We use anonymized aggregates for product improvement. Individual searches are not linked to personal data." },
+          { q: "Can I delete my data?", a: "Yes. Account deletion within 30 days via settings, or by email. Consultancy files are retained 7 years for fiscal requirements, then deleted." },
+        ],
+      },
+      {
+        id: "billing",
+        title: "Billing & subscription",
+        sub: "Practical questions about payment and cancellation.",
+        items: [
+          { q: "Which payment methods are supported?", a: "iDEAL, SEPA direct debit, credit card. Invoicing with VAT for business customers." },
+          { q: "Can I cancel monthly?", a: "Yes. The subscription is monthly cancellable with no notice period. Access continues through the end of the paid period." },
+          { q: "Is there an annual bundle with a discount?", a: "Yes — €490 per year (16% discount). Ideal for developers using the tool long-term." },
+          { q: "How does the free trial work?", a: "14 days full access, no credit card required. No automatic conversion — you actively decide to start a subscription." },
+        ],
+      },
+    ];
+
+    const getFAQData = (lang) => lang === "en" ? FAQ_DATA_EN : FAQ_DATA_NL;
+
     function FAQPage() {
       const [lang, setLang] = useState("nl");
       const [active, setActive] = useState("data");
       const [open, setOpen] = useState({});
       const t = window.COPY[lang];
+      const faqData = getFAQData(lang);
       const accent = window.ACCENT_PRESETS_S.blue;
 
       const toggle = (id) => setOpen(prev => ({ ...prev, [id]: !prev[id] }));
@@ -93,9 +144,9 @@
           <section className="longform">
             <div className="container faq-page-grid">
               <aside className="longform-toc">
-                <div className="toc-title">Categorieën</div>
+                <div className="toc-title">{lang === "en" ? "Categories" : "Categorieën"}</div>
                 <ul className="faq-cat-list">
-                  {FAQ_DATA.map(cat => (
+                  {faqData.map(cat => (
                     <li key={cat.id}>
                       <a href={`#${cat.id}`}
                          className={active === cat.id ? "active" : ""}
@@ -107,7 +158,7 @@
                 </ul>
               </aside>
               <div>
-                {FAQ_DATA.map(cat => (
+                {faqData.map(cat => (
                   <div key={cat.id} id={cat.id} className="faq-section">
                     <h2>{cat.title}</h2>
                     <p className="sec-sub">{cat.sub}</p>
@@ -131,13 +182,15 @@
 
                 <div style={{ marginTop: 48, padding: 28, background: "var(--bg-alt)", border: "1px solid var(--hairline)", borderRadius: 12 }}>
                   <div style={{ fontFamily: "var(--serif)", fontSize: 24, letterSpacing: "-0.02em", marginBottom: 8 }}>
-                    Vraag niet beantwoord?
+                    {lang === "en" ? "Question not answered?" : "Vraag niet beantwoord?"}
                   </div>
                   <p style={{ fontSize: 15, color: "var(--ink-soft)", margin: "0 0 18px", maxWidth: "50ch" }}>
-                    Specifieke vragen over jouw gemeente of project — we antwoorden binnen 48 uur.
+                    {lang === "en"
+                      ? "Specific questions about your municipality or project — we answer within 48 hours."
+                      : "Specifieke vragen over jouw gemeente of project — we antwoorden binnen 48 uur."}
                   </p>
                   <a href="diensten.html" className="btn btn-primary" style={{ background: accent.bg, color: accent.fg }}>
-                    Plan een gesprek <span className="arrow">→</span>
+                    {lang === "en" ? "Schedule a call" : "Plan een gesprek"} <span className="arrow">→</span>
                   </a>
                 </div>
               </div>
