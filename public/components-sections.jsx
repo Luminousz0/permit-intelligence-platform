@@ -586,7 +586,7 @@ function NetherlandsMap({ t, lang }) {
           <div className="nl-map-sidebar">
             <div className="nl-map-stat-card">
               <div className="nlms-eyebrow mono small">{isNL ? "Database" : "Coverage"}</div>
-              <div className="nlms-value serif">28</div>
+              <div className="nlms-value serif">41</div>
               <div className="nlms-label">{isNL ? "gemeenten volledig geprofileerd" : "municipalities fully profiled"}</div>
             </div>
 
