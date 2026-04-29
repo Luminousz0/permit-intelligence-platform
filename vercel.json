@@ -1,23 +1,10 @@
 {
   "version": 2,
-  "builds": [
-    {
-      "src": "public/**",
-      "use": "@vercel/static"
-    },
-    {
-      "src": "src/server.ts",
-      "use": "@vercel/node"
+  "buildCommand": "npm run build",
+  "public": "public",
+  "functions": {
+    "api/**/*.ts": {
+      "runtime": "@vercel/node@3.0.0-canary.19"
     }
-  ],
-  "routes": [
-    {
-      "src": "/api/(.*)",
-      "dest": "/src/server.ts"
-    },
-    {
-      "src": "/(.*)",
-      "dest": "/public/$1"
-    }
-  ]
+  }
 }
