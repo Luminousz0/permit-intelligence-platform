@@ -1,4 +1,5 @@
 const { useState, useEffect } = window.React;
+const API_BASE = (window.API_BASE || '');
 
 function DashboardApp() {
   const [lang, setLang] = useState(localStorage.getItem('pi_lang') || 'nl');
@@ -13,6 +14,8 @@ function DashboardApp() {
   const [authMode, setAuthMode] = useState('login');
   const [authEmail, setAuthEmail] = useState('');
   const [authPassword, setAuthPassword] = useState('');
+  const [authError, setAuthError] = useState('');
+  const [authBusy, setAuthBusy] = useState(false);
 
   const t = window.COPY[lang];
 
@@ -22,7 +25,7 @@ function DashboardApp() {
 
     const checkAuth = async () => {
       try {
-        const res = await fetch('/api/auth/me', {
+        const res = await fetch(`${API_BASE}/api/auth/me`, {
           headers: { 'Authorization': `Bearer ${token}` }
         });
         if (res.ok) {
@@ -47,7 +50,7 @@ function DashboardApp() {
     const fetchApplications = async () => {
       setLoading(true);
       try {
-        const res = await fetch('/api/applications', {
+        const res = await fetch(`${API_BASE}/api/applications`, {
           headers: { 'Authorization': `Bearer ${token}` }
         });
         if (res.ok) {
@@ -65,7 +68,7 @@ function DashboardApp() {
 
   const fetchApplicationFull = async (id) => {
     try {
-      const res = await fetch(`/api/applications/${id}`, {
+      const res = await fetch(`${API_BASE}/api/applications/${id}`, {
         headers: { 'Authorization': `Bearer ${token}` }
       });
       if (res.ok) {
@@ -79,7 +82,7 @@ function DashboardApp() {
 
   const handleAddApplication = async (formData) => {
     try {
-      const res = await fetch('/api/applications', {
+      const res = await fetch(`${API_BASE}/api/applications`, {
         method: 'POST',
         headers: {
           'Authorization': `Bearer ${token}`,
@@ -89,7 +92,7 @@ function DashboardApp() {
       });
       if (res.ok) {
         const newApp = await res.json();
-        setApplications([{ ...formData, id: newApp.id, status: newApp.status, completed_milestones: 0, created_at: new Date().toISOString() }, ...applications]);
+        setApplications([newApp, ...applications]);
         setShowAddModal(false);
       }
     } catch (err) {
@@ -99,7 +102,7 @@ function DashboardApp() {
 
   const handleUpdateApplication = async (id, updates) => {
     try {
-      const res = await fetch(`/api/applications/${id}`, {
+      const res = await fetch(`${API_BASE}/api/applications/${id}`, {
         method: 'PUT',
         headers: {
           'Authorization': `Bearer ${token}`,
@@ -122,7 +125,7 @@ function DashboardApp() {
   const handleDeleteApplication = async (id) => {
     if (!confirm(t.dashboard.confirmDelete)) return;
     try {
-      const res = await fetch(`/api/applications/${id}`, {
+      const res = await fetch(`${API_BASE}/api/applications/${id}`, {
         method: 'DELETE',
         headers: { 'Authorization': `Bearer ${token}` }
       });
@@ -138,7 +141,11 @@ function DashboardApp() {
 
   const handleAuth = async (e) => {
     e.preventDefault();
-    const endpoint = authMode === 'login' ? '/api/auth/login' : '/api/auth/register';
+    setAuthError('');
+    setAuthBusy(true);
+    const endpoint = authMode === 'login'
+      ? `${API_BASE}/api/auth/login`
+      : `${API_BASE}/api/auth/register`;
     try {
       const res = await fetch(endpoint, {
         method: 'POST',
@@ -153,11 +160,20 @@ function DashboardApp() {
         setShowAuthModal(false);
         setAuthEmail('');
         setAuthPassword('');
+        setAuthError('');
       } else {
-        alert('Auth failed');
+        let msg = 'Er is iets misgegaan. Probeer opnieuw.';
+        try {
+          const errData = await res.json();
+          if (errData && errData.error) msg = errData.error;
+        } catch (_) {}
+        setAuthError(msg);
       }
     } catch (err) {
-      console.error('Auth failed:', err);
+      console.error('Auth error:', err);
+      setAuthError('Geen verbinding met de server. Probeer opnieuw.');
+    } finally {
+      setAuthBusy(false);
     }
   };
 
@@ -251,13 +267,15 @@ function DashboardApp() {
           <AuthModal
             t={t}
             authMode={authMode}
-            setAuthMode={setAuthMode}
+            setAuthMode={(mode) => { setAuthMode(mode); setAuthError(''); }}
             authEmail={authEmail}
             setAuthEmail={setAuthEmail}
             authPassword={authPassword}
             setAuthPassword={setAuthPassword}
+            authError={authError}
+            authBusy={authBusy}
             onSubmit={handleAuth}
-            onClose={() => setShowAuthModal(false)}
+            onClose={() => { setShowAuthModal(false); setAuthError(''); }}
           />
         )}
       </main>
@@ -635,7 +653,7 @@ function AddApplicationModal({ t, onClose, onSubmit }) {
   );
 }
 
-function AuthModal({ t, authMode, setAuthMode, authEmail, setAuthEmail, authPassword, setAuthPassword, onSubmit, onClose }) {
+function AuthModal({ t, authMode, setAuthMode, authEmail, setAuthEmail, authPassword, setAuthPassword, authError, authBusy, onSubmit, onClose }) {
   return (
     <>
       <div className="modal-overlay" onClick={onClose} />
@@ -650,37 +668,57 @@ function AuthModal({ t, authMode, setAuthMode, authEmail, setAuthEmail, authPass
               <input
                 type="email"
                 required
+                autoComplete="email"
                 value={authEmail}
                 onChange={(e) => setAuthEmail(e.target.value)}
               />
             </div>
             <div className="form-group">
-              <label>Password</label>
+              <label>Wachtwoord</label>
               <input
                 type="password"
                 required
+                autoComplete={authMode === 'login' ? 'current-password' : 'new-password'}
                 value={authPassword}
                 onChange={(e) => setAuthPassword(e.target.value)}
               />
             </div>
+            {authError && (
+              <div style={{
+                marginBottom: '16px',
+                padding: '10px 14px',
+                background: 'oklch(0.97 0.02 15)',
+                border: '1px solid oklch(0.85 0.08 15)',
+                borderRadius: '6px',
+                color: 'oklch(0.45 0.15 15)',
+                fontSize: '14px'
+              }}>
+                {authError}
+              </div>
+            )}
             <button
               type="submit"
+              disabled={authBusy}
               style={{
                 width: '100%',
                 padding: '12px',
-                background: 'var(--ink)',
+                background: authBusy ? 'var(--ink-soft)' : 'var(--ink)',
                 color: 'var(--bg)',
                 border: 'none',
                 borderRadius: '6px',
-                cursor: 'pointer',
+                cursor: authBusy ? 'not-allowed' : 'pointer',
                 fontWeight: '500',
-                marginBottom: '12px'
+                marginBottom: '12px',
+                opacity: authBusy ? 0.7 : 1
               }}
             >
-              {authMode === 'login' ? t.dashboard.loginBtn : t.dashboard.registerBtn}
+              {authBusy
+                ? (authMode === 'login' ? 'Bezig...' : 'Account aanmaken...')
+                : (authMode === 'login' ? t.dashboard.loginBtn : t.dashboard.registerBtn)}
             </button>
             <button
               type="button"
+              disabled={authBusy}
               onClick={() => setAuthMode(authMode === 'login' ? 'register' : 'login')}
               style={{
                 width: '100%',
@@ -689,7 +727,7 @@ function AuthModal({ t, authMode, setAuthMode, authEmail, setAuthEmail, authPass
                 color: 'var(--ink-soft)',
                 border: '1px solid var(--hairline)',
                 borderRadius: '6px',
-                cursor: 'pointer',
+                cursor: authBusy ? 'not-allowed' : 'pointer',
                 fontSize: '14px'
               }}
             >

@@ -1,43 +1,58 @@
+/**
+ * Auth helpers — pure JS, no native modules, works on Vercel Lambda.
+ * Dependencies: bcryptjs (pure JS), jsonwebtoken (pure JS).
+ */
 import bcrypt from 'bcryptjs';
 import jwt from 'jsonwebtoken';
-import { db } from './db';
+import { findUserByEmail, createUser } from './users';
 
 const JWT_SECRET = process.env.JWT_SECRET || 'dev-secret-change-in-production';
 const JWT_EXPIRES_IN = '7d';
 
-export interface User {
+export interface AuthUser {
   id: number;
   email: string;
 }
 
-export async function registerUser(email: string, password: string): Promise<User | null> {
-  const hashed = await bcrypt.hash(password, 10);
-  try {
-    const stmt = db.prepare('INSERT INTO users (email, password_hash) VALUES (?, ?)');
-    const result = stmt.run(email, hashed);
-    return { id: result.lastInsertRowid as number, email };
-  } catch (err) {
-    return null;
-  }
+export async function registerUser(
+  email: string,
+  password: string
+): Promise<{ user: AuthUser; token: string } | null> {
+  // Check duplicate
+  if (findUserByEmail(email)) return null;
+
+  const passwordHash = await bcrypt.hash(password, 10);
+  const stored = createUser(email, passwordHash);
+
+  const token = jwt.sign(
+    { id: stored.id, email: stored.email },
+    JWT_SECRET,
+    { expiresIn: JWT_EXPIRES_IN }
+  );
+  return { user: { id: stored.id, email: stored.email }, token };
 }
 
-export async function loginUser(email: string, password: string): Promise<{ user: User; token: string } | null> {
-  const stmt = db.prepare('SELECT id, email, password_hash FROM users WHERE email = ?');
-  const user = stmt.get(email) as any;
-  if (!user) return null;
+export async function loginUser(
+  email: string,
+  password: string
+): Promise<{ user: AuthUser; token: string } | null> {
+  const stored = findUserByEmail(email);
+  if (!stored) return null;
 
-  const valid = await bcrypt.compare(password, user.password_hash);
+  const valid = await bcrypt.compare(password, stored.passwordHash);
   if (!valid) return null;
 
-  db.prepare('UPDATE users SET last_login = CURRENT_TIMESTAMP WHERE id = ?').run(user.id);
-
-  const token = jwt.sign({ id: user.id, email: user.email }, JWT_SECRET, { expiresIn: JWT_EXPIRES_IN });
-  return { user: { id: user.id, email: user.email }, token };
+  const token = jwt.sign(
+    { id: stored.id, email: stored.email },
+    JWT_SECRET,
+    { expiresIn: JWT_EXPIRES_IN }
+  );
+  return { user: { id: stored.id, email: stored.email }, token };
 }
 
-export function verifyToken(token: string): User | null {
+export function verifyToken(token: string): AuthUser | null {
   try {
-    return jwt.verify(token, JWT_SECRET) as User;
+    return jwt.verify(token, JWT_SECRET) as AuthUser;
   } catch {
     return null;
   }
