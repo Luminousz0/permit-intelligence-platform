@@ -1376,6 +1376,7 @@ body[data-theme="dark"] .modal-box {
 
 .nl-map-container {
   position: relative;
+  z-index: 1;
   border-radius: 10px;
   overflow: hidden;
   border: 1px solid var(--hairline);
