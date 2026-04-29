@@ -303,7 +303,7 @@ app.get('/api/applications/:id', (req, res) => {
     `);
     const milestones = milestonesStmt.all(id);
 
-    res.json({ ...app, milestones });
+    res.json({ ...(app as any), milestones });
   } catch (error: any) {
     res.status(500).json({ error: error.message });
   }
