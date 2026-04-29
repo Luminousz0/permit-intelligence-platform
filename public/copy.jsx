@@ -319,7 +319,7 @@ const COPY = {
       loginBtn: "Inloggen",
       registerBtn: "Account aanmaken",
       milestoneStages: [
-        { key: "ingediend",          label: "Ingediend" },
+        { key: "submitted",          label: "Ingediend" },
         { key: "volledigheidscheck", label: "Volledigheidscheck" },
         { key: "regeltoetsing",      label: "Regeltoetsing" },
         { key: "proceduretrack",     label: "Proceduretrack" },
@@ -668,7 +668,7 @@ const COPY = {
       loginBtn: "Log in",
       registerBtn: "Create account",
       milestoneStages: [
-        { key: "ingediend",          label: "Submitted" },
+        { key: "submitted",          label: "Submitted" },
         { key: "volledigheidscheck", label: "Completeness check" },
         { key: "regeltoetsing",      label: "Rule assessment" },
         { key: "proceduretrack",     label: "Procedure track" },

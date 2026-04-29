@@ -780,7 +780,7 @@
   right: 0;
   bottom: 0;
   background: rgba(0,0,0,0.5);
-  z-index: 2000;
+  z-index: 1999;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -793,6 +793,8 @@
   max-height: 90vh;
   overflow-y: auto;
   animation: slideUp 0.2s ease-out;
+  z-index: 2000;
+  position: relative;
 }
 @keyframes slideUp {
   from { transform: translateY(20px); opacity: 0; }

@@ -208,7 +208,7 @@ function DashboardApp() {
           localStorage.setItem('pi_lang', newLang);
         }}
         current="dashboard.html"
-        accent={{ bg: "oklch(0.68 0.16 50)", fg: "#fff" }}
+        accent={{ bg: "oklch(0.45 0.13 250)", fg: "#fff" }}
         demoLabel={t.nav.demo}
         tryLabel={t.nav.tryTool}
       />
@@ -525,7 +525,7 @@ function AddApplicationModal({ t, onClose, onSubmit }) {
   return (
     <>
       <div className="modal-overlay" onClick={onClose} />
-      <div className="modal-box" style={{ maxWidth: '500px', margin: '50px auto' }}>
+      <div className="modal-box" style={{ maxWidth: '500px' }}>
         <div style={{ padding: '32px' }}>
           <h2 className="modal-title">{t.dashboard.addTitle}</h2>
           <form onSubmit={handleSubmit}>
