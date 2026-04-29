@@ -170,14 +170,28 @@ Gegenereerd door Permit Intelligence — permitintelligence.nl
 `;
 }
 
-function downloadTemplate(content, filename) {
-  const blob = new Blob([content], { type: "application/msword" });
-  const url = URL.createObjectURL(blob);
-  const a = document.createElement("a");
-  a.href = url;
-  a.download = filename;
-  a.click();
-  URL.revokeObjectURL(url);
+async function downloadTemplate(content, filename) {
+  try {
+    const API_BASE = window.location.hostname === 'localhost' ? 'http://localhost:3000' : '';
+    const res = await fetch(`${API_BASE}/api/generate-docx`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ content, filename }),
+    });
+
+    if (!res.ok) throw new Error(`HTTP ${res.status}`);
+
+    const blob = await res.blob();
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement('a');
+    a.href = url;
+    a.download = filename;
+    a.click();
+    URL.revokeObjectURL(url);
+  } catch (err) {
+    console.error('Download error:', err);
+    alert('Failed to generate document. Please try again.');
+  }
 }
 
 // ── Full 41-municipality database ─────────────────────────────────────────────
@@ -613,6 +627,175 @@ const FULL_MUNI_DATA = {
 
 const MUNI_LIST = Object.keys(FULL_MUNI_DATA).sort((a, b) => a.localeCompare(b, "nl"));
 
+// ── Timeline Panel — Dynamic prediction per municipality ──────────────────────
+function TimelinePanel({ municipality, projectType, housingUnits, staticTimeline, lang }) {
+  const [prediction, setPrediction] = useStateT(null);
+  const [loading, setLoading] = useStateT(true);
+  const [error, setError] = useStateT(null);
+
+  useEffectT(() => {
+    if (!municipality || !projectType) {
+      setLoading(false);
+      return;
+    }
+
+    const fetchPrediction = async () => {
+      try {
+        setLoading(true);
+        setError(null);
+        const API_BASE = window.location.hostname === 'localhost' ? 'http://localhost:3000' : '';
+        const res = await fetch(`${API_BASE}/api/predict-timeline`, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({
+            municipality,
+            projectType,
+            housingUnits: housingUnits || undefined,
+          }),
+        });
+        if (!res.ok) throw new Error(`HTTP ${res.status}`);
+        const data = await res.json();
+        setPrediction(data);
+      } catch (err) {
+        console.error('Timeline prediction error:', err);
+        setError(err.message);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchPrediction();
+  }, [municipality, projectType, housingUnits]);
+
+  const getConfidenceBadgeClass = (confidence) => {
+    switch (confidence) {
+      case 'high': return 'badge-high';
+      case 'medium': return 'badge-medium';
+      case 'low': return 'badge-low';
+      default: return 'badge-low';
+    }
+  };
+
+  const getConfidenceLabel = (confidence, lang) => {
+    const labels = {
+      high: { nl: 'Hoog vertrouwen', en: 'High confidence' },
+      medium: { nl: 'Matig vertrouwen', en: 'Medium confidence' },
+      low: { nl: 'Laag vertrouwen', en: 'Low confidence' },
+    };
+    return labels[confidence]?.[lang] || 'Unknown';
+  };
+
+  const isNL = lang !== 'en';
+
+  return (
+    <div className="timeline-panel">
+      {loading && (
+        <div style={{ padding: '12px 0', color: 'var(--mute)', fontSize: 13 }}>
+          {isNL ? 'Doorlooptijd voorspellen…' : 'Predicting timeline…'}
+        </div>
+      )}
+
+      {error && (
+        <div style={{ padding: '12px 0', color: 'var(--mute)', fontSize: 13 }}>
+          {isNL ? 'Voorspelling niet beschikbaar' : 'Prediction unavailable'}
+        </div>
+      )}
+
+      {!loading && !error && prediction && (
+        <>
+          <div style={{ marginBottom: 12 }}>
+            <div style={{ fontSize: 13, color: 'var(--mute)', marginBottom: 4 }}>
+              {isNL ? '⏱ Doorlooptijd voorspeld' : '⏱ Predicted timeline'}
+            </div>
+            <div style={{ fontSize: 18, fontWeight: 600, color: 'var(--ink)' }}>
+              {prediction.predictedWeeks.average} {isNL ? 'weken gemiddeld' : 'weeks average'}
+            </div>
+            <div style={{ fontSize: 12, color: 'var(--mute)', marginTop: 4 }}>
+              {isNL ? 'Bereik: ' : 'Range: '}
+              {prediction.predictedWeeks.minimum} – {prediction.predictedWeeks.maximum} {isNL ? 'weken' : 'weeks'}
+            </div>
+          </div>
+
+          {/* Confidence badge */}
+          <div style={{ marginBottom: 12, display: 'flex', gap: 8, alignItems: 'center', flexWrap: 'wrap' }}>
+            <span
+              className={`confidence-badge ${getConfidenceBadgeClass(prediction.confidence)}`}
+              style={{
+                padding: '4px 8px',
+                borderRadius: 4,
+                fontSize: 12,
+                fontWeight: 500,
+                backgroundColor:
+                  prediction.confidence === 'high'
+                    ? 'rgba(34, 197, 94, 0.1)'
+                    : prediction.confidence === 'medium'
+                    ? 'rgba(217, 119, 6, 0.1)'
+                    : 'rgba(107, 114, 128, 0.1)',
+                color:
+                  prediction.confidence === 'high'
+                    ? '#16a34a'
+                    : prediction.confidence === 'medium'
+                    ? '#d97706'
+                    : '#6b7280',
+              }}
+            >
+              ● {getConfidenceLabel(prediction.confidence, lang)}
+            </span>
+            <span style={{ fontSize: 12, color: 'var(--mute)' }}>
+              {isNL ? 'op basis van' : 'based on'} {prediction.basedOnCases} {isNL ? 'gevallen' : 'cases'}
+            </span>
+          </div>
+
+          {/* Stage breakdown */}
+          {prediction.breakdown && prediction.breakdown.length > 0 && (
+            <div style={{ marginBottom: 12 }}>
+              <div style={{ fontSize: 12, fontWeight: 600, color: 'var(--ink)', marginBottom: 8 }}>
+                {isNL ? 'Fasen' : 'Stages'} ▼
+              </div>
+              <ul style={{ listStyle: 'none', padding: 0, margin: 0, fontSize: 12 }}>
+                {prediction.breakdown.map((stage, i) => (
+                  <li key={i} style={{ display: 'flex', gap: 8, marginBottom: 6 }}>
+                    <span style={{ fontWeight: 600, minWidth: '24px', color: 'var(--mute)' }}>
+                      {stage.typicalWeeks}w
+                    </span>
+                    <span style={{ color: 'var(--ink)' }}>{stage.stage}</span>
+                  </li>
+                ))}
+              </ul>
+            </div>
+          )}
+
+          {/* Recommendations */}
+          {prediction.recommendations && prediction.recommendations.length > 0 && (
+            <div style={{ marginBottom: 12 }}>
+              <div style={{ fontSize: 12, fontWeight: 600, color: 'var(--ink)', marginBottom: 8 }}>
+                {isNL ? 'Aanbevelingen' : 'Recommendations'}
+              </div>
+              <ul style={{ listStyle: 'none', padding: 0, margin: 0, fontSize: 12 }}>
+                {prediction.recommendations.map((rec, i) => (
+                  <li key={i} style={{ marginBottom: 6, color: 'var(--ink)' }}>
+                    • {rec}
+                  </li>
+                ))}
+              </ul>
+            </div>
+          )}
+
+          {/* Statutory timeline fallback */}
+          <div style={{ marginTop: 12, paddingTop: 12, borderTop: '1px solid var(--hairline)', fontSize: 12, color: 'var(--mute)' }}>
+            <strong>{isNL ? 'Wettelijke termijn: ' : 'Statutory timeline: '}</strong>
+            {staticTimeline}
+          </div>
+        </>
+      )}
+
+      {!loading && !error && !prediction && (
+        <div style={{ fontSize: 13, color: 'var(--ink)' }}>{staticTimeline}</div>
+      )}
+    </div>
+  );
+}
+
 // ── Step indicator ────────────────────────────────────────────────────────────
 function StepIndicator({ step }) {
   const steps = [
@@ -879,7 +1062,18 @@ function ToolPage({ lang, setLang }) {
                 <div className="tos-body"><strong>{data.framework}.</strong> {data.method}</div>
                 <ul className="tos-kv-list" style={{ marginTop: 16 }}>
                   <li><span className="k">{tt.triggerLabel}</span><span className="v">{data.trigger}</span></li>
-                  <li><span className="k">{tt.timelineLabel}</span><span className="v">{data.timeline}</span></li>
+                  <li>
+                    <span className="k">{tt.timelineLabel}</span>
+                    <span className="v">
+                      <TimelinePanel
+                        municipality={muni}
+                        projectType={type}
+                        housingUnits={units}
+                        staticTimeline={data.timeline}
+                        lang={lang}
+                      />
+                    </span>
+                  </li>
                   <li><span className="k">{tt.contactLabel}</span><span className="v mono">{data.contact}</span></li>
                 </ul>
               </div>

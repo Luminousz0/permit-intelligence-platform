@@ -1,6 +1,6 @@
 import fs from 'fs';
 
-const API_KEY = '357661e4-a1e1-47f0-a12f-6fe9909627f6';
+const API_KEY = process.env.DSO_API_KEY || '357661e4-a1e1-47f0-a12f-6fe9909627f6';
 const BASE_URL = 'https://service.pre.omgevingswet.overheid.nl/publiek/toepasbare-regels/api/opvragenwerkzaamheden/v1/werkzaamheden';
 
 async function fetchAllWerkzaamheden() {

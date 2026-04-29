@@ -1,7 +1,7 @@
 import fs from 'fs';
 import path from 'path';
 
-const API_KEY = '357661e4-a1e1-47f0-a12f-6fe9909627f6';
+const API_KEY = process.env.DSO_API_KEY || '357661e4-a1e1-47f0-a12f-6fe9909627f6';
 const BASE_URL = 'https://service.pre.omgevingswet.overheid.nl/publiek/toepasbare-regels/api/opvragenwerkzaamheden/v1/werkzaamheden';
 const CACHE_FILE = path.join(__dirname, '../../public/werkzaamheden-cache.json');
 const CACHE_DURATION = 24 * 60 * 60 * 1000; // 24 hours

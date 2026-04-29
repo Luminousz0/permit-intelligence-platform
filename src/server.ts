@@ -14,6 +14,7 @@ import db from './db/database';
 
 const app = express();
 const PORT = 3000;
+const ADMIN_EMAIL = process.env.ADMIN_EMAIL || 'asramcharan@gmail.com';
 
 // Auth helper
 function requireAuth(req: any, res: any): { id: number; email: string } | null {
@@ -42,7 +43,12 @@ app.post('/api/auth/register', async (req, res) => {
   if (!user) {
     return res.status(400).json({ error: 'Email already registered' });
   }
-  res.json({ user });
+  // Generate token for new user (same as login)
+  const loginResult = await loginUser(email, password);
+  if (!loginResult) {
+    return res.status(500).json({ error: 'Token generation failed' });
+  }
+  res.status(201).json(loginResult);
 });
 
 app.post('/api/auth/login', async (req, res) => {
@@ -141,7 +147,7 @@ app.post('/api/trial-signup', async (req, res) => {
   `;
 
   try {
-    await sendReportEmail('asramcharan@gmail.com', `Nieuwe trial signup: ${email}`, html);
+    await sendReportEmail(ADMIN_EMAIL, `Nieuwe trial signup: ${email}`, html);
   } catch (err) {
     console.error('Email notification failed:', err);
     // Don't fail the request — signup was received
@@ -396,7 +402,7 @@ app.put('/api/applications/:id', async (req, res) => {
           </p>
         `;
         try {
-          await sendReportEmail('asramcharan@gmail.com', `Aanvraag status update: ${projectName}`, html);
+          await sendReportEmail(ADMIN_EMAIL, `Aanvraag status update: ${projectName}`, html);
         } catch (err) {
           console.error('Status email notification failed:', err);
         }
@@ -420,7 +426,7 @@ app.put('/api/applications/:id', async (req, res) => {
         </p>
       `;
       try {
-        await sendReportEmail('asramcharan@gmail.com', `Mijlpaal bereikt: ${(app as any).project_name}`, html);
+        await sendReportEmail(ADMIN_EMAIL, `Mijlpaal bereikt: ${(app as any).project_name}`, html);
       } catch (err) {
         console.error('Milestone email notification failed:', err);
       }
