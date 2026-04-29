@@ -705,7 +705,7 @@ function TimelinePanel({ municipality, projectType, housingUnits, staticTimeline
         <>
           <div style={{ marginBottom: 12 }}>
             <div style={{ fontSize: 13, color: 'var(--mute)', marginBottom: 4 }}>
-              {isNL ? '⏱ Doorlooptijd voorspeld' : '⏱ Predicted timeline'}
+              {isNL ? 'Doorlooptijd voorspeld' : 'Predicted timeline'}
             </div>
             <div style={{ fontSize: 18, fontWeight: 600, color: 'var(--ink)' }}>
               {prediction.predictedWeeks.average} {isNL ? 'weken gemiddeld' : 'weeks average'}
@@ -739,7 +739,7 @@ function TimelinePanel({ municipality, projectType, housingUnits, staticTimeline
                     : '#6b7280',
               }}
             >
-              ● {getConfidenceLabel(prediction.confidence, lang)}
+              {getConfidenceLabel(prediction.confidence, lang)}
             </span>
             <span style={{ fontSize: 12, color: 'var(--mute)' }}>
               {isNL ? 'op basis van' : 'based on'} {prediction.basedOnCases} {isNL ? 'gevallen' : 'cases'}
@@ -808,7 +808,7 @@ function StepIndicator({ step }) {
       {steps.map((s, i) => (
         <React.Fragment key={i}>
           <div className={`tsi-item ${step === i + 1 ? "tsi-active" : step > i + 1 ? "tsi-done" : ""}`}>
-            <span className="tsi-n">{step > i + 1 ? "✓" : s.n}</span>
+            <span className="tsi-n">{step > i + 1 ? "✔" : s.n}</span>
             <span className="tsi-label">{s.label}</span>
           </div>
           {i < 2 && <span className="tsi-arrow">→</span>}
@@ -902,7 +902,7 @@ function AddressSearch({ onMuniDetected, lang }) {
               {doc.gemeentenaam && (
                 <span className="pdok-muni mono small">
                   {doc.gemeentenaam}
-                  {FULL_MUNI_DATA[normalizeMuniName(doc.gemeentenaam)] ? " ✓" : ""}
+                  {FULL_MUNI_DATA[normalizeMuniName(doc.gemeentenaam)] ? " ✔" : ""}
                 </span>
               )}
             </li>

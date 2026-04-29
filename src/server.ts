@@ -134,7 +134,7 @@ app.post('/api/trial-signup', async (req, res) => {
   const { email, name, company } = req.body;
   if (!email) return res.status(400).json({ error: 'Email required' });
 
-  console.log(`📋 Trial signup: ${name || '—'} <${email}> ${company ? `(${company})` : ''}`);
+  console.log(`Trial signup: ${name || '-'} <${email}> ${company ? `(${company})` : ''}`);
 
   const html = `
     <h2 style="font-family:sans-serif">Nieuwe trial aanmelding</h2>

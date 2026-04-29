@@ -16,13 +16,13 @@ export async function getValidWerkzaamheden(): Promise<string[]> {
   if (fs.existsSync(CACHE_FILE)) {
     const cache: CacheData = JSON.parse(fs.readFileSync(CACHE_FILE, 'utf-8'));
     if (Date.now() - cache.timestamp < CACHE_DURATION) {
-      console.log(`📦 Using cached activities: ${cache.activities.length} items`);
+      console.log(`Using cached activities: ${cache.activities.length} items`);
       return cache.activities;
     }
   }
   
   // Fetch fresh from DSO
-  console.log('🔄 Fetching fresh activities from DSO...');
+  console.log('Fetching fresh activities from DSO...');
   const activities: string[] = [];
   let page = 1;
   let hasMore = true;
@@ -54,7 +54,7 @@ export async function getValidWerkzaamheden(): Promise<string[]> {
   }
   
   activities.sort();
-  console.log(`✅ Fetched ${activities.length} valid activities`);
+  console.log(`Fetched ${activities.length} valid activities`);
   
   // Save to cache
   const cache: CacheData = { timestamp: Date.now(), activities };
