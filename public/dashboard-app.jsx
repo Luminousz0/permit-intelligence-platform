@@ -705,3 +705,5 @@ function AuthModal({ t, authMode, setAuthMode, authEmail, setAuthEmail, authPass
 }
 
 window.DashboardApp = DashboardApp;
+
+ReactDOM.createRoot(document.getElementById("root")).render(<DashboardApp />);

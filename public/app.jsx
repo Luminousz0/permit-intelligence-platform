@@ -35,6 +35,7 @@ const HOME_NAV = {
   nl: [
     { href: "regelgeving.html", label: "Regelgeving" },
     { href: "tool.html",        label: "Referentietool" },
+    { href: "dashboard.html",   label: "Dashboard" },
     { href: "gemeenten.html",   label: "Gemeenten" },
     { href: "diensten.html",    label: "Diensten" },
     { href: "faq.html",         label: "FAQ" },
@@ -42,6 +43,7 @@ const HOME_NAV = {
   en: [
     { href: "regelgeving.html", label: "Regulatory" },
     { href: "tool.html",        label: "Reference tool" },
+    { href: "dashboard.html",   label: "Dashboard" },
     { href: "gemeenten.html",   label: "Municipalities" },
     { href: "diensten.html",    label: "Services" },
     { href: "faq.html",         label: "FAQ" },
