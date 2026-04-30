@@ -403,7 +403,13 @@ function Footer({ t }) {
             {t.footer.cols.map((c, i) => (
               <div className="footer-col" key={i}>
                 <div className="footer-col-title mono small">{c.title}</div>
-                <ul>{c.links.map((l, j) => <li key={j}><a href="#">{l}</a></li>)}</ul>
+                <ul>{c.links.map((l, j) => (
+                  <li key={j}>
+                    <a href={l.href} target={l.target || undefined} rel={l.target === "_blank" ? "noopener noreferrer" : undefined}>
+                      {l.label}
+                    </a>
+                  </li>
+                ))}</ul>
               </div>
             ))}
           </div>

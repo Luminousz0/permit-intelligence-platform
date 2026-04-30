@@ -343,10 +343,30 @@ const COPY = {
     footer: {
       tagline: "Een professionele referentie voor Omgevingswet-compliance.",
       cols: [
-        { title: "Product", links: ["Live tool", "Gemeentendatabase", "Documentatie\u00adtemplates", "API (binnenkort)"] },
-        { title: "Bedrijf", links: ["Over ons", "Validatie", "Contact", "Pers"] },
-        { title: "Bronnen", links: ["lokaleregelgeving.overheid.nl", "parolo.nl", "Omgevingsloket", "Wettekst Omgevingswet"] },
-        { title: "Juridisch", links: ["Privacybeleid", "Voorwaarden", "Cookies", "Disclaimer"] },
+        { title: "Product", links: [
+          { label: "Live tool", href: "tool.html" },
+          { label: "Gemeentendatabase", href: "gemeenten.html" },
+          { label: "Documentatietemplates", href: "#" },
+          { label: "API (binnenkort)", href: "#" }
+        ] },
+        { title: "Bedrijf", links: [
+          { label: "Over ons", href: "#" },
+          { label: "Validatie", href: "validatie.html" },
+          { label: "Contact", href: "mailto:asramcharan@gmail.com" },
+          { label: "Pers", href: "#" }
+        ] },
+        { title: "Bronnen", links: [
+          { label: "lokaleregelgeving.overheid.nl", href: "https://lokaleregelgeving.overheid.nl", target: "_blank" },
+          { label: "parolo.nl", href: "https://parolo.nl", target: "_blank" },
+          { label: "Omgevingsloket", href: "https://omgevingsloket.nl", target: "_blank" },
+          { label: "Wettekst Omgevingswet", href: "https://iplo.nl/regelgeving/omgevingswet/", target: "_blank" }
+        ] },
+        { title: "Juridisch", links: [
+          { label: "Privacybeleid", href: "#" },
+          { label: "Voorwaarden", href: "#" },
+          { label: "Cookies", href: "#" },
+          { label: "Disclaimer", href: "#" }
+        ] },
       ],
       legal: "Permit Intelligence B.V. \u00b7 KvK 00000000 \u00b7 Almere, Nederland",
       disclaimer: "Deze referentie is informatief. Gebruikers blijven verantwoordelijk voor het bevestigen van actuele vereisten bij hun gemeente.",
@@ -692,10 +712,30 @@ const COPY = {
     footer: {
       tagline: "A professional reference for Omgevingswet compliance.",
       cols: [
-        { title: "Product", links: ["Live tool", "Municipality database", "Documentation templates", "API (soon)"] },
-        { title: "Company", links: ["About", "Validation", "Contact", "Press"] },
-        { title: "Sources", links: ["lokaleregelgeving.overheid.nl", "parolo.nl", "Omgevingsloket", "Omgevingswet text"] },
-        { title: "Legal", links: ["Privacy policy", "Terms", "Cookies", "Disclaimer"] },
+        { title: "Product", links: [
+          { label: "Live tool", href: "tool.html" },
+          { label: "Municipality database", href: "gemeenten.html" },
+          { label: "Documentation templates", href: "#" },
+          { label: "API (soon)", href: "#" }
+        ] },
+        { title: "Company", links: [
+          { label: "About", href: "#" },
+          { label: "Validation", href: "validatie.html" },
+          { label: "Contact", href: "mailto:asramcharan@gmail.com" },
+          { label: "Press", href: "#" }
+        ] },
+        { title: "Sources", links: [
+          { label: "lokaleregelgeving.overheid.nl", href: "https://lokaleregelgeving.overheid.nl", target: "_blank" },
+          { label: "parolo.nl", href: "https://parolo.nl", target: "_blank" },
+          { label: "Omgevingsloket", href: "https://omgevingsloket.nl", target: "_blank" },
+          { label: "Omgevingswet text", href: "https://iplo.nl/regelgeving/omgevingswet/", target: "_blank" }
+        ] },
+        { title: "Legal", links: [
+          { label: "Privacy policy", href: "#" },
+          { label: "Terms", href: "#" },
+          { label: "Cookies", href: "#" },
+          { label: "Disclaimer", href: "#" }
+        ] },
       ],
       legal: "Permit Intelligence B.V. \u00b7 KvK 00000000 \u00b7 Almere, Netherlands",
       disclaimer: "This reference is informational. Users remain responsible for confirming current requirements with their municipality.",

@@ -171,32 +171,37 @@ function Hero({ lang, t, headlineIdx, accent, onScrollHow }) {
   return (
     <section className="hero" data-screen-label="01 Hero">
       <div className="container">
-        <div className="hero-text hero-text-full">
-          <div className="eyebrow">{t.hero.eyebrow}</div>
-          <h1 className="hero-headline hero-headline-full">
-            <span className="headline-line">{h.line1}</span>
-            <span className="headline-line headline-emph">{h.line2}</span>
-          </h1>
-          <p className="hero-sub hero-sub-full">{h.sub}</p>
-          <div className="hero-ctas">
-            <a
-              href="tool.html"
-              className="btn btn-primary"
-              style={{ background: accent.bg, color: accent.fg, borderColor: accent.bg }}
-            >
-              {t.hero.ctaPrimary}
-              <span className="arrow">→</span>
-            </a>
-            <button type="button" className="btn btn-ghost" onClick={onScrollHow}>
-              {t.hero.ctaSecondary}
-            </button>
+        <div className="hero-grid">
+          <div className="hero-text">
+            <div className="eyebrow">{t.hero.eyebrow}</div>
+            <h1 className="hero-headline">
+              <span className="headline-line">{h.line1}</span>
+              <span className="headline-line headline-emph">{h.line2}</span>
+            </h1>
+            <p className="hero-sub">{h.sub}</p>
+            <div className="hero-ctas">
+              <a
+                href="tool.html"
+                className="btn btn-primary"
+                style={{ background: accent.bg, color: accent.fg, borderColor: accent.bg }}
+              >
+                {t.hero.ctaPrimary}
+                <span className="arrow">→</span>
+              </a>
+              <button type="button" className="btn btn-ghost" onClick={onScrollHow}>
+                {t.hero.ctaSecondary}
+              </button>
+            </div>
+            <div className="hero-foot">
+              <span className="foot-item">{t.hero.footMunicipalities}</span>
+              <span className="foot-sep">·</span>
+              <span className="foot-item">{t.hero.footSource}</span>
+              <span className="foot-sep">·</span>
+              <span className="foot-item mono small">Omgevingswet 2024</span>
+            </div>
           </div>
-          <div className="hero-foot">
-            <span className="foot-item">{t.hero.footMunicipalities}</span>
-            <span className="foot-sep">·</span>
-            <span className="foot-item">{t.hero.footSource}</span>
-            <span className="foot-sep">·</span>
-            <span className="foot-item mono small">Omgevingswet 2024</span>
+          <div className="hero-aside">
+            <HeroWidget lang={lang} t={t.hero} accent={accent} />
           </div>
         </div>
       </div>

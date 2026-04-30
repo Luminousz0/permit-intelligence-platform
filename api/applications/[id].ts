@@ -4,8 +4,8 @@
  * DELETE /api/applications/:id   — delete application
  */
 import { VercelRequest, VercelResponse } from '@vercel/node';
-import { verifyToken } from '../lib/auth';
-import { getApplicationById, updateApplication, deleteApplication } from '../lib/applications';
+import { verifyToken } from '../_lib/auth';
+import { getApplicationById, updateApplication, deleteApplication } from '../_lib/applications';
 
 export default async function handler(req: VercelRequest, res: VercelResponse) {
   // Auth

@@ -3,8 +3,8 @@
  * POST /api/applications   — create a new application
  */
 import { VercelRequest, VercelResponse } from '@vercel/node';
-import { verifyToken } from '../lib/auth';
-import { getApplicationsByUser, createApplication } from '../lib/applications';
+import { verifyToken } from '../_lib/auth';
+import { getApplicationsByUser, createApplication } from '../_lib/applications';
 
 export default async function handler(req: VercelRequest, res: VercelResponse) {
   // Auth
