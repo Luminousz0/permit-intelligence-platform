@@ -957,7 +957,7 @@ function ToolPage({ lang, setLang }) {
   return (
     <>
       <SubNav lang={lang} setLang={setLang} current="tool.html" accent={accent}
-              demoLabel={t.nav.demo} tryLabel={t.nav.tryTool} />
+              tryLabel={t.nav.tryTool} />
       <PageHeader
         breadcrumb={[{ label: "Home", href: "index.html" }, { label: tt.breadcrumbLabel }]}
         eyebrow={tt.eyebrow}

@@ -90,13 +90,6 @@ function Nav({ lang, setLang, t, accent, sticky, glyph, onTrialOpen, theme, setT
           </button>
           <button
             type="button"
-            className="nav-cta-ghost"
-            onClick={() => { window.openCalendly ? window.openCalendly("nav") : (window.location.href = "diensten.html"); }}
-          >
-            {t.nav.demo}
-          </button>
-          <button
-            type="button"
             className="nav-cta"
             style={{ background: accent.bg, color: accent.fg }}
             onClick={() => { if (onTrialOpen) onTrialOpen(); }}

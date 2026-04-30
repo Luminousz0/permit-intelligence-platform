@@ -225,7 +225,6 @@ function DashboardApp() {
         }}
         current="dashboard.html"
         accent={{ bg: "oklch(0.45 0.13 250)", fg: "#fff" }}
-        demoLabel={t.nav.demo}
         tryLabel={t.nav.tryTool}
       />
 

@@ -28,7 +28,7 @@ const SUBNAV = {
   ],
 };
 
-function SubNav({ lang, setLang, current, accent, demoLabel, tryLabel }) {
+function SubNav({ lang, setLang, current, accent, tryLabel }) {
   const [theme, setThemeState] = React.useState("light");
   const [mobileMenuOpen, setMobileMenuOpen] = React.useState(false);
   const [currentLang, setCurrentLang] = React.useState(lang || "nl");
@@ -82,13 +82,6 @@ function SubNav({ lang, setLang, current, accent, demoLabel, tryLabel }) {
             <span className={currentLang === "nl" ? "active" : ""}>NL</span>
             <span className="lang-sep">/</span>
             <span className={currentLang === "en" ? "active" : ""}>EN</span>
-          </button>
-          <button
-            type="button"
-            className="nav-cta-ghost"
-            onClick={() => { window.openCalendly ? window.openCalendly("subnav") : (window.location.href = "diensten.html"); }}
-          >
-            {demoLabel}
           </button>
           <a href="tool.html" className="nav-cta" style={{ background: accent.bg, color: accent.fg }}>
             {tryLabel}

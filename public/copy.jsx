@@ -174,21 +174,6 @@ const COPY = {
           type: "trial",
           accent: true,
         },
-        {
-          name: "Consultatie",
-          price: "vanaf \u20ac500",
-          period: "per project",
-          description: "Voor complexe of onzekere gemeentelijke vereisten.",
-          features: [
-            "Project\u00adbeoordeling tegen gemeentelijk kader",
-            "Voorbereiding participatiedocumentatie",
-            "Pre-submission review",
-            "Directe toegang tot specialist",
-          ],
-          cta: "Plan een gesprek",
-          type: "demo",
-          accent: false,
-        },
       ],
     },
     process: {
