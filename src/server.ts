@@ -13,7 +13,7 @@ import middleware from 'i18next-http-middleware';
 import db from './db/database';
 
 const app = express();
-const PORT = 3000;
+const PORT = process.env.PORT ? parseInt(process.env.PORT) : 3000;
 const ADMIN_EMAIL = process.env.ADMIN_EMAIL || 'asramcharan@gmail.com';
 
 // Auth helper
