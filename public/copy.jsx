@@ -543,21 +543,6 @@ const COPY = {
           type: "trial",
           accent: true,
         },
-        {
-          name: "Consultancy",
-          price: "from \u20ac500",
-          period: "per project",
-          description: "For complex or uncertain municipal requirements.",
-          features: [
-            "Project assessment vs. municipal framework",
-            "Participation documentation prep",
-            "Pre-submission review",
-            "Direct access to specialist",
-          ],
-          cta: "Schedule a call",
-          type: "demo",
-          accent: false,
-        },
       ],
     },
     process: {

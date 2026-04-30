@@ -686,25 +686,25 @@ button { font-family: inherit; cursor: pointer; }
 }
 .quote-mark {
   font-family: var(--serif);
-  color: oklch(0.5 0.01 250);
+  color: var(--ink-soft);
   font-size: 1em;
   margin-right: 4px;
 }
 .quote-mark.close { margin-left: 4px; margin-right: 0; }
 
 .proof-attr {
-  border-top: 1px solid oklch(0.4 0.01 250);
+  border-top: 1px solid var(--hairline);
   padding-top: 16px;
   display: flex;
   align-items: baseline;
   gap: 16px;
 }
-.attr-line { font-size: 14px; color: oklch(0.85 0.005 250); }
-.attr-note { color: oklch(0.55 0.01 250); }
+.attr-line { font-size: 14px; color: var(--bg); }
+.attr-note { color: var(--bg); }
 
 .proof-sources {
-  background: oklch(0.22 0.01 250);
-  border: 1px solid oklch(0.3 0.01 250);
+  background: var(--bg-deep);
+  border: 1px solid var(--hairline-strong);
   border-radius: 12px;
   padding: 28px;
   margin-top: 64px;
@@ -718,7 +718,7 @@ button { font-family: inherit; cursor: pointer; }
 .sources-body {
   font-size: 14px;
   line-height: 1.6;
-  color: oklch(0.75 0.005 250);
+  color: var(--bg);
   margin: 0 0 18px;
 }
 .sources-list {
@@ -728,10 +728,10 @@ button { font-family: inherit; cursor: pointer; }
   display: flex;
   flex-direction: column;
   gap: 8px;
-  color: oklch(0.85 0.005 250);
+  color: var(--bg);
 }
 .sources-list li { display: inline-flex; align-items: center; gap: 8px; }
-.src-bullet { color: oklch(0.5 0.01 250); }
+.src-bullet { color: var(--bg); }
 
 /* ---------- PRICING ---------- */
 .pricing {
@@ -800,7 +800,7 @@ button { font-family: inherit; cursor: pointer; }
   margin-bottom: 22px;
   min-height: 42px;
 }
-.tier-accent .tier-desc { color: oklch(0.78 0.005 250); }
+.tier-accent .tier-desc { color: var(--bg); }
 .tier-features {
   list-style: none;
   padding: 0;
