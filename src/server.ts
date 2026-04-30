@@ -456,10 +456,4 @@ app.delete('/api/applications/:id', (req, res) => {
 
 // ========== End Application Tracking Endpoints ==========
 
-// Export app for Vercel serverless functions
-export default app;
-
-// Start server locally (not used on Vercel)
-if (require.main === module) {
-  app.listen(PORT, () => console.log(`Server running at http://localhost:${PORT}`));
-}
+app.listen(PORT, () => console.log(`Server running at http://localhost:${PORT}`));
