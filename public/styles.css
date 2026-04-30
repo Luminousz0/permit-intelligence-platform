@@ -1149,6 +1149,12 @@ body[data-theme="dark"] .nav {
 body[data-theme="dark"] .proof {
   background: oklch(0.1 0.008 250);
 }
+body[data-theme="dark"] .proof .eyebrow {
+  color: oklch(0.7 0.01 250);
+}
+body[data-theme="dark"] .proof .section-title {
+  color: oklch(0.90 0.005 250);
+}
 body[data-theme="dark"] .proof-sources {
   background: oklch(0.14 0.008 250);
   border-color: oklch(0.28 0.01 250);
