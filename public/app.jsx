@@ -73,9 +73,9 @@ function Nav({ lang, setLang, t, accent, sticky, glyph, onTrialOpen, theme, setT
           <button type="button" className="theme-toggle mono small"
                   onClick={() => setTheme(theme === "light" ? "dark" : "light")}
                   title={theme === "light" ? "Donker" : "Licht"}>
-            <span className={theme === "light" ? "active" : ""}>☀️</span>
+            <span className={theme === "light" ? "active" : ""}>Light</span>
             <span className="lang-sep">/</span>
-            <span className={theme === "dark" ? "active" : ""}>🌙</span>
+            <span className={theme === "dark" ? "active" : ""}>Dark</span>
           </button>
           <button type="button" className="lang-toggle mono small"
                   onClick={() => setLang(lang === "nl" ? "en" : "nl")}>

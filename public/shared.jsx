@@ -29,6 +29,20 @@ const SUBNAV = {
 };
 
 function SubNav({ lang, setLang, current, accent, demoLabel, tryLabel }) {
+  const [theme, setThemeState] = React.useState("light");
+
+  React.useEffect(() => {
+    // Read initial theme from body data attribute
+    const initialTheme = document.body.dataset.theme || "light";
+    setThemeState(initialTheme);
+  }, []);
+
+  const handleThemeToggle = () => {
+    const newTheme = theme === "light" ? "dark" : "light";
+    setThemeState(newTheme);
+    if (window.toggleTheme) window.toggleTheme();
+  };
+
   return (
     <header className="nav">
       <div className="container nav-inner">
@@ -42,6 +56,16 @@ function SubNav({ lang, setLang, current, accent, demoLabel, tryLabel }) {
           ))}
         </nav>
         <div className="nav-right">
+          <button
+            type="button"
+            className="theme-toggle mono small"
+            onClick={handleThemeToggle}
+            title={theme === "light" ? "Donker" : "Licht"}
+          >
+            <span className={`light-label${theme === "light" ? " active" : ""}`}>Light</span>
+            <span className="lang-sep">/</span>
+            <span className={`dark-label${theme === "dark" ? " active" : ""}`}>Dark</span>
+          </button>
           <button
             type="button"
             className="lang-toggle mono small"
