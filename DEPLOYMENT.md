@@ -97,6 +97,29 @@ Railway monitors the `/` endpoint on port 3000. The app responds with the homepa
 
 ## Troubleshooting
 
+### 502 Bad Gateway Error
+This means the server failed to start. Steps to fix:
+
+1. **Check Railway Logs**
+   - Go to Railway dashboard → Deployments → Logs
+   - Look for error messages during build or startup
+
+2. **Verify Build Configuration**
+   - Ensure `railway.json` has correct `buildCommand`
+   - Must include: `npm ci && npm run build`
+
+3. **Check Dependencies**
+   - Ensure all packages are in `package.json`
+   - Run locally: `npm install && npm run build && npm start`
+
+4. **Verify Database Directory**
+   - Server needs to create `src/data/` directory
+   - Railway provides persistent storage automatically
+
+5. **Check Environment Variables**
+   - Set required vars in Railway dashboard
+   - At minimum: `NODE_ENV=production`
+
 ### App Crashes on Start
 ```bash
 # Check logs
@@ -106,6 +129,7 @@ railway logs -f
 # - PORT already in use (Railway handles this)
 # - Missing dependencies (npm install run during build)
 # - Environment variable issues
+# - TypeScript compilation errors
 ```
 
 ### Database File Not Persisting
