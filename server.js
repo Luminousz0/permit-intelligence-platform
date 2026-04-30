@@ -5,31 +5,137 @@ const fs = require('fs');
 const app = express();
 const PORT = process.env.PORT || 3000;
 
-// Verify public directory exists
-const publicDir = path.join(__dirname, 'public');
-console.log(`Public directory: ${publicDir}`);
-console.log(`Public directory exists: ${fs.existsSync(publicDir)}`);
-
-// Serve static files from public directory
-app.use(express.static(publicDir, {
+// Middleware
+app.use(express.json());
+app.use(express.static(path.join(__dirname, 'public'), {
   maxAge: '1h',
   etag: false,
   dotfiles: 'allow'
 }));
 
-// Health check endpoint
+// =============== TIMELINE PREDICTION DATA ===============
+const TIMELINE_DATA = {
+  'Amsterdam': '8 weken reguliere procedure / 26 weken uitgebreide procedure',
+  'Rotterdam': '8 weken reguliere procedure / 26 weken uitgebreide procedure',
+  'Den Haag': '8 weken reguliere procedure / 26 weken uitgebreide procedure',
+  'Utrecht': 'Vooroverleg 4–6 weken; daarna reguliere procedure',
+  'Eindhoven': '8 weken reguliere procedure / 26 weken uitgebreide procedure',
+  'Groningen': '8 weken reguliere procedure / 26 weken uitgebreide procedure',
+  'Almere': '8 weken reguliere procedure',
+  'Tilburg': '8 weken reguliere procedure / 26 weken uitgebreide procedure',
+  'Zwolle': 'Vooroverleg 4–6 weken; daarna reguliere procedure',
+  'Arnhem': '8 weken reguliere procedure / 26 weken uitgebreide procedure',
+  'Alkmaar': '8 weken reguliere procedure / 26 weken uitgebreide procedure',
+  'Haarlem': '8 weken reguliere procedure / 26 weken uitgebreide procedure',
+  'Leiden': 'Vooroverleg 4–6 weken; daarna reguliere procedure',
+  'Maastricht': '8 weken reguliere procedure / 26 weken uitgebreide procedure',
+  'Breda': '8 weken reguliere procedure',
+  'Enschede': '8 weken reguliere procedure / 26 weken uitgebreide procedure',
+  'Hengelo': '8 weken reguliere procedure / 26 weken uitgebreide procedure',
+  'Apeldoorn': '8 weken reguliere procedure / 26 weken uitgebreide procedure',
+  'Zaanstad': 'Vooroverleg 4–6 weken; daarna reguliere procedure',
+  'Amersfoort': '8 weken reguliere procedure / 26 weken uitgebreide procedure',
+  'Dordrecht': '8 weken reguliere procedure / 26 weken uitgebreide procedure',
+  'Delft': '8 weken reguliere procedure',
+  'Zoetermeer': '8 weken reguliere procedure / 26 weken uitgebreide procedure',
+  'Westland': '8 weken reguliere procedure / 26 weken uitgebreide procedure',
+  'Leeuwarden': 'Vooroverleg 4–6 weken; daarna reguliere procedure',
+  'Emmen': '8 weken reguliere procedure / 26 weken uitgebreide procedure',
+  'Assen': '8 weken reguliere procedure / 26 weken uitgebreide procedure',
+  'Purmerend': '8 weken reguliere procedure / 26 weken uitgebreide procedure'
+};
+
+// =============== API ENDPOINTS ===============
+
+// Health check
 app.get('/health', (req, res) => {
   res.json({ status: 'ok', port: PORT });
 });
 
-// API requests - return 404 for now (no backend)
-app.use('/api', (req, res) => {
-  res.status(404).json({ error: 'API not available - static site only' });
+// Timeline Prediction
+app.post('/api/predict-timeline', (req, res) => {
+  try {
+    const { municipality } = req.body;
+    
+    if (!municipality) {
+      return res.status(400).json({ error: 'Municipality required' });
+    }
+
+    const timeline = TIMELINE_DATA[municipality] || 
+      '8 weken reguliere procedure / 26 weken uitgebreide procedure';
+    
+    res.json({
+      success: true,
+      municipality,
+      timeline,
+      weeks: municipality === 'Almere' ? 8 : 
+             municipality === 'Delft' ? 8 : 26
+    });
+  } catch (error) {
+    console.error('Timeline prediction error:', error);
+    res.status(500).json({ error: 'Failed to predict timeline' });
+  }
 });
 
-// Fallback route - serve index.html for single-page app navigation
+// Generate DOCX (placeholder - returns base64 of simple text)
+app.post('/api/generate-docx', (req, res) => {
+  try {
+    // Simple response - full DOCX generation requires docx library
+    // For now, return a simple text-based response
+    res.json({
+      success: true,
+      message: 'PDF export requires backend setup. Please contact support.',
+      downloadUrl: null
+    });
+  } catch (error) {
+    console.error('DOCX generation error:', error);
+    res.status(500).json({ error: 'Failed to generate document' });
+  }
+});
+
+// Auth endpoints (placeholder)
+app.post('/api/auth/register', (req, res) => {
+  try {
+    const { email, password } = req.body;
+    
+    if (!email || !password) {
+      return res.status(400).json({ error: 'Email and password required' });
+    }
+
+    // Placeholder - just return success with a token
+    res.status(201).json({
+      success: true,
+      token: 'placeholder_token_' + Date.now(),
+      user: { id: 1, email }
+    });
+  } catch (error) {
+    console.error('Registration error:', error);
+    res.status(500).json({ error: 'Registration failed' });
+  }
+});
+
+app.post('/api/auth/login', (req, res) => {
+  try {
+    const { email, password } = req.body;
+    
+    if (!email || !password) {
+      return res.status(400).json({ error: 'Email and password required' });
+    }
+
+    res.json({
+      success: true,
+      token: 'placeholder_token_' + Date.now(),
+      user: { id: 1, email }
+    });
+  } catch (error) {
+    console.error('Login error:', error);
+    res.status(500).json({ error: 'Login failed' });
+  }
+});
+
+// Fallback - serve index.html for SPA routing
 app.use((req, res) => {
-  const indexPath = path.join(publicDir, 'index.html');
+  const indexPath = path.join(__dirname, 'public', 'index.html');
   if (fs.existsSync(indexPath)) {
     res.sendFile(indexPath);
   } else {
@@ -37,7 +143,7 @@ app.use((req, res) => {
   }
 });
 
-// Error handling middleware
+// Error handler
 app.use((err, req, res, next) => {
   console.error('ERROR:', err.message);
   res.status(500).json({ error: 'Internal server error', message: err.message });
@@ -48,13 +154,14 @@ const server = app.listen(PORT, () => {
   console.log('═══════════════════════════════════════');
   console.log('Permit Intelligence Platform');
   console.log('═══════════════════════════════════════');
-  console.log(`Server running on port ${PORT}`);
-  console.log(`URL: http://localhost:${PORT}`);
-  console.log(`Static files from: ${publicDir}`);
+  console.log(`✓ Server running on port ${PORT}`);
+  console.log(`✓ URL: http://localhost:${PORT}`);
+  console.log(`✓ Static frontend: serving from public/`);
+  console.log(`✓ API endpoints: /api/predict-timeline, /api/auth/*`);
   console.log('═══════════════════════════════════════');
 });
 
-// Handle graceful shutdown
+// Graceful shutdown
 process.on('SIGTERM', () => {
   console.log('SIGTERM received, shutting down gracefully');
   server.close(() => {
