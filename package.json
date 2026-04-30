@@ -10,8 +10,8 @@
   },
   "homepage": "https://permit-intelligence.nl",
   "scripts": {
-    "start": "python3 -m http.server 3000 --directory public",
-    "dev": "python3 -m http.server 3000 --directory public",
+    "start": "http-server public -p 3000 -c-1",
+    "dev": "http-server public -p 3000 -c-1 -o",
     "build": "echo 'Static site - no build required'",
     "test": "echo 'No tests configured yet'",
     "lint": "echo 'No linter configured yet'"
@@ -25,6 +25,9 @@
     "saas",
     "real-estate"
   ],
+  "dependencies": {
+    "http-server": "^14.1.1"
+  },
   "engines": {
     "node": ">=16.0.0",
     "npm": ">=8.0.0"

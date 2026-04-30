@@ -180,7 +180,7 @@ npm start
 
 - Open an issue with the `question` label
 - Check existing issues for similar questions
-- Contact: asramcharan@gmail.com
+- Contact: ashwinramcharan21@gmail.com
 
 ---
 

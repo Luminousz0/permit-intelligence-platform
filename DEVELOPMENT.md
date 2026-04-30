@@ -426,7 +426,7 @@ const [m1, m2] = await Promise.all([
 
 - Check existing GitHub issues
 - Ask in PRs or discussions
-- Contact: asramcharan@gmail.com
+- Contact: ashwinramcharan21@gmail.com
 
 ---
 
