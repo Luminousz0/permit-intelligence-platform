@@ -1139,23 +1139,39 @@
   }
 }
 
-/* Dark mode overrides for tool page text readability */
-body[data-theme="dark"] .tool-input,
-body[data-theme="dark"] .tool-output,
-body[data-theme="dark"] .timeline-panel {
-  --mute: oklch(0.80 0.005 250);
+/* Dark mode overrides for tool page - comprehensive text color fixes */
+
+/* Override CSS variables in dark mode for tool */
+body[data-theme="dark"] .tool-shell {
+  --mute: oklch(0.85 0.005 250);
+  --ink-soft: oklch(0.92 0.005 250);
 }
 
+/* Catch all inline styles using var(--mute) in dark mode */
+body[data-theme="dark"] [style*="color: var(--mute)"] {
+  color: oklch(0.85 0.005 250) !important;
+}
+
+body[data-theme="dark"] [style*="color: 'var(--mute)'"] {
+  color: oklch(0.85 0.005 250) !important;
+}
+
+/* Specific elements in tool */
 body[data-theme="dark"] .muni-list-item {
   color: oklch(0.95 0.005 250) !important;
 }
 
-body[data-theme="dark"] .muni-list-item .mono.small {
+body[data-theme="dark"] .muni-list-item .mono.small,
+body[data-theme="dark"] .muni-list-item span {
   color: oklch(0.80 0.005 250) !important;
 }
 
 body[data-theme="dark"] .muni-meta {
   color: oklch(0.80 0.005 250) !important;
+}
+
+body[data-theme="dark"] .muni-name {
+  color: oklch(0.95 0.005 250) !important;
 }
 
 body[data-theme="dark"] .tos-label {
@@ -1174,10 +1190,26 @@ body[data-theme="dark"] .tos-kv-list .v {
   color: oklch(0.93 0.005 250) !important;
 }
 
+body[data-theme="dark"] .tos-kv-list .v.mono {
+  color: oklch(0.85 0.005 250) !important;
+}
+
 body[data-theme="dark"] .tos-doc-list .doc-title {
   color: oklch(0.93 0.005 250) !important;
 }
 
 body[data-theme="dark"] .tos-doc-list .doc-desc {
+  color: oklch(0.85 0.005 250) !important;
+}
+
+body[data-theme="dark"] .timeline-panel {
+  --mute: oklch(0.85 0.005 250) !important;
+}
+
+body[data-theme="dark"] .timeline-panel > * {
+  color: oklch(0.90 0.005 250) !important;
+}
+
+body[data-theme="dark"] .confidence-badge {
   color: oklch(0.85 0.005 250) !important;
 }

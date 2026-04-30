@@ -8,6 +8,16 @@ const {
   useCallback: useCallbackT,
 } = React;
 
+// Dark mode detection helper
+function isDarkMode() {
+  return document.body.dataset.theme === 'dark';
+}
+
+// Color helper for dark mode
+function getTextColor(lightColor, darkColor) {
+  return isDarkMode() ? darkColor : lightColor;
+}
+
 // ── PDOK name normalisation (PDOK returns official names that differ from ours) ──
 const PDOK_NAME_MAP = {
   "'s-gravenhage":        "Den Haag",
@@ -686,17 +696,20 @@ function TimelinePanel({ municipality, projectType, housingUnits, staticTimeline
   };
 
   const isNL = lang !== 'en';
+  const darkMode = isDarkMode();
+  const muteColor = darkMode ? 'oklch(0.85 0.005 250)' : 'var(--mute)';
+  const inkColor = darkMode ? 'oklch(0.95 0.005 250)' : 'var(--ink)';
 
   return (
     <div className="timeline-panel">
       {loading && (
-        <div style={{ padding: '12px 0', color: 'var(--mute)', fontSize: 13 }}>
+        <div style={{ padding: '12px 0', color: muteColor, fontSize: 13 }}>
           {isNL ? 'Doorlooptijd voorspellen…' : 'Predicting timeline…'}
         </div>
       )}
 
       {error && (
-        <div style={{ padding: '12px 0', color: 'var(--mute)', fontSize: 13 }}>
+        <div style={{ padding: '12px 0', color: muteColor, fontSize: 13 }}>
           {isNL ? 'Voorspelling niet beschikbaar' : 'Prediction unavailable'}
         </div>
       )}
@@ -704,13 +717,13 @@ function TimelinePanel({ municipality, projectType, housingUnits, staticTimeline
       {!loading && !error && prediction && (
         <>
           <div style={{ marginBottom: 12 }}>
-            <div style={{ fontSize: 13, color: 'var(--mute)', marginBottom: 4 }}>
+            <div style={{ fontSize: 13, color: muteColor, marginBottom: 4 }}>
               {isNL ? 'Doorlooptijd voorspeld' : 'Predicted timeline'}
             </div>
-            <div style={{ fontSize: 18, fontWeight: 600, color: 'var(--ink)' }}>
+            <div style={{ fontSize: 18, fontWeight: 600, color: inkColor }}>
               {prediction.predictedWeeks.average} {isNL ? 'weken gemiddeld' : 'weeks average'}
             </div>
-            <div style={{ fontSize: 12, color: 'var(--mute)', marginTop: 4 }}>
+            <div style={{ fontSize: 12, color: muteColor, marginTop: 4 }}>
               {isNL ? 'Bereik: ' : 'Range: '}
               {prediction.predictedWeeks.minimum} – {prediction.predictedWeeks.maximum} {isNL ? 'weken' : 'weeks'}
             </div>
@@ -731,8 +744,13 @@ function TimelinePanel({ municipality, projectType, housingUnits, staticTimeline
                     : prediction.confidence === 'medium'
                     ? 'rgba(217, 119, 6, 0.1)'
                     : 'rgba(107, 114, 128, 0.1)',
-                color:
-                  prediction.confidence === 'high'
+                color: darkMode
+                  ? prediction.confidence === 'high'
+                    ? 'oklch(0.72 0.15 145)'
+                    : prediction.confidence === 'medium'
+                    ? 'oklch(0.75 0.15 75)'
+                    : 'oklch(0.85 0.005 250)'
+                  : prediction.confidence === 'high'
                     ? '#16a34a'
                     : prediction.confidence === 'medium'
                     ? '#d97706'
@@ -741,7 +759,7 @@ function TimelinePanel({ municipality, projectType, housingUnits, staticTimeline
             >
               {getConfidenceLabel(prediction.confidence, lang)}
             </span>
-            <span style={{ fontSize: 12, color: 'var(--mute)' }}>
+            <span style={{ fontSize: 12, color: muteColor }}>
               {isNL ? 'op basis van' : 'based on'} {prediction.basedOnCases} {isNL ? 'gevallen' : 'cases'}
             </span>
           </div>
@@ -749,16 +767,16 @@ function TimelinePanel({ municipality, projectType, housingUnits, staticTimeline
           {/* Stage breakdown */}
           {prediction.breakdown && prediction.breakdown.length > 0 && (
             <div style={{ marginBottom: 12 }}>
-              <div style={{ fontSize: 12, fontWeight: 600, color: 'var(--ink)', marginBottom: 8 }}>
+              <div style={{ fontSize: 12, fontWeight: 600, color: inkColor, marginBottom: 8 }}>
                 {isNL ? 'Fasen' : 'Stages'} ▼
               </div>
               <ul style={{ listStyle: 'none', padding: 0, margin: 0, fontSize: 12 }}>
                 {prediction.breakdown.map((stage, i) => (
                   <li key={i} style={{ display: 'flex', gap: 8, marginBottom: 6 }}>
-                    <span style={{ fontWeight: 600, minWidth: '24px', color: 'var(--mute)' }}>
+                    <span style={{ fontWeight: 600, minWidth: '24px', color: muteColor }}>
                       {stage.typicalWeeks}w
                     </span>
-                    <span style={{ color: 'var(--ink)' }}>{stage.stage}</span>
+                    <span style={{ color: inkColor }}>{stage.stage}</span>
                   </li>
                 ))}
               </ul>
@@ -768,12 +786,12 @@ function TimelinePanel({ municipality, projectType, housingUnits, staticTimeline
           {/* Recommendations */}
           {prediction.recommendations && prediction.recommendations.length > 0 && (
             <div style={{ marginBottom: 12 }}>
-              <div style={{ fontSize: 12, fontWeight: 600, color: 'var(--ink)', marginBottom: 8 }}>
+              <div style={{ fontSize: 12, fontWeight: 600, color: inkColor, marginBottom: 8 }}>
                 {isNL ? 'Aanbevelingen' : 'Recommendations'}
               </div>
               <ul style={{ listStyle: 'none', padding: 0, margin: 0, fontSize: 12 }}>
                 {prediction.recommendations.map((rec, i) => (
-                  <li key={i} style={{ marginBottom: 6, color: 'var(--ink)' }}>
+                  <li key={i} style={{ marginBottom: 6, color: inkColor }}>
                     • {rec}
                   </li>
                 ))}
@@ -782,7 +800,7 @@ function TimelinePanel({ municipality, projectType, housingUnits, staticTimeline
           )}
 
           {/* Statutory timeline fallback */}
-          <div style={{ marginTop: 12, paddingTop: 12, borderTop: '1px solid var(--hairline)', fontSize: 12, color: 'var(--mute)' }}>
+          <div style={{ marginTop: 12, paddingTop: 12, borderTop: '1px solid var(--hairline)', fontSize: 12, color: muteColor }}>
             <strong>{isNL ? 'Wettelijke termijn: ' : 'Statutory timeline: '}</strong>
             {staticTimeline}
           </div>
