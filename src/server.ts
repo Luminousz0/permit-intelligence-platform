@@ -14,7 +14,7 @@ import db from './db/database';
 
 const app = express();
 const PORT = process.env.PORT ? parseInt(process.env.PORT) : 3000;
-const ADMIN_EMAIL = process.env.ADMIN_EMAIL || 'asramcharan@gmail.com';
+const ADMIN_EMAIL = process.env.ADMIN_EMAIL || 'ashwinramcharan21@gmail.com';
 
 // Auth helper
 function requireAuth(req: any, res: any): { id: number; email: string } | null {
