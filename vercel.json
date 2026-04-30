@@ -3,13 +3,17 @@
   "builds": [
     {
       "src": "src/server.ts",
-      "use": "@vercel/node"
+      "use": "@vercel/node",
+      "config": {
+        "runtime": "nodejs20.x"
+      }
     }
   ],
   "routes": [
     {
       "src": "/(.*)",
-      "dest": "src/server.ts"
+      "dest": "src/server.ts",
+      "methods": ["GET", "HEAD", "POST", "PUT", "DELETE", "PATCH", "OPTIONS"]
     }
   ]
 }
