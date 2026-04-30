@@ -60,13 +60,15 @@ function Logo({ glyph }) {
 }
 
 function Nav({ lang, setLang, t, accent, sticky, glyph, onTrialOpen, theme, setTheme }) {
+  const [mobileMenuOpen, setMobileMenuOpen] = useStateApp(false);
+
   return (
     <header className="nav" data-sticky={sticky ? "yes" : "no"}>
       <div className="container nav-inner">
         <Logo glyph={glyph} />
-        <nav className="nav-links">
+        <nav className={`nav-links${mobileMenuOpen ? " nav-open" : ""}`}>
           {HOME_NAV[lang].map(l => (
-            <a key={l.href} href={l.href}>{l.label}</a>
+            <a key={l.href} href={l.href} onClick={() => setMobileMenuOpen(false)}>{l.label}</a>
           ))}
         </nav>
         <div className="nav-right">
@@ -86,7 +88,7 @@ function Nav({ lang, setLang, t, accent, sticky, glyph, onTrialOpen, theme, setT
           <button
             type="button"
             className="nav-cta-ghost"
-            onClick={() => window.openCalendly ? window.openCalendly("nav") : (window.location.href = "diensten.html")}
+            onClick={() => { window.openCalendly ? window.openCalendly("nav") : (window.location.href = "diensten.html"); }}
           >
             {t.nav.demo}
           </button>
@@ -97,6 +99,17 @@ function Nav({ lang, setLang, t, accent, sticky, glyph, onTrialOpen, theme, setT
             onClick={() => { if (onTrialOpen) onTrialOpen(); }}
           >
             {t.nav.tryTool}
+          </button>
+          <button
+            type="button"
+            className={`nav-menu-toggle${mobileMenuOpen ? " open" : ""}`}
+            onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
+            aria-label="Toggle menu"
+            title="Menu"
+          >
+            <span></span>
+            <span></span>
+            <span></span>
           </button>
         </div>
       </div>

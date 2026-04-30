@@ -862,3 +862,278 @@
   .app-detail-panel { width: 100%; }
   .dash-unauth-actions { flex-direction: column; }
 }
+
+/* Mobile optimization for subpages (max-width 480px) */
+@media (max-width: 480px) {
+  .page-header {
+    padding: clamp(32px, 5vw, 48px) 0 clamp(24px, 4vw, 32px);
+  }
+
+  .page-title {
+    font-size: clamp(28px, 6vw, 40px);
+    margin: 8px 0 16px;
+  }
+
+  .page-sub {
+    font-size: 16px;
+    margin: 0;
+  }
+
+  /* Longform layout */
+  .longform-grid {
+    grid-template-columns: 1fr;
+    gap: 20px;
+  }
+
+  .longform-toc {
+    position: static;
+    top: auto;
+    border: 1px solid var(--hairline);
+    border-radius: 8px;
+    padding: 12px;
+    margin-bottom: 20px;
+    font-size: 12px;
+  }
+
+  .toc-title {
+    font-size: 10px;
+    margin-bottom: 12px;
+  }
+
+  .toc-list {
+    gap: 8px;
+  }
+
+  .longform-body h2 {
+    font-size: clamp(22px, 5vw, 32px);
+    margin: 32px 0 12px;
+  }
+
+  .longform-body h3 {
+    font-size: 16px;
+    margin: 24px 0 8px;
+  }
+
+  .longform-body p {
+    font-size: 15px;
+    line-height: 1.6;
+    margin: 0 0 16px;
+  }
+
+  /* Tool page */
+  .tool-grid {
+    grid-template-columns: 1fr;
+    gap: 16px;
+  }
+
+  .tool-input {
+    position: static;
+    top: auto;
+    padding: 14px;
+  }
+
+  .tool-step-indicator {
+    flex-wrap: wrap;
+    gap: 6px;
+    padding: 16px 0 20px;
+  }
+
+  .tsi-item {
+    font-size: 11px;
+  }
+
+  .tsi-n {
+    padding: 2px 5px;
+    font-size: 10px;
+  }
+
+  .tsi-label {
+    font-size: 11px;
+  }
+
+  .tsi-arrow {
+    display: none;
+  }
+
+  .tool-step-block {
+    padding: 12px;
+    margin-bottom: 14px;
+  }
+
+  .tool-step-header {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 6px;
+  }
+
+  .tool-step-num {
+    font-size: 10px;
+  }
+
+  .tool-step-title {
+    font-size: 13px;
+  }
+
+  .muni-list-scroll {
+    max-height: 200px;
+  }
+
+  .muni-list-item {
+    padding: 10px 12px;
+    font-size: 14px;
+    min-height: 44px;
+  }
+
+  .address-input {
+    font-size: 16px;
+    padding-left: 36px !important;
+  }
+
+  .address-icon {
+    font-size: 14px;
+  }
+
+  .pdok-dropdown {
+    max-height: 200px;
+  }
+
+  .pdok-item {
+    padding: 12px;
+    min-height: 40px;
+  }
+
+  /* Services page */
+  .svc-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .svc-card {
+    padding: 16px;
+  }
+
+  /* Credentials page */
+  .creds-intro {
+    font-size: 16px;
+  }
+
+  .creds-stats {
+    grid-template-columns: 1fr;
+  }
+
+  .creds-stat {
+    padding: 16px 0 !important;
+    border: none;
+    border-bottom: 1px solid var(--hairline);
+  }
+
+  .creds-stat:last-child {
+    border-bottom: none;
+  }
+
+  /* FAQ page */
+  .faq-page-grid {
+    grid-template-columns: 1fr;
+  }
+
+  /* ToS/Privacy */
+  .tos-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .tos-body h2 {
+    font-size: clamp(20px, 5vw, 28px);
+    margin: 28px 0 12px;
+  }
+
+  .tos-body h3 {
+    font-size: 15px;
+    margin: 20px 0 8px;
+  }
+
+  .tos-body p {
+    font-size: 14px;
+    line-height: 1.6;
+  }
+
+  /* Dashboard */
+  .dash-stats {
+    grid-template-columns: 1fr;
+    gap: 12px;
+  }
+
+  .dash-stat {
+    padding: 16px;
+  }
+
+  .dash-section-head {
+    flex-direction: column;
+    gap: 12px;
+    align-items: flex-start;
+  }
+
+  .dash-section-title {
+    font-size: 18px;
+  }
+
+  .dash-unauth-actions {
+    flex-direction: column;
+    gap: 10px;
+  }
+
+  .dash-unauth-actions .btn {
+    width: 100%;
+    min-height: 44px;
+  }
+
+  .app-detail-panel {
+    width: 100%;
+    padding: 12px;
+  }
+}
+
+/* Tablet optimization (481px - 768px) */
+@media (min-width: 481px) and (max-width: 768px) {
+  .page-title {
+    font-size: clamp(32px, 5vw, 44px);
+  }
+
+  .longform-grid {
+    grid-template-columns: 1fr;
+    gap: 24px;
+  }
+
+  .longform-toc {
+    padding: 14px;
+    margin-bottom: 20px;
+  }
+
+  .toc-list {
+    gap: 8px;
+  }
+
+  .tool-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .tool-input {
+    position: sticky;
+    top: 88px;
+    padding: 16px;
+  }
+
+  .tool-step-block {
+    padding: 14px;
+  }
+
+  .svc-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+  .creds-stats {
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+  .dash-stats {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}

@@ -30,6 +30,7 @@ const SUBNAV = {
 
 function SubNav({ lang, setLang, current, accent, demoLabel, tryLabel }) {
   const [theme, setThemeState] = React.useState("light");
+  const [mobileMenuOpen, setMobileMenuOpen] = React.useState(false);
 
   React.useEffect(() => {
     // Read initial theme from body data attribute
@@ -50,9 +51,9 @@ function SubNav({ lang, setLang, current, accent, demoLabel, tryLabel }) {
           <span className="logo-mark"><span className="logo-glyph">PI</span></span>
           <span className="logo-text serif">Permit Intelligence</span>
         </a>
-        <nav className="nav-links">
+        <nav className={`nav-links${mobileMenuOpen ? " nav-open" : ""}`}>
           {SUBNAV[lang].slice(1).map(l => (
-            <a key={l.href} href={l.href} className={current === l.href ? "is-current" : ""}>{l.label}</a>
+            <a key={l.href} href={l.href} className={current === l.href ? "is-current" : ""} onClick={() => setMobileMenuOpen(false)}>{l.label}</a>
           ))}
         </nav>
         <div className="nav-right">
@@ -78,13 +79,24 @@ function SubNav({ lang, setLang, current, accent, demoLabel, tryLabel }) {
           <button
             type="button"
             className="nav-cta-ghost"
-            onClick={() => window.openCalendly ? window.openCalendly("subnav") : (window.location.href = "diensten.html")}
+            onClick={() => { window.openCalendly ? window.openCalendly("subnav") : (window.location.href = "diensten.html"); }}
           >
             {demoLabel}
           </button>
           <a href="tool.html" className="nav-cta" style={{ background: accent.bg, color: accent.fg }}>
             {tryLabel}
           </a>
+          <button
+            type="button"
+            className={`nav-menu-toggle${mobileMenuOpen ? " open" : ""}`}
+            onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
+            aria-label="Toggle menu"
+            title="Menu"
+          >
+            <span></span>
+            <span></span>
+            <span></span>
+          </button>
         </div>
       </div>
     </header>

@@ -1771,3 +1771,542 @@ body[data-theme="dark"] .modal-box {
 .pdok-hit  { background: oklch(0.72 0.14 145 / 0.12); color: oklch(0.3 0.1 145); }
 .pdok-miss { background: oklch(0.78 0.14 75 / 0.12);  color: oklch(0.4 0.1 75); }
 
+/* ─────────────────────────────────────────────────────────
+   MOBILE & TABLET OPTIMIZATION
+───────────────────────────────────────────────────────── */
+
+/* Hamburger menu button (hidden on desktop) */
+.nav-menu-toggle {
+  display: none;
+  flex-direction: column;
+  gap: 5px;
+  background: transparent;
+  border: none;
+  padding: 8px;
+  cursor: pointer;
+  margin-left: 12px;
+}
+.nav-menu-toggle span {
+  width: 24px;
+  height: 2px;
+  background: var(--ink);
+  transition: all 0.3s ease;
+  display: block;
+}
+
+/* Mobile menu open state */
+.nav-menu-toggle.open span:nth-child(1) {
+  transform: rotate(45deg) translate(10px, 10px);
+}
+.nav-menu-toggle.open span:nth-child(2) {
+  opacity: 0;
+}
+.nav-menu-toggle.open span:nth-child(3) {
+  transform: rotate(-45deg) translate(8px, -8px);
+}
+
+/* Make sure all touch targets are at least 44px */
+.btn, .nav-cta, .nav-cta-ghost, .lang-toggle, .theme-toggle,
+.field-input, .widget-cta, button, a[class*="btn"], input[type="button"],
+input[type="submit"], .faq-q, .tier-cta, .muni-list-item {
+  min-height: 44px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+/* Responsive typography */
+@media (max-width: 768px) {
+  html {
+    font-size: 15px;
+  }
+  body {
+    font-size: 15px;
+  }
+}
+
+@media (max-width: 480px) {
+  html {
+    font-size: 14px;
+  }
+  body {
+    font-size: 14px;
+  }
+}
+
+/* Tablet optimization (768px - 1024px) */
+@media (min-width: 481px) and (max-width: 1024px) {
+  .hero-grid,
+  .problem-grid,
+  .proof-grid,
+  .faq-grid,
+  .footer-top {
+    gap: clamp(24px, 5vw, 40px);
+  }
+
+  .nav-links {
+    gap: 20px;
+  }
+
+  .section-title {
+    font-size: clamp(28px, 4vw, 48px);
+  }
+
+  .hero-headline {
+    font-size: clamp(36px, 5vw, 64px);
+  }
+
+  .tiers {
+    grid-template-columns: 1fr;
+  }
+
+  .how-grid {
+    grid-template-columns: 1fr 1fr;
+  }
+
+  .how-step:nth-child(3) {
+    grid-column: 1 / -1;
+    max-width: 50%;
+  }
+}
+
+/* Mobile optimization (max-width 480px) */
+@media (max-width: 480px) {
+  /* Show hamburger menu */
+  .nav-menu-toggle {
+    display: flex;
+  }
+
+  /* Mobile nav links */
+  .nav-links {
+    display: none;
+    position: absolute;
+    top: 100%;
+    left: 0;
+    right: 0;
+    flex-direction: column;
+    background: var(--bg);
+    border-bottom: 1px solid var(--hairline);
+    padding: 16px var(--pad-x);
+    gap: 12px;
+    z-index: 100;
+  }
+
+  .nav-links.nav-open {
+    display: flex;
+  }
+
+  .nav-links a {
+    padding: 12px 0;
+    font-size: 16px;
+    display: block;
+  }
+
+  /* Compact nav-right for mobile */
+  .nav-right {
+    gap: 4px !important;
+  }
+
+  .lang-toggle,
+  .theme-toggle {
+    padding: 4px 6px !important;
+    font-size: 11px !important;
+  }
+
+  .nav-cta-ghost,
+  .nav-cta {
+    display: none;
+  }
+
+  /* Hero section mobile */
+  .hero {
+    padding: clamp(40px, 6vw, 56px) 0 clamp(32px, 5vw, 48px);
+  }
+
+  .hero-headline {
+    font-size: clamp(32px, 7vw, 52px);
+    line-height: 1.1;
+    margin: 8px 0 20px;
+  }
+
+  .hero-sub {
+    font-size: 16px;
+    margin-bottom: 24px;
+  }
+
+  .hero-ctas {
+    flex-direction: column;
+    gap: 12px;
+  }
+
+  .hero-ctas .btn {
+    width: 100%;
+    justify-content: center;
+  }
+
+  .hero-foot {
+    font-size: 12px;
+    flex-direction: column;
+    gap: 8px;
+  }
+
+  .foot-sep {
+    display: none;
+  }
+
+  /* Stats grid mobile */
+  .stats {
+    padding: clamp(40px, 6vw, 56px) 0;
+  }
+
+  .stats-grid {
+    grid-template-columns: 1fr;
+    border: none;
+  }
+
+  .stat {
+    border: 1px solid var(--hairline);
+    border-radius: 8px;
+    margin-bottom: 12px;
+    padding: 20px 16px;
+  }
+
+  .stat:last-child {
+    margin-bottom: 0;
+  }
+
+  /* Problem section mobile */
+  .problem {
+    padding: clamp(40px, 6vw, 56px) 0;
+  }
+
+  .problem-grid {
+    gap: 24px;
+  }
+
+  /* How section mobile */
+  .how {
+    padding: clamp(40px, 6vw, 56px) 0;
+  }
+
+  .how-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .how-step {
+    border-right: none;
+    padding: 24px 0;
+    border-bottom: 1px solid var(--hairline);
+  }
+
+  .how-step:first-child {
+    padding-top: 0;
+  }
+
+  /* Pricing tiers mobile */
+  .pricing {
+    padding: clamp(40px, 6vw, 56px) 0;
+  }
+
+  .tiers {
+    gap: 12px;
+  }
+
+  .tier {
+    padding: 20px 16px;
+  }
+
+  .tier-price {
+    font-size: 36px;
+  }
+
+  /* FAQ mobile */
+  .faq {
+    padding: clamp(40px, 6vw, 56px) 0;
+  }
+
+  .faq-grid {
+    gap: 20px;
+  }
+
+  .faq-q {
+    padding: 16px 0;
+    gap: 16px;
+  }
+
+  .faq-a {
+    padding: 0 0 16px;
+    font-size: 14px;
+  }
+
+  /* Footer mobile */
+  .footer {
+    padding: 48px 0 24px;
+  }
+
+  .footer-top {
+    gap: 24px;
+  }
+
+  .footer-cols {
+    grid-template-columns: 1fr;
+    gap: 20px;
+  }
+
+  .footer-col-title {
+    margin-bottom: 10px;
+  }
+
+  /* Form inputs mobile */
+  .field-input,
+  .field-input:focus {
+    font-size: 16px;
+    padding: 12px 14px;
+    min-height: 44px;
+  }
+
+  input[type="text"],
+  input[type="email"],
+  textarea,
+  select {
+    font-size: 16px;
+  }
+
+  /* Button mobile */
+  .btn {
+    width: 100%;
+    min-height: 44px;
+    padding: 12px 20px;
+    font-size: 16px;
+  }
+
+  .btn-primary {
+    font-weight: 600;
+  }
+
+  /* Modal mobile */
+  .modal-box {
+    padding: 24px 20px;
+    max-width: 90vw;
+  }
+
+  .modal-title {
+    font-size: 20px;
+  }
+
+  .modal-form {
+    gap: 12px;
+  }
+
+  /* Breadcrumb mobile */
+  .breadcrumb {
+    display: none;
+  }
+
+  /* Page header mobile */
+  .page-header {
+    padding: clamp(32px, 6vw, 48px) 0 clamp(24px, 4vw, 32px);
+  }
+
+  .page-title {
+    font-size: clamp(28px, 6vw, 40px);
+    margin: 8px 0 16px;
+  }
+
+  .page-sub {
+    font-size: 16px;
+  }
+
+  /* Longform mobile */
+  .longform-grid {
+    grid-template-columns: 1fr;
+    gap: 24px;
+  }
+
+  .longform-toc {
+    position: static;
+    top: auto;
+    border: 1px solid var(--hairline);
+    border-radius: 8px;
+    padding: 16px;
+    margin-bottom: 24px;
+  }
+
+  /* Proof section mobile */
+  .proof {
+    padding: clamp(48px, 8vw, 80px) 0;
+  }
+
+  .proof-quote {
+    font-size: clamp(24px, 5vw, 32px);
+  }
+
+  /* Process timeline mobile */
+  .process-timeline {
+    grid-template-columns: 1fr;
+  }
+
+  .process-stage {
+    border-right: none;
+    border-bottom: 1px solid var(--hairline);
+    padding: 20px 0;
+  }
+
+  .process-stage:last-child {
+    border-bottom: none;
+  }
+
+  /* Roadmap mobile */
+  .roadmap {
+    padding: clamp(40px, 6vw, 56px) 0;
+  }
+
+  .roadmap-layer {
+    padding: 16px 14px;
+    gap: 16px;
+  }
+
+  .layer-label {
+    font-size: 16px;
+  }
+
+  /* Tool page mobile */
+  .tool-step-indicator {
+    flex-wrap: wrap;
+    gap: 8px;
+  }
+
+  .tsi-item {
+    font-size: 12px;
+  }
+
+  .tsi-n {
+    padding: 2px 5px;
+    font-size: 10px;
+  }
+
+  .tool-step-block {
+    padding: 14px;
+    margin-bottom: 16px;
+  }
+
+  /* Checklist mobile */
+  .checklist-item {
+    padding: 6px 0;
+  }
+
+  .checklist-label {
+    font-size: 13px;
+  }
+
+  .checklist-ref {
+    font-size: 11px;
+  }
+
+  /* Netherlands map mobile */
+  .nl-map-layout {
+    grid-template-columns: 1fr;
+  }
+
+  .nl-map-canvas {
+    height: 300px;
+  }
+
+  .nl-map-sidebar {
+    grid-template-columns: 1fr;
+  }
+
+  .nl-map-cta-block {
+    grid-column: auto;
+  }
+
+  /* Widget/card mobile */
+  .hero-widget,
+  .cost-card,
+  .tier,
+  .proof-sources {
+    padding: 16px 14px;
+  }
+
+  .widget-title {
+    font-size: 14px;
+  }
+
+  /* Scanner/checklist mobile */
+  .checklist-body {
+    min-height: auto;
+    padding: 4px 0 8px;
+  }
+
+  /* Cost card mobile */
+  .cost-card {
+    position: static;
+    top: auto;
+    margin-bottom: 24px;
+  }
+}
+
+/* Large mobile (480px - 768px) */
+@media (max-width: 768px) and (min-width: 481px) {
+  .nav-links {
+    gap: 18px;
+  }
+
+  .hero-headline {
+    font-size: clamp(36px, 5vw, 60px);
+  }
+
+  .section-title {
+    font-size: clamp(28px, 4vw, 46px);
+  }
+
+  .how-grid {
+    grid-template-columns: 1fr 1fr;
+  }
+
+  .how-step:nth-child(3) {
+    grid-column: 1 / -1;
+    max-width: 50%;
+  }
+
+  .tiers {
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+  .tier:nth-child(2) {
+    grid-column: 1 / -1;
+    max-width: calc(50% + 8px);
+  }
+
+  .footer-cols {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+/* Extra small mobile (max-width 360px) */
+@media (max-width: 360px) {
+  :root {
+    --pad-x: 12px;
+  }
+
+  .nav-right {
+    gap: 0 !important;
+  }
+
+  .lang-toggle,
+  .theme-toggle {
+    padding: 2px 4px !important;
+    font-size: 10px !important;
+    gap: 2px !important;
+  }
+
+  .hero-headline {
+    font-size: clamp(24px, 6vw, 40px);
+  }
+
+  .btn {
+    padding: 10px 16px;
+    font-size: 14px;
+  }
+}
+
