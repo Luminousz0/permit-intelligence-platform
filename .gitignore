@@ -40,5 +40,7 @@ Thumbs.db
 *.db-journal
 src/data/
 
-# Deployment
-.vercel/
+# Deployment (Railway)
+.railway/
+*.railway
+railway.json

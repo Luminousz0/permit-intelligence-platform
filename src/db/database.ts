@@ -2,21 +2,17 @@ import Database from 'better-sqlite3';
 import path from 'path';
 import * as fs from 'fs';
 
-// Use in-memory DB on Vercel, file-based DB locally
-const dbPath = process.env.VERCEL === '1'
-  ? ':memory:'
-  : path.join(__dirname, '../data/app.db');
+// Use file-based DB (works on Railway and local development)
+const dbPath = path.join(__dirname, '../data/app.db');
 
-// Create data directory if needed (local development only)
-if (process.env.VERCEL !== '1') {
-  const dataDir = path.join(__dirname, '../data');
-  try {
-    if (!fs.existsSync(dataDir)) {
-      fs.mkdirSync(dataDir, { recursive: true });
-    }
-  } catch (error) {
-    console.warn('Could not create data directory:', (error as any).message);
+// Create data directory if needed
+const dataDir = path.join(__dirname, '../data');
+try {
+  if (!fs.existsSync(dataDir)) {
+    fs.mkdirSync(dataDir, { recursive: true });
   }
+} catch (error) {
+  console.warn('Could not create data directory:', (error as any).message);
 }
 
 const db = new Database(dbPath);
