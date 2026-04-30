@@ -1,8 +1,8 @@
 // Hero — bold problem-first headline + live municipality compliance widget.
 
-const { useState, useMemo } = React;
+const { useState } = React;
 
-// Municipality participation data — used by HeroWidget for live checks.
+// Municipality participation data — used by MunicipalityScanner for live checks.
 window.MUNICIPALITIES = [
   { name: "Almere",      status: "mandatory",     trigger: "≥4 woningen of >500 m²",          cvdr: "CVDR685432" },
   { name: "Amsterdam",   status: "mandatory",     trigger: "Impactscore ≥7 punten",            cvdr: "CVDR701294" },
@@ -58,108 +58,66 @@ function StatusDot({ status, lang }) {
   );
 }
 
-function HeroWidget({ lang, t, accent }) {
-  const [muniInput, setMuniInput] = useState("Almere");
-  const [type, setType] = useState("residential");
-  const [units, setUnits] = useState(8);
-  const [submitted, setSubmitted] = useState(true);
+function MunicipalityScanner({ lang, t, accent }) {
+  const [idx, setIdx] = useState(0);
+  const [visible, setVisible] = useState(true);
+  const munis = window.MUNICIPALITIES;
 
-  const matched = useMemo(() => {
-    const q = muniInput.trim().toLowerCase();
-    if (!q) return null;
-    return window.MUNICIPALITIES.find(m => m.name.toLowerCase().startsWith(q)) || null;
-  }, [muniInput]);
+  React.useEffect(() => {
+    const interval = setInterval(() => {
+      setVisible(false);
+      setTimeout(() => {
+        setIdx(i => (i + 1) % munis.length);
+        setVisible(true);
+      }, 300);
+    }, 2800);
+    return () => clearInterval(interval);
+  }, []);
 
-  const result = submitted && matched ? matched : null;
+  const muni = munis[idx];
+
+  const statusConfig = {
+    mandatory:     { bg: "var(--green)",     label: lang === "en" ? "Mandatory"     : "Verplicht" },
+    discretionary: { bg: "var(--amber)",     label: lang === "en" ? "Discretionary" : "Beoordelingsruimte" },
+    voluntary:     { bg: "var(--blue-soft)", label: lang === "en" ? "Voluntary"     : "Vrijwillig" },
+  };
+  const sc = statusConfig[muni.status] || statusConfig.voluntary;
+
+  const titleNL = "Gemeentelijke compliance database";
+  const titleEN = "Municipal compliance database";
+  const subNL = `${idx + 1} van ${munis.length} gemeenten`;
+  const subEN = `${idx + 1} of ${munis.length} municipalities`;
 
   return (
     <div className="hero-widget">
       <div className="widget-head">
         <div>
-          <div className="widget-title">{t.widgetTitle}</div>
-          <div className="widget-sub">{t.widgetSub}</div>
+          <div className="widget-title">{lang === "en" ? titleEN : titleNL}</div>
+          <div className="widget-sub mono small">{lang === "en" ? subEN : subNL}</div>
         </div>
         <div className="widget-pill">
           <span className="dot live"></span>
-          <span>live tool</span>
+          <span>live</span>
         </div>
       </div>
 
-      <div className="widget-form">
-        <label className="field">
-          <span className="field-label">{t.widgetMuni}</span>
-          <input
-            type="text"
-            value={muniInput}
-            onChange={(e) => { setMuniInput(e.target.value); setSubmitted(false); }}
-            placeholder={t.widgetMuniPlaceholder}
-            className="field-input"
-            autoComplete="off"
-            spellCheck={false}
-          />
-        </label>
-
-        <label className="field">
-          <span className="field-label">{t.widgetType}</span>
-          <select
-            value={type}
-            onChange={(e) => { setType(e.target.value); setSubmitted(false); }}
-            className="field-input"
-          >
-            {t.types.map(opt => <option key={opt.id} value={opt.id}>{opt.label}</option>)}
-          </select>
-        </label>
-
-        <label className="field field-units">
-          <span className="field-label">{t.widgetUnits}</span>
-          <input
-            type="number"
-            value={units}
-            onChange={(e) => { setUnits(Number(e.target.value) || 0); setSubmitted(false); }}
-            className="field-input"
-            min={1}
-          />
-        </label>
-
-        <button
-          type="button"
-          className="widget-cta"
-          onClick={() => setSubmitted(true)}
-          style={{ background: accent.bg, color: accent.fg }}
-        >
-          {t.widgetCheck}
-          <span className="arrow">→</span>
-        </button>
+      <div className={`scanner-entry ${visible ? "scanner-fade-in" : "scanner-fade-out"}`}>
+        <div className="scanner-municipality">{muni.name}</div>
+        <div className="scanner-status">
+          <span className="scanner-dot" style={{ background: sc.bg }}></span>
+          <span className="scanner-status-label mono small">{sc.label}</span>
+        </div>
+        <div className="scanner-trigger">{muni.trigger}</div>
+        <div className="scanner-meta">
+          <span>{muni.cvdr}</span>
+          <span className="scanner-cvdr-link">↗ lokaleregelgeving.overheid.nl</span>
+        </div>
       </div>
 
-      <div className="widget-result">
-        {result ? (
-          <>
-            <div className="result-row">
-              <div className="result-key">{lang === "en" ? "Municipality" : "Gemeente"}</div>
-              <div className="result-val mono">{result.name}</div>
-            </div>
-            <div className="result-row">
-              <div className="result-key">Status</div>
-              <div className="result-val"><StatusDot status={result.status} lang={lang} /></div>
-            </div>
-            <div className="result-row">
-              <div className="result-key">Trigger</div>
-              <div className="result-val">{result.trigger}</div>
-            </div>
-            <div className="result-row">
-              <div className="result-key">{lang === "en" ? "Source" : "Bron"}</div>
-              <div className="result-val mono small">
-                {result.cvdr || "—"} {result.cvdr && <span className="src-link">↗ lokaleregelgeving.overheid.nl</span>}
-              </div>
-            </div>
-          </>
-        ) : (
-          <div className="result-empty">
-            <div className="empty-line">{t.widgetNoMatch}</div>
-            <div className="empty-sub">{t.widgetNoMatchSub}</div>
-          </div>
-        )}
+      <div className="scanner-progress">
+        {munis.map((_, i) => (
+          <span key={i} className={`scanner-pip${i === idx ? " active" : ""}`}></span>
+        ))}
       </div>
     </div>
   );
@@ -201,7 +159,7 @@ function Hero({ lang, t, headlineIdx, accent, onScrollHow }) {
             </div>
           </div>
           <div className="hero-aside">
-            <HeroWidget lang={lang} t={t.hero} accent={accent} />
+            <MunicipalityScanner lang={lang} t={t.hero} accent={accent} />
           </div>
         </div>
       </div>
