@@ -56,20 +56,34 @@ app.get('/health', (req, res) => {
 app.post('/api/predict-timeline', (req, res) => {
   try {
     const { municipality } = req.body;
-    
+
     if (!municipality) {
       return res.status(400).json({ error: 'Municipality required' });
     }
 
-    const timeline = TIMELINE_DATA[municipality] || 
-      '8 weken reguliere procedure / 26 weken uitgebreide procedure';
-    
+    // Determine weeks based on municipality
+    let minimum = 8;
+    let average = 18;
+    let maximum = 26;
+
+    if (municipality === 'Almere' || municipality === 'Delft') {
+      minimum = 8;
+      average = 8;
+      maximum = 8;
+    } else if (municipality === 'Utrecht' || municipality === 'Zaanstad' || municipality === 'Leiden' || municipality === 'Leeuwarden') {
+      minimum = 10;
+      average = 12;
+      maximum = 16;
+    }
+
     res.json({
       success: true,
       municipality,
-      timeline,
-      weeks: municipality === 'Almere' ? 8 : 
-             municipality === 'Delft' ? 8 : 26
+      predictedWeeks: {
+        minimum,
+        average,
+        maximum
+      }
     });
   } catch (error) {
     console.error('Timeline prediction error:', error);

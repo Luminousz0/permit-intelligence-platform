@@ -6,7 +6,7 @@ If you discover a security vulnerability in Permit Intelligence Platform, please
 
 ### How to Report
 
-1. **Email**: Send a detailed report to `ashwinramcharan21@gmail.com`
+1. **GitHub**: Open a private security advisory on the repository or message [@Luminousz0](https://github.com/Luminousz0)
 2. **Subject line**: `[SECURITY] Vulnerability in Permit Intelligence`
 3. **Include**:
    - Description of the vulnerability
@@ -82,6 +82,6 @@ Subscribe to releases on GitHub: Click "Watch" → "Releases only"
 
 ## Questions?
 
-Email: ashwinramcharan21@gmail.com
+Message [@Luminousz0](https://github.com/Luminousz0) on GitHub.
 
 Thank you for helping keep Permit Intelligence secure! 🔒

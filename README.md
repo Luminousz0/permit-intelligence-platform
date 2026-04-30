@@ -254,8 +254,7 @@ This codebase is private and not open for public use. For licensing inquiries, c
 ## Contact & Support
 
 - **Website**: https://permit-intelligence.nl
-- **Email**: ashwinramcharan21@gmail.com
-- **GitHub**: [@Luminousz0](https://github.com/Luminousz0)
+- **GitHub**: [@Luminousz0](https://github.com/Luminousz0) — message on GitHub for inquiries
 
 ---
 

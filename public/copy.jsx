@@ -337,7 +337,7 @@ const COPY = {
         { title: "Bedrijf", links: [
           { label: "Over ons", href: "#" },
           { label: "Validatie", href: "validatie.html" },
-          { label: "Contact", href: "mailto:asramcharan@gmail.com" },
+          { label: "Contact", href: "https://github.com/Luminousz0", target: "_blank" },
           { label: "Pers", href: "#" }
         ] },
         { title: "Bronnen", links: [
@@ -691,7 +691,7 @@ const COPY = {
         { title: "Company", links: [
           { label: "About", href: "#" },
           { label: "Validation", href: "validatie.html" },
-          { label: "Contact", href: "mailto:asramcharan@gmail.com" },
+          { label: "Contact", href: "https://github.com/Luminousz0", target: "_blank" },
           { label: "Press", href: "#" }
         ] },
         { title: "Sources", links: [
