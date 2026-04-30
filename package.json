@@ -1,35 +1,37 @@
 {
   "name": "permit-intelligence-platform",
   "version": "1.0.0",
-  "description": "Permit intelligence for Dutch real estate developers",
-  "main": "dist/server.js",
+  "description": "Modern SaaS reference tool for Dutch municipal compliance under Omgevingswet",
+  "author": "Ashwin Ramcharan",
+  "license": "Proprietary",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/Luminousz0/permit-intelligence-platform.git"
+  },
+  "homepage": "https://permit-intelligence.nl",
   "scripts": {
-    "dev": "ts-node src/server.ts",
-    "build": "tsc",
-    "start": "node dist/server.js"
+    "start": "python3 -m http.server 3000 --directory public",
+    "dev": "python3 -m http.server 3000 --directory public",
+    "build": "echo 'Static site - no build required'",
+    "test": "echo 'No tests configured yet'",
+    "lint": "echo 'No linter configured yet'"
   },
-  "dependencies": {
-    "bcryptjs": "^3.0.3",
-    "better-sqlite3": "^11.0.0",
-    "cors": "^2.8.5",
-    "docx": "^9.6.1",
-    "express": "^4.18.2",
-    "i18next": "^26.0.6",
-    "i18next-fs-backend": "^2.6.4",
-    "i18next-http-middleware": "^3.9.3",
-    "jsonwebtoken": "^9.0.3",
-    "nodemailer": "^8.0.5"
+  "keywords": [
+    "permit",
+    "omgevingswet",
+    "dutch-law",
+    "municipality",
+    "compliance",
+    "saas",
+    "real-estate"
+  ],
+  "engines": {
+    "node": ">=16.0.0",
+    "npm": ">=8.0.0"
   },
-  "devDependencies": {
-    "@types/bcryptjs": "^2.4.6",
-    "@types/better-sqlite3": "^7.6.8",
-    "@types/cors": "^2.8.17",
-    "@types/express": "^4.17.21",
-    "@types/jsonwebtoken": "^9.0.10",
-    "@types/node": "^20.11.0",
-    "@types/nodemailer": "^8.0.0",
-    "@vercel/node": "^3.2.0",
-    "ts-node": "^10.9.2",
-    "typescript": "^5.3.3"
-  }
+  "browserslist": [
+    ">0.2%",
+    "not dead",
+    "not op_mini all"
+  ]
 }

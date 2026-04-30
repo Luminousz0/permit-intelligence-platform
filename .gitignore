@@ -1,10 +1,44 @@
+# Node modules
 node_modules/
+package-lock.json
+yarn.lock
+
+# Build outputs
 dist/
+build/
+*.tsbuildinfo
+
+# IDE & Editor
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+
+# Environment variables
 .env
 .env.*
+!.env.example
+
+# Logs
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
 *.log
+
+# Temporary files
+*.tmp
+*.temp
+.cache/
+
+# OS
 .DS_Store
-src/data/
+Thumbs.db
+
+# Database
 *.db
 *.db-journal
+src/data/
+
+# Deployment
 .vercel/
