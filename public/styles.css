@@ -165,6 +165,7 @@ button { font-family: inherit; cursor: pointer; }
 
 .nav-right { display: flex; align-items: center; gap: 14px; }
 
+.theme-toggle,
 .lang-toggle {
   background: transparent;
   border: 1px solid var(--hairline);
@@ -174,8 +175,13 @@ button { font-family: inherit; cursor: pointer; }
   align-items: center;
   gap: 4px;
   color: var(--mute);
+  transition: border-color 0.15s, color 0.15s;
 }
+.theme-toggle:hover,
+.lang-toggle:hover { border-color: var(--ink-soft); }
+.theme-toggle .active,
 .lang-toggle .active { color: var(--ink); font-weight: 600; }
+.theme-toggle .lang-sep,
 .lang-toggle .lang-sep { color: var(--hairline-strong); }
 
 .nav-cta-ghost {
@@ -302,12 +308,13 @@ button { font-family: inherit; cursor: pointer; }
 /* ---------- HERO WIDGET ---------- */
 .hero-aside {
   position: relative;
+  padding-top: 0;
 }
 .hero-widget {
   background: var(--bg);
   border: 1px solid var(--hairline-strong);
   border-radius: 12px;
-  padding: 22px;
+  padding: 20px 22px 22px 22px;
   box-shadow:
     0 1px 0 0 oklch(1 0 0) inset,
     0 30px 60px -30px oklch(0.18 0.01 250 / 0.18),

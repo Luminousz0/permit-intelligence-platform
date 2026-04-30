@@ -59,7 +59,7 @@ function Logo({ glyph }) {
   );
 }
 
-function Nav({ lang, setLang, t, accent, sticky, glyph, onTrialOpen }) {
+function Nav({ lang, setLang, t, accent, sticky, glyph, onTrialOpen, theme, setTheme }) {
   return (
     <header className="nav" data-sticky={sticky ? "yes" : "no"}>
       <div className="container nav-inner">
@@ -70,6 +70,13 @@ function Nav({ lang, setLang, t, accent, sticky, glyph, onTrialOpen }) {
           ))}
         </nav>
         <div className="nav-right">
+          <button type="button" className="theme-toggle mono small"
+                  onClick={() => setTheme(theme === "light" ? "dark" : "light")}
+                  title={theme === "light" ? "Donker" : "Licht"}>
+            <span className={theme === "light" ? "active" : ""}>☀️</span>
+            <span className="lang-sep">/</span>
+            <span className={theme === "dark" ? "active" : ""}>🌙</span>
+          </button>
           <button type="button" className="lang-toggle mono small"
                   onClick={() => setLang(lang === "nl" ? "en" : "nl")}>
             <span className={lang === "nl" ? "active" : ""}>NL</span>
@@ -105,6 +112,8 @@ function App() {
 
   const lang = tweaks.lang;
   const setLang = (v) => setTweak("lang", v);
+  const theme = tweaks.theme;
+  const setTheme = (v) => setTweak("theme", v);
   const t = window.COPY[lang];
 
   // Cycle headlines automatically
@@ -164,7 +173,8 @@ function App() {
   return (
     <>
       <Nav lang={lang} setLang={setLang} t={t} accent={accent}
-           sticky={tweaks.stickyNav} glyph={tweaks.logoGlyph} onTrialOpen={openTrial} />
+           sticky={tweaks.stickyNav} glyph={tweaks.logoGlyph} onTrialOpen={openTrial}
+           theme={theme} setTheme={setTheme} />
       <main>
         {tweaks.showHero && (
           <Hero lang={lang} t={t} headlineIdx={headlineIdx} accent={accent} onScrollHow={onScrollHow} />
