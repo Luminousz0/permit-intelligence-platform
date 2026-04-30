@@ -2,7 +2,7 @@
 
 A modern SaaS reference tool for Dutch municipal compliance under the Omgevingswet (environmental law). Permit Intelligence simplifies permit requirements by providing real-time access to municipal policies, documentation templates, and expert guidance.
 
-**Live**: [permit-intelligence.nl](https://permit-intelligence.nl)
+**Live**: [permitintelligence.up.railway.app](https://permitintelligence.up.railway.app/)
 
 ---
 
