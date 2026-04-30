@@ -1575,15 +1575,15 @@ body[data-theme="dark"] .modal-box {
 .nl-map-tooltip::before { display: none !important; }
 .map-tooltip {
   background: var(--bg, #fff);
-  border: 1px solid oklch(0.88 0.005 250);
+  border: 1px solid var(--hairline-strong);
   border-radius: 8px;
   padding: 12px 14px;
   min-width: 180px;
 }
-.mtt-name  { font-weight: 600; font-size: 14px; color: oklch(0.22 0.01 250); margin-bottom: 4px; }
-.mtt-status{ font-size: 12px; color: oklch(0.45 0.01 250); margin-bottom: 3px; }
-.mtt-trigger { font-size: 12px; color: oklch(0.55 0.01 250); margin-bottom: 4px; }
-.mtt-cvdr  { font-family: "JetBrains Mono", monospace; font-size: 11px; color: oklch(0.65 0.01 250); }
+.mtt-name  { font-weight: 600; font-size: 14px; color: var(--ink); margin-bottom: 4px; }
+.mtt-status{ font-size: 12px; color: var(--ink-soft); margin-bottom: 3px; }
+.mtt-trigger { font-size: 12px; color: var(--mute); margin-bottom: 4px; }
+.mtt-cvdr  { font-family: "JetBrains Mono", monospace; font-size: 11px; color: var(--mute); }
 
 /* Map cursor */
 .nl-map-canvas .leaflet-container { cursor: default; }
@@ -1768,8 +1768,8 @@ body[data-theme="dark"] .modal-box {
   font-size: 12px;
   font-family: var(--mono);
 }
-.pdok-hit  { background: oklch(0.72 0.14 145 / 0.12); color: oklch(0.3 0.1 145); }
-.pdok-miss { background: oklch(0.78 0.14 75 / 0.12);  color: oklch(0.4 0.1 75); }
+.pdok-hit  { background: oklch(0.72 0.14 145 / 0.12); color: var(--ink); }
+.pdok-miss { background: oklch(0.78 0.14 75 / 0.12);  color: var(--ink); }
 
 /* ─────────────────────────────────────────────────────────
    MOBILE & TABLET OPTIMIZATION

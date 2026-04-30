@@ -31,12 +31,19 @@ const SUBNAV = {
 function SubNav({ lang, setLang, current, accent, demoLabel, tryLabel }) {
   const [theme, setThemeState] = React.useState("light");
   const [mobileMenuOpen, setMobileMenuOpen] = React.useState(false);
+  const [currentLang, setCurrentLang] = React.useState(lang || "nl");
 
   React.useEffect(() => {
     // Read initial theme from body data attribute
     const initialTheme = document.body.dataset.theme || "light";
     setThemeState(initialTheme);
   }, []);
+
+  const handleLangChange = (newLang) => {
+    setCurrentLang(newLang);
+    setLang(newLang);
+    if (window.saveLangPreference) window.saveLangPreference(newLang);
+  };
 
   const handleThemeToggle = () => {
     const newTheme = theme === "light" ? "dark" : "light";
@@ -70,11 +77,11 @@ function SubNav({ lang, setLang, current, accent, demoLabel, tryLabel }) {
           <button
             type="button"
             className="lang-toggle mono small"
-            onClick={() => setLang(lang === "nl" ? "en" : "nl")}
+            onClick={() => handleLangChange(currentLang === "nl" ? "en" : "nl")}
           >
-            <span className={lang === "nl" ? "active" : ""}>NL</span>
+            <span className={currentLang === "nl" ? "active" : ""}>NL</span>
             <span className="lang-sep">/</span>
-            <span className={lang === "en" ? "active" : ""}>EN</span>
+            <span className={currentLang === "en" ? "active" : ""}>EN</span>
           </button>
           <button
             type="button"

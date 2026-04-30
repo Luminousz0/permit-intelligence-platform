@@ -1,24 +1,30 @@
-// Global theme manager for all pages
-// Handles dark/light mode switching and persistence via localStorage
+// Global preference manager for all pages
+// Handles dark/light mode switching, language preference, and persistence via localStorage
 
 (function() {
   const THEME_KEY = "permit-intelligence-theme";
+  const LANG_KEY = "permit-intelligence-lang";
   const DARK = "dark";
   const LIGHT = "light";
+  const DEFAULT_LANG = "nl";
 
-  // Initialize theme on page load
-  function initTheme() {
-    // 1. Try to get saved preference
+  // Initialize preferences on page load
+  function initPreferences() {
+    // Initialize theme
     let savedTheme = localStorage.getItem(THEME_KEY);
-
-    // 2. If no saved preference, check system preference
     if (!savedTheme) {
       const prefersDark = window.matchMedia && window.matchMedia("(prefers-color-scheme: dark)").matches;
       savedTheme = prefersDark ? DARK : LIGHT;
     }
-
-    // 3. Apply theme to document
     applyTheme(savedTheme);
+
+    // Initialize language
+    let savedLang = localStorage.getItem(LANG_KEY);
+    if (!savedLang) {
+      savedLang = DEFAULT_LANG;
+    }
+    // Store in window object so React components can access it
+    window.STORED_LANG = savedLang;
   }
 
   // Apply theme to document
@@ -48,10 +54,21 @@
     applyTheme(newTheme);
   };
 
+  // Save language preference (called from React setLang)
+  window.saveLangPreference = function(lang) {
+    localStorage.setItem(LANG_KEY, lang);
+    window.STORED_LANG = lang;
+  };
+
+  // Get stored language preference
+  window.getStoredLang = function() {
+    return localStorage.getItem(LANG_KEY) || DEFAULT_LANG;
+  };
+
   // Initialize on DOMContentLoaded or immediately if already loaded
   if (document.readyState === "loading") {
-    document.addEventListener("DOMContentLoaded", initTheme);
+    document.addEventListener("DOMContentLoaded", initPreferences);
   } else {
-    initTheme();
+    initPreferences();
   }
 })();

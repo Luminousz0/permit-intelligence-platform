@@ -80,7 +80,10 @@ function Nav({ lang, setLang, t, accent, sticky, glyph, onTrialOpen, theme, setT
             <span className={theme === "dark" ? "active" : ""}>Dark</span>
           </button>
           <button type="button" className="lang-toggle mono small"
-                  onClick={() => setLang(lang === "nl" ? "en" : "nl")}>
+                  onClick={() => {
+                    const newLang = lang === "nl" ? "en" : "nl";
+                    setLang(newLang);
+                  }}>
             <span className={lang === "nl" ? "active" : ""}>NL</span>
             <span className="lang-sep">/</span>
             <span className={lang === "en" ? "active" : ""}>EN</span>
@@ -123,11 +126,24 @@ function App() {
   const openTrial = useCallbackApp(() => setTrialOpen(true), []);
   const closeTrial = useCallbackApp(() => setTrialOpen(false), []);
 
+  // Initialize language from localStorage if available
+  const storedLang = window.getStoredLang ? window.getStoredLang() : "nl";
+
   const lang = tweaks.lang;
-  const setLang = (v) => setTweak("lang", v);
+  const setLang = (v) => {
+    setTweak("lang", v);
+    if (window.saveLangPreference) window.saveLangPreference(v);
+  };
   const theme = tweaks.theme;
   const setTheme = (v) => setTweak("theme", v);
   const t = window.COPY[lang];
+
+  // Sync tweaks with localStorage on mount
+  useEffectApp(() => {
+    if (storedLang && storedLang !== tweaks.lang) {
+      setTweak("lang", storedLang);
+    }
+  }, []);
 
   // Cycle headlines automatically
   const [autoIdx, setAutoIdx] = useStateApp(tweaks.headline);
