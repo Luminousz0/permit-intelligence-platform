@@ -1138,3 +1138,16 @@
     grid-template-columns: repeat(2, 1fr);
   }
 }
+
+/* Dark mode overrides for tool page readability */
+body[data-theme="dark"] .muni-list-item .mono.small.mute {
+  color: oklch(0.75 0.005 250) !important;
+}
+
+body[data-theme="dark"] .tool-output-section .tos-kv-list .v.mono {
+  color: oklch(0.80 0.005 250) !important;
+}
+
+body[data-theme="dark"] .muni-meta {
+  color: oklch(0.75 0.005 250) !important;
+}
