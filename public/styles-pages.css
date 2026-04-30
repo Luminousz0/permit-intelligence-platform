@@ -320,7 +320,7 @@
   display: flex;
   flex-direction: column;
 }
-.svc-card.is-dark { background: var(--bg-deep); color: var(--bg); border-color: var(--bg-deep); }
+.svc-card.is-dark { background: var(--bg-deep); color: oklch(0.75 0.005 250); border-color: var(--bg-deep); }
 .svc-eyebrow {
   font-family: var(--mono);
   font-size: 11px;
@@ -331,7 +331,7 @@
 }
 .svc-card.is-dark .svc-eyebrow { color: oklch(0.7 0.01 250); }
 .svc-title { font-family: var(--serif); font-size: 32px; letter-spacing: -0.02em; line-height: 1.1; margin: 0 0 12px; }
-.svc-card.is-dark .svc-title { color: var(--bg); }
+.svc-card.is-dark .svc-title { color: oklch(0.90 0.005 250); }
 .svc-desc { font-size: 15px; color: var(--ink-soft); margin: 0 0 24px; max-width: 36ch; }
 .svc-card.is-dark .svc-desc { color: oklch(0.78 0.005 250); }
 .svc-price-row {
@@ -344,6 +344,7 @@
 }
 .svc-card.is-dark .svc-price-row { border-color: oklch(0.3 0.01 250); }
 .svc-price { font-family: var(--serif); font-size: 44px; letter-spacing: -0.025em; line-height: 1; }
+.svc-card.is-dark .svc-price { color: oklch(0.85 0.005 250); }
 .svc-period { font-family: var(--mono); font-size: 13px; color: var(--mute); }
 .svc-card.is-dark .svc-period { color: oklch(0.7 0.01 250); }
 .svc-features { list-style: none; padding: 0; margin: 0 0 28px; display: flex; flex-direction: column; gap: 10px; font-size: 14px; flex: 1; }
