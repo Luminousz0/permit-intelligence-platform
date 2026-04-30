@@ -1139,15 +1139,45 @@
   }
 }
 
-/* Dark mode overrides for tool page readability */
-body[data-theme="dark"] .muni-list-item .mono.small.mute {
-  color: oklch(0.75 0.005 250) !important;
+/* Dark mode overrides for tool page text readability */
+body[data-theme="dark"] .tool-input,
+body[data-theme="dark"] .tool-output,
+body[data-theme="dark"] .timeline-panel {
+  --mute: oklch(0.80 0.005 250);
 }
 
-body[data-theme="dark"] .tool-output-section .tos-kv-list .v.mono {
+body[data-theme="dark"] .muni-list-item {
+  color: oklch(0.95 0.005 250) !important;
+}
+
+body[data-theme="dark"] .muni-list-item .mono.small {
   color: oklch(0.80 0.005 250) !important;
 }
 
 body[data-theme="dark"] .muni-meta {
-  color: oklch(0.75 0.005 250) !important;
+  color: oklch(0.80 0.005 250) !important;
+}
+
+body[data-theme="dark"] .tos-label {
+  color: oklch(0.95 0.005 250) !important;
+}
+
+body[data-theme="dark"] .tos-body {
+  color: oklch(0.93 0.005 250) !important;
+}
+
+body[data-theme="dark"] .tos-kv-list .k {
+  color: oklch(0.80 0.005 250) !important;
+}
+
+body[data-theme="dark"] .tos-kv-list .v {
+  color: oklch(0.93 0.005 250) !important;
+}
+
+body[data-theme="dark"] .tos-doc-list .doc-title {
+  color: oklch(0.93 0.005 250) !important;
+}
+
+body[data-theme="dark"] .tos-doc-list .doc-desc {
+  color: oklch(0.85 0.005 250) !important;
 }
