@@ -251,7 +251,7 @@ console.error('Error:', problem);
 
 ### React DevTools
 
-Install the [React DevTools extension](https://react-devtools-tutorial.vercel.app/):
+Install the [React DevTools extension](https://react.dev/learn/react-developer-tools):
 - Inspect component hierarchy
 - View props and state
 - Profile performance
