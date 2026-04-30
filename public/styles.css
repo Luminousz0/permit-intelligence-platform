@@ -680,7 +680,7 @@ button { font-family: inherit; cursor: pointer; }
   font-size: clamp(28px, 3vw, 38px);
   line-height: 1.25;
   letter-spacing: -0.015em;
-  color: var(--bg);
+  color: oklch(0.90 0.005 250);
   margin: 28px 0 28px;
   text-wrap: balance;
 }
@@ -699,8 +699,8 @@ button { font-family: inherit; cursor: pointer; }
   align-items: baseline;
   gap: 16px;
 }
-.attr-line { font-size: 14px; color: var(--bg); }
-.attr-note { color: var(--bg); }
+.attr-line { font-size: 14px; color: oklch(0.85 0.005 250); }
+.attr-note { color: oklch(0.85 0.005 250); }
 
 .proof-sources {
   background: var(--bg-deep);
@@ -712,13 +712,13 @@ button { font-family: inherit; cursor: pointer; }
 .sources-title {
   font-size: 15px;
   font-weight: 600;
-  color: var(--bg);
+  color: oklch(0.85 0.005 250);
   margin-bottom: 12px;
 }
 .sources-body {
   font-size: 14px;
   line-height: 1.6;
-  color: var(--bg);
+  color: oklch(0.75 0.005 250);
   margin: 0 0 18px;
 }
 .sources-list {
@@ -728,10 +728,10 @@ button { font-family: inherit; cursor: pointer; }
   display: flex;
   flex-direction: column;
   gap: 8px;
-  color: var(--bg);
+  color: oklch(0.75 0.005 250);
 }
 .sources-list li { display: inline-flex; align-items: center; gap: 8px; }
-.src-bullet { color: var(--bg); }
+.src-bullet { color: oklch(0.75 0.005 250); }
 
 /* ---------- PRICING ---------- */
 .pricing {
@@ -800,7 +800,7 @@ button { font-family: inherit; cursor: pointer; }
   margin-bottom: 22px;
   min-height: 42px;
 }
-.tier-accent .tier-desc { color: var(--bg); }
+.tier-accent .tier-desc { color: oklch(0.75 0.005 250); }
 .tier-features {
   list-style: none;
   padding: 0;
@@ -819,6 +819,8 @@ button { font-family: inherit; cursor: pointer; }
   width: 16px;
 }
 .tier-accent .check { color: oklch(0.85 0.12 145); }
+.tier-accent .tier-price { color: oklch(0.85 0.005 250); }
+.tier-accent .tier-features li { color: oklch(0.75 0.005 250); }
 
 .tier-cta {
   font-size: 14px;
@@ -835,7 +837,7 @@ button { font-family: inherit; cursor: pointer; }
   transition: background 0.15s, opacity 0.15s, transform 0.15s;
 }
 .tier-cta:hover { background: var(--bg-alt); transform: translateY(-1px); }
-.tier-accent .tier-cta { color: var(--bg); border-color: oklch(0.4 0.01 250); }
+.tier-accent .tier-cta { color: oklch(0.85 0.005 250); border-color: oklch(0.4 0.01 250); }
 .tier-accent .tier-cta:hover { background: oklch(0.25 0.01 250); }
 .tier-cta .arrow { transition: transform 0.2s; }
 .tier-cta:hover .arrow { transform: translateX(3px); }
