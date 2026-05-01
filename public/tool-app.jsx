@@ -180,7 +180,7 @@ Gegenereerd door Permit Intelligence — permitintelligence.nl
 `;
 }
 
-const API_BASE = window.location.hostname === 'localhost' ? 'http://localhost:3000' : '';
+const API_BASE = window.location.hostname === 'localhost' ? 'http://localhost:3000' : 'https://permitintelligence.up.railway.app';
 
 async function downloadTemplate(content, filename) {
   const token = localStorage.getItem('authToken');
@@ -857,7 +857,7 @@ function TimelinePanel({ municipality, projectType, housingUnits, staticTimeline
       try {
         setLoading(true);
         setError(null);
-        const API_BASE = window.location.hostname === 'localhost' ? 'http://localhost:3000' : '';
+        const API_BASE = window.location.hostname === 'localhost' ? 'http://localhost:3000' : 'https://permitintelligence.up.railway.app';
         const res = await fetch(`${API_BASE}/api/predict-timeline`, {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },

@@ -29,7 +29,14 @@ function requireAuth(req: any, res: any): { id: number; email: string } | null {
   return user as { id: number; email: string };
 }
 
-app.use(cors());
+app.use(cors({
+  origin: [
+    'https://permit-intelligence-platform.vercel.app',
+    'http://localhost:3000',
+    'http://localhost:5173',
+  ],
+  credentials: true,
+}));
 
 // ── Stripe webhook — raw body MUST be parsed before express.json() ──────────
 app.post('/api/webhooks/stripe', express.raw({ type: 'application/json' }), async (req, res) => {
