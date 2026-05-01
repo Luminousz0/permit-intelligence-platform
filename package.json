@@ -10,9 +10,9 @@
   },
   "homepage": "https://permit-intelligence.nl",
   "scripts": {
-    "start": "node server.js",
-    "dev": "node server.js",
-    "build": "echo 'Static frontend - no build required'",
+    "start": "node dist/server.js",
+    "dev": "node dist/server.js",
+    "build": "node_modules/.bin/tsc",
     "test": "echo 'No tests configured yet'",
     "lint": "echo 'No linter configured yet'"
   },
@@ -26,9 +26,18 @@
     "real-estate"
   ],
   "dependencies": {
-    "express": "^4.18.2"
+    "bcryptjs": "^3.0.3",
+    "better-sqlite3": "^12.9.0",
+    "cors": "^2.8.6",
+    "docx": "^9.6.1",
+    "express": "^4.18.2",
+    "i18next": "^26.0.8",
+    "i18next-fs-backend": "^2.6.5",
+    "i18next-http-middleware": "^3.9.6",
+    "jsonwebtoken": "^9.0.3",
+    "nodemailer": "^8.0.7",
+    "stripe": "^22.1.0"
   },
-  "devDependencies": {},
   "engines": {
     "node": ">=16.0.0",
     "npm": ">=8.0.0"
@@ -37,5 +46,16 @@
     ">0.2%",
     "not dead",
     "not op_mini all"
-  ]
+  ],
+  "devDependencies": {
+    "@types/bcryptjs": "^2.4.6",
+    "@types/better-sqlite3": "^7.6.13",
+    "@types/cors": "^2.8.19",
+    "@types/express": "^5.0.6",
+    "@types/i18next": "^12.1.0",
+    "@types/jsonwebtoken": "^9.0.10",
+    "@types/node": "^25.6.0",
+    "@types/nodemailer": "^8.0.0",
+    "typescript": "^6.0.3"
+  }
 }

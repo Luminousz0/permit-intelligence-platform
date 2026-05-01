@@ -10,7 +10,8 @@ import { registerUser, loginUser, verifyToken } from './services/auth';
 import { sendReportEmail } from './services/email';
 import i18next from './services/i18n';
 import middleware from 'i18next-http-middleware';
-import db from './db/database';
+import db, { getCredits, getSubscriptionStatus, addCredits, useCredit } from './db/database';
+import { createCheckoutSession, constructWebhookEvent, getCreditsForPriceId } from './services/stripe';
 
 const app = express();
 const PORT = process.env.PORT ? parseInt(process.env.PORT) : 3000;
@@ -29,6 +30,65 @@ function requireAuth(req: any, res: any): { id: number; email: string } | null {
 }
 
 app.use(cors());
+
+// ── Stripe webhook — raw body MUST be parsed before express.json() ──────────
+app.post('/api/webhooks/stripe', express.raw({ type: 'application/json' }), async (req, res) => {
+  const sig = req.headers['stripe-signature'] as string;
+  if (!sig) return res.status(400).send('Missing stripe-signature header');
+
+  let event: any;
+  try {
+    event = constructWebhookEvent(req.body as Buffer, sig);
+  } catch (err: any) {
+    console.error('Stripe webhook signature verification failed:', err.message);
+    return res.status(400).send(`Webhook error: ${err.message}`);
+  }
+
+  if (event.type === 'checkout.session.completed') {
+    const session = event.data.object as any;
+    const userId = parseInt(session.metadata?.userId || '0', 10);
+    const priceId = session.metadata?.priceId || '';
+    const credits = getCreditsForPriceId(priceId);
+    const amountPaid = session.amount_total || 0;
+
+    if (!userId || !priceId) {
+      console.error('Stripe webhook: missing userId or priceId in metadata', session.id);
+      return res.json({ received: true });
+    }
+
+    try {
+      // Record purchase — idempotent via UNIQUE on stripe_session_id
+      db.prepare(`
+        INSERT OR IGNORE INTO purchases (user_id, stripe_session_id, stripe_price_id, credits_purchased, amount_paid)
+        VALUES (?, ?, ?, ?, ?)
+      `).run(userId, session.id, priceId, credits === -1 ? 0 : credits, amountPaid);
+
+      if (credits > 0) {
+        addCredits(userId, credits);
+        console.log(`Credited ${credits} report(s) to user ${userId} (session ${session.id})`);
+      } else if (credits === -1) {
+        // Pro subscription
+        db.prepare(`UPDATE users SET subscription_status = 'active' WHERE id = ?`).run(userId);
+        console.log(`Pro subscription activated for user ${userId}`);
+      }
+    } catch (err: any) {
+      console.error('Stripe webhook DB error:', err.message);
+    }
+  }
+
+  if (event.type === 'customer.subscription.deleted') {
+    // Pro subscription cancelled
+    const subscription = event.data.object as any;
+    const userId = parseInt(subscription.metadata?.userId || '0', 10);
+    if (userId) {
+      db.prepare(`UPDATE users SET subscription_status = 'free' WHERE id = ?`).run(userId);
+      console.log(`Pro subscription cancelled for user ${userId}`);
+    }
+  }
+
+  res.json({ received: true });
+});
+
 app.use(express.json());
 app.use(middleware.handle(i18next));
 app.use(express.static(path.join(__dirname, '../public')));
@@ -64,9 +124,48 @@ app.get('/api/auth/me', (req, res) => {
   const authHeader = req.headers.authorization;
   if (!authHeader) return res.status(401).json({ error: 'No token' });
   const token = authHeader.split(' ')[1];
-  const user = verifyToken(token);
+  const user = verifyToken(token) as { id: number; email: string } | null;
   if (!user) return res.status(401).json({ error: 'Invalid token' });
-  res.json({ user });
+
+  // Attach live credit + subscription info
+  const credits = getCredits(user.id);
+  const subscriptionStatus = getSubscriptionStatus(user.id);
+
+  res.json({ user: { ...user, credits_remaining: credits, subscription_status: subscriptionStatus } });
+});
+
+// Create Stripe Checkout session
+app.post('/api/create-checkout-session', async (req, res) => {
+  const user = requireAuth(req, res);
+  if (!user) return;
+
+  const { priceId } = req.body;
+  if (!priceId) return res.status(400).json({ error: 'priceId required' });
+
+  const validPriceIds = [
+    'price_1TSNK7JJ8j4Hbj4T5hUe7YkX',
+    'price_1TSNKSJJ8j4Hbj4TegNWqhKd',
+    'price_1TSNKmJJ8j4Hbj4TjqpvxIYl',
+    'price_1TSNLBJJ8j4Hbj4TlZMxwjLO',
+  ];
+  if (!validPriceIds.includes(priceId)) {
+    return res.status(400).json({ error: 'Invalid price ID' });
+  }
+
+  try {
+    const baseUrl = process.env.BASE_URL || `http://localhost:${PORT}`;
+    const url = await createCheckoutSession({
+      userId: user.id,
+      userEmail: user.email,
+      priceId,
+      successUrl: `${baseUrl}/success.html?session_id={CHECKOUT_SESSION_ID}`,
+      cancelUrl: `${baseUrl}/tool.html`,
+    });
+    res.json({ url });
+  } catch (err: any) {
+    console.error('Stripe checkout session error:', err.message);
+    res.status(500).json({ error: 'Could not create checkout session' });
+  }
 });
 
 // Email report endpoint
@@ -156,8 +255,28 @@ app.post('/api/trial-signup', async (req, res) => {
   res.json({ success: true });
 });
 
-// Generate participatieverslag as DOCX
+// Generate participatieverslag as DOCX (requires auth + report credit)
 app.post('/api/generate-docx', async (req, res) => {
+  // Auth check
+  const user = requireAuth(req, res);
+  if (!user) return;
+
+  // Credit / subscription check
+  const subStatus = getSubscriptionStatus(user.id);
+  if (subStatus !== 'active') {
+    // Not Pro — needs a credit
+    const spent = useCredit(user.id);
+    if (!spent) {
+      return res.status(402).json({
+        error: 'No report credits remaining',
+        code: 'NO_CREDITS',
+        buyUrl: '/diensten.html#pricing',
+      });
+    }
+  }
+
+  // Proceed with generation below
+
   try {
     const { content, filename } = req.body;
     if (!content) {

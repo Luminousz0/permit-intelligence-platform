@@ -180,12 +180,17 @@ Gegenereerd door Permit Intelligence — permitintelligence.nl
 `;
 }
 
+const API_BASE = window.location.hostname === 'localhost' ? 'http://localhost:3000' : '';
+
 async function downloadTemplate(content, filename) {
+  const token = localStorage.getItem('authToken');
   try {
-    const API_BASE = window.location.hostname === 'localhost' ? 'http://localhost:3000' : '';
     const res = await fetch(`${API_BASE}/api/generate-docx`, {
       method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
+      headers: {
+        'Content-Type': 'application/json',
+        ...(token ? { 'Authorization': `Bearer ${token}` } : {}),
+      },
       body: JSON.stringify({ content, filename }),
     });
 
@@ -200,8 +205,207 @@ async function downloadTemplate(content, filename) {
     URL.revokeObjectURL(url);
   } catch (err) {
     console.error('Download error:', err);
-    alert('Failed to generate document. Please try again.');
+    alert('Fout bij het genereren. Probeer opnieuw.');
   }
+}
+
+// ── Purchase modal ────────────────────────────────────────────────────────────
+function PurchaseModal({ onClose, onLoginRequired }) {
+  const [loading, useStateT_loading] = useStateT(null);
+
+  const PLANS = [
+    { priceId: 'price_1TSNK7JJ8j4Hbj4T5hUe7YkX', label: '1 rapport', price: '€29', sub: '€29 per rapport' },
+    { priceId: 'price_1TSNKSJJ8j4Hbj4TegNWqhKd', label: '5 rapporten', price: '€99', sub: '€19,80 per rapport' },
+    { priceId: 'price_1TSNKmJJ8j4Hbj4TjqpvxIYl', label: '15 rapporten', price: '€249', sub: '€16,60 per rapport' },
+  ];
+
+  async function handleBuy(priceId) {
+    useStateT_loading(priceId);
+    try {
+      const token = localStorage.getItem('authToken');
+      const res = await fetch(`${API_BASE}/api/create-checkout-session`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': `Bearer ${token}`,
+        },
+        body: JSON.stringify({ priceId }),
+      });
+      const data = await res.json();
+      if (data.url) {
+        window.location.href = data.url;
+      } else {
+        alert('Kon betaling niet starten. Probeer opnieuw.');
+        useStateT_loading(null);
+      }
+    } catch (err) {
+      console.error('Checkout error:', err);
+      alert('Kon betaling niet starten. Probeer opnieuw.');
+      useStateT_loading(null);
+    }
+  }
+
+  return (
+    <div style={{
+      position: 'fixed', inset: 0, background: 'rgba(0,0,0,0.5)',
+      display: 'flex', alignItems: 'center', justifyContent: 'center',
+      zIndex: 9999, padding: 16,
+    }} onClick={onClose}>
+      <div style={{
+        background: 'var(--bg)', borderRadius: 12, padding: '32px 28px',
+        maxWidth: 480, width: '100%', boxShadow: '0 20px 60px rgba(0,0,0,0.25)',
+      }} onClick={e => e.stopPropagation()}>
+        <div style={{ fontSize: 13, color: 'var(--ink-muted)', marginBottom: 4 }}>RAPPORT CREDITS</div>
+        <h2 style={{ margin: '0 0 6px', fontSize: 22, fontWeight: 700 }}>Genereer uw participatieverslag</h2>
+        <p style={{ margin: '0 0 24px', color: 'var(--ink-muted)', fontSize: 14 }}>
+          Gemeentespecifiek DOCX-template, klaar om in te vullen en in te dienen.
+          Één afgekeurde aanvraag kost €60–80k vertraging. Ons template kost €29.
+        </p>
+        <div style={{ display: 'flex', flexDirection: 'column', gap: 10, marginBottom: 20 }}>
+          {PLANS.map(plan => (
+            <button key={plan.priceId} onClick={() => handleBuy(plan.priceId)}
+              disabled={loading === plan.priceId}
+              style={{
+                display: 'flex', alignItems: 'center', justifyContent: 'space-between',
+                padding: '14px 18px', border: '1.5px solid var(--hairline-strong)',
+                borderRadius: 8, background: 'var(--bg-alt)', cursor: 'pointer',
+                opacity: loading && loading !== plan.priceId ? 0.5 : 1,
+              }}>
+              <span style={{ fontWeight: 600, fontSize: 15 }}>{plan.label}</span>
+              <span style={{ display: 'flex', flexDirection: 'column', alignItems: 'flex-end' }}>
+                <span style={{ fontWeight: 700, fontSize: 17 }}>{loading === plan.priceId ? '...' : plan.price}</span>
+                <span style={{ fontSize: 12, color: 'var(--ink-muted)' }}>{plan.sub}</span>
+              </span>
+            </button>
+          ))}
+        </div>
+        <button onClick={onClose} style={{
+          width: '100%', padding: '10px', border: '1px solid var(--hairline)',
+          borderRadius: 8, background: 'transparent', cursor: 'pointer',
+          color: 'var(--ink-muted)', fontSize: 14,
+        }}>Annuleren</button>
+      </div>
+    </div>
+  );
+}
+
+// ── Auth-aware download handler ───────────────────────────────────────────────
+async function handleDocxClick({ muni, data, type, units, setShowAuth, setShowPurchase, setPendingDownload }) {
+  const token = localStorage.getItem('authToken');
+
+  // Step 1: must be logged in
+  if (!token) {
+    setPendingDownload({ muni, data, type, units });
+    setShowAuth(true);
+    return;
+  }
+
+  // Step 2: check credits
+  try {
+    const meRes = await fetch(`${API_BASE}/api/auth/me`, {
+      headers: { 'Authorization': `Bearer ${token}` },
+    });
+    if (!meRes.ok) {
+      // Token invalid — prompt re-login
+      localStorage.removeItem('authToken');
+      setPendingDownload({ muni, data, type, units });
+      setShowAuth(true);
+      return;
+    }
+    const { user } = await meRes.json();
+
+    if (user.subscription_status === 'active' || user.credits_remaining > 0) {
+      // Has access — download directly
+      const content = generateParticipatieverslag(muni, data, type, units);
+      const filename = `participatieverslag-${muni.toLowerCase().replace(/\s+/g, '-')}.docx`;
+      await downloadTemplate(content, filename);
+    } else {
+      // No credits — show purchase modal
+      setPendingDownload({ muni, data, type, units });
+      setShowPurchase(true);
+    }
+  } catch (err) {
+    console.error('Auth check error:', err);
+    // Fall back to showing purchase modal
+    setPendingDownload({ muni, data, type, units });
+    setShowPurchase(true);
+  }
+}
+
+// ── Simple inline auth modal ──────────────────────────────────────────────────
+function AuthModal({ onClose, onSuccess }) {
+  const [mode, setMode] = useStateT('login'); // 'login' | 'register'
+  const [email, setEmail] = useStateT('');
+  const [password, setPassword] = useStateT('');
+  const [error, setError] = useStateT('');
+  const [loading, setLoading] = useStateT(false);
+
+  async function handleSubmit(e) {
+    e.preventDefault();
+    setLoading(true);
+    setError('');
+    try {
+      const endpoint = mode === 'login' ? '/api/auth/login' : '/api/auth/register';
+      const res = await fetch(`${API_BASE}${endpoint}`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ email, password }),
+      });
+      const data = await res.json();
+      if (!res.ok) {
+        setError(data.error || 'Er is iets misgegaan.');
+      } else {
+        localStorage.setItem('authToken', data.token);
+        onSuccess(data.user);
+      }
+    } catch (err) {
+      setError('Verbindingsfout. Probeer opnieuw.');
+    } finally {
+      setLoading(false);
+    }
+  }
+
+  return (
+    <div style={{
+      position: 'fixed', inset: 0, background: 'rgba(0,0,0,0.5)',
+      display: 'flex', alignItems: 'center', justifyContent: 'center',
+      zIndex: 9999, padding: 16,
+    }} onClick={onClose}>
+      <div style={{
+        background: 'var(--bg)', borderRadius: 12, padding: '32px 28px',
+        maxWidth: 400, width: '100%', boxShadow: '0 20px 60px rgba(0,0,0,0.25)',
+      }} onClick={e => e.stopPropagation()}>
+        <div style={{ fontSize: 13, color: 'var(--ink-muted)', marginBottom: 4 }}>GRATIS ACCOUNT</div>
+        <h2 style={{ margin: '0 0 6px', fontSize: 22, fontWeight: 700 }}>
+          {mode === 'login' ? 'Inloggen' : 'Account aanmaken'}
+        </h2>
+        <p style={{ margin: '0 0 20px', color: 'var(--ink-muted)', fontSize: 14 }}>
+          {mode === 'login'
+            ? 'Log in om uw participatieverslag te downloaden.'
+            : 'Maak gratis een account aan om uw rapport te downloaden.'}
+        </p>
+        <form onSubmit={handleSubmit} style={{ display: 'flex', flexDirection: 'column', gap: 12 }}>
+          <input type="email" placeholder="E-mailadres" value={email}
+            onChange={e => setEmail(e.target.value)} required
+            style={{ padding: '11px 14px', borderRadius: 8, border: '1.5px solid var(--hairline-strong)', background: 'var(--bg-alt)', fontSize: 15 }} />
+          <input type="password" placeholder="Wachtwoord" value={password}
+            onChange={e => setPassword(e.target.value)} required
+            style={{ padding: '11px 14px', borderRadius: 8, border: '1.5px solid var(--hairline-strong)', background: 'var(--bg-alt)', fontSize: 15 }} />
+          {error && <div style={{ color: '#c0392b', fontSize: 13 }}>{error}</div>}
+          <button type="submit" disabled={loading}
+            style={{ padding: '12px', borderRadius: 8, background: '#111', color: '#fff', border: 'none', fontWeight: 600, fontSize: 15, cursor: 'pointer' }}>
+            {loading ? 'Bezig...' : (mode === 'login' ? 'Inloggen' : 'Account aanmaken')}
+          </button>
+        </form>
+        <div style={{ textAlign: 'center', marginTop: 16, fontSize: 14 }}>
+          {mode === 'login'
+            ? <span>Nog geen account? <button onClick={() => setMode('register')} style={{ background: 'none', border: 'none', cursor: 'pointer', textDecoration: 'underline', fontSize: 14 }}>Registreren</button></span>
+            : <span>Al een account? <button onClick={() => setMode('login')} style={{ background: 'none', border: 'none', cursor: 'pointer', textDecoration: 'underline', fontSize: 14 }}>Inloggen</button></span>
+          }
+        </div>
+      </div>
+    </div>
+  );
 }
 
 // ── Full 41-municipality database ─────────────────────────────────────────────
@@ -955,6 +1159,30 @@ function ToolPage({ lang, setLang }) {
   const [query, setQuery] = useStateT("");
   const [step,  setStep]  = useStateT(1);
 
+  // Payment + auth modals
+  const [showAuth,     setShowAuth]     = useStateT(false);
+  const [showPurchase, setShowPurchase] = useStateT(false);
+  const [pendingDl,    setPendingDl]    = useStateT(null); // { muni, data, type, units }
+
+  // After login: resume pending download
+  async function onAuthSuccess(user) {
+    setShowAuth(false);
+    if (pendingDl) {
+      const { user: freshUser } = await fetch(`${API_BASE}/api/auth/me`, {
+        headers: { 'Authorization': `Bearer ${localStorage.getItem('authToken')}` },
+      }).then(r => r.json());
+
+      if (freshUser.subscription_status === 'active' || freshUser.credits_remaining > 0) {
+        const content = generateParticipatieverslag(pendingDl.muni, pendingDl.data, pendingDl.type, pendingDl.units);
+        const filename = `participatieverslag-${pendingDl.muni.toLowerCase().replace(/\s+/g, '-')}.docx`;
+        await downloadTemplate(content, filename);
+        setPendingDl(null);
+      } else {
+        setShowPurchase(true);
+      }
+    }
+  }
+
   const filtered = useMemoT(() => {
     if (!query) return MUNI_LIST;
     return MUNI_LIST.filter(m => m.toLowerCase().includes(query.toLowerCase()));
@@ -974,6 +1202,18 @@ function ToolPage({ lang, setLang }) {
 
   return (
     <>
+      {showAuth && (
+        <AuthModal
+          onClose={() => setShowAuth(false)}
+          onSuccess={onAuthSuccess}
+        />
+      )}
+      {showPurchase && (
+        <PurchaseModal
+          onClose={() => setShowPurchase(false)}
+          onLoginRequired={() => { setShowPurchase(false); setShowAuth(true); }}
+        />
+      )}
       <SubNav lang={lang} setLang={setLang} current="tool.html" accent={accent}
               tryLabel={t.nav.tryTool} />
       <PageHeader
@@ -1132,13 +1372,16 @@ function ToolPage({ lang, setLang }) {
                 </div>
                 <button type="button" className="btn btn-primary"
                         style={{ background: accent.bg, color: accent.fg }}
-                        onClick={() => {
-                          const content = generateParticipatieverslag(muni, data, type, units);
-                          const filename = `participatieverslag-${muni.toLowerCase().replace(/\s+/g, "-")}.doc`;
-                          downloadTemplate(content, filename);
-                        }}>
-                  {tt.generateBtn} <span className="arrow">↓</span>
+                        onClick={() => handleDocxClick({
+                          muni, data, type, units,
+                          setShowAuth, setShowPurchase,
+                          setPendingDownload: setPendingDl,
+                        })}>
+                  {tt.generateBtn} — €29 <span className="arrow">↓</span>
                 </button>
+                <div style={{ fontSize: 12, color: 'var(--ink-muted)', marginTop: 8 }}>
+                  Gratis account vereist · Eén credit per rapport
+                </div>
               </div>
             </div>
           </div>
