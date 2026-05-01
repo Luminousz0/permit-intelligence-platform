@@ -1326,7 +1326,11 @@ body[data-rounded="sharp"] .widget-result {
 }
 .layer-status.status-live  { background: var(--green); color: oklch(0.15 0.04 145); }
 .layer-status.status-soon  { background: var(--amber); color: oklch(0.3 0.06 75); }
-.layer-status.status-dev   { background: var(--gray-soft); color: var(--mute); }
+.layer-status.status-dev   { background: var(--gray-soft); color: var(--ink-soft); }
+body[data-theme="dark"] .layer-status.status-dev {
+  background: oklch(0.28 0.012 250);
+  color: oklch(0.88 0.005 250);
+}
 .layer-text {
   font-size: 15px;
   line-height: 1.6;

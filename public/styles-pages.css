@@ -185,12 +185,17 @@
   position: sticky; top: 0;
 }
 .comparison-table td {
-  padding: 14px;
+  padding: 14px 18px 14px 14px;
   border-bottom: 1px solid var(--hairline);
+  border-right: 1px solid var(--hairline);
   vertical-align: top;
   color: var(--ink-soft);
+  min-width: 110px;
+  white-space: normal;
+  word-break: normal;
 }
 .comparison-table td:first-child { color: var(--ink); font-weight: 500; }
+.comparison-table td:last-child { border-right: none; }
 .comparison-table tr:hover td { background: var(--bg-alt); }
 
 /* ---------- Reference Tool page ---------- */
@@ -312,6 +317,12 @@
   grid-template-columns: 1fr 1fr;
   gap: 16px;
 }
+.svc-grid-3 {
+  grid-template-columns: repeat(3, 1fr);
+}
+@media (max-width: 960px) {
+  .svc-grid-3 { grid-template-columns: 1fr; }
+}
 .svc-card {
   background: var(--bg);
   border: 1px solid var(--hairline-strong);
@@ -319,6 +330,20 @@
   padding: 36px 32px;
   display: flex;
   flex-direction: column;
+  position: relative;
+}
+.svc-card-recommended { border-width: 2px; }
+.svc-flag {
+  position: absolute;
+  top: 0;
+  right: 24px;
+  transform: translateY(-50%);
+  font-size: 10px;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  padding: 4px 10px;
+  border-radius: 999px;
+  font-weight: 600;
 }
 .svc-card.is-dark { background: var(--bg-deep); color: oklch(0.75 0.005 250); border-color: var(--bg-deep); }
 .svc-eyebrow {

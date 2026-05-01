@@ -39,95 +39,154 @@
               { label: lang === "en" ? "Services" : "Diensten" }
             ]}
             eyebrow={lang === "en" ? "Services" : "Diensten"}
-            title={lang === "en" ? "Two paths, depending on your needs." : "Twee paden, afhankelijk van je behoefte."}
+            title={lang === "en" ? "Three paths, depending on your needs." : "Drie paden, afhankelijk van je behoefte."}
             sub={lang === "en"
-              ? "Start free with the tool. Scale up with a subscription, or have us fully handle your participation documentation for complex or urgent projects."
-              : "Begin gratis met de tool. Schaal op met een abonnement, of laat ons je participatiedocumentatie volledig verzorgen voor complexe of urgente projecten."}
+              ? "Free lookup with no signup. Buy individual reports per project, or go Pro for unlimited. Hands-on consultancy is also available for complex projects."
+              : "Gratis lookup zonder registratie. Koop losse rapporten per project of neem Pro voor onbeperkt. Begeleide consultancy beschikbaar voor complexe projecten."}
           />
 
           <section className="services-tiers">
             <div className="container">
-              <div className="svc-grid">
+              <div className="svc-grid svc-grid-3">
                 <div className="svc-card">
-                  <div className="svc-eyebrow">Self-service</div>
-                  <h2 className="svc-title">Abonnement</h2>
-                  <p className="svc-desc">Voor ontwikkelaars met meerdere actieve projecten die zelf documentatie willen voorbereiden.</p>
+                  <div className="svc-eyebrow">Free</div>
+                  <h2 className="svc-title">{lang === "en" ? "Lookup" : "Lookup"}</h2>
+                  <p className="svc-desc">
+                    {lang === "en"
+                      ? "Free forever, no signup. Look up any of 41 municipalities and read the policy summary."
+                      : "Altijd gratis, geen registratie nodig. Zoek elke van de 41 gemeenten op en lees het beleidsoverzicht."}
+                  </p>
                   <div className="svc-price-row">
-                    <div className="svc-price">€49</div>
-                    <div className="svc-period">per maand · 14 dagen gratis</div>
+                    <div className="svc-price">€0</div>
+                    <div className="svc-period">{lang === "en" ? "free forever" : "altijd gratis"}</div>
                   </div>
                   <ul className="svc-features">
-                    <li><span className="check">✓</span>Onbeperkte zoekopdrachten in 41 gemeenten</li>
-                    <li><span className="check">✓</span>Documentatie-templates per gemeente</li>
-                    <li><span className="check">✓</span>Beleidsupdates per e-mail</li>
-                    <li><span className="check">✓</span>Technische vragen — antwoord binnen 48u</li>
-                    <li><span className="check">✓</span>Export naar PDF / Word voor indiening</li>
-                    <li><span className="check">✓</span>Maandelijks opzegbaar</li>
+                    <li><span className="check">✓</span>{lang === "en" ? "Lookup all 41 municipalities" : "Lookup alle 41 gemeenten"}</li>
+                    <li><span className="check">✓</span>{lang === "en" ? "Policy summary per municipality" : "Beleidsoverzicht per gemeente"}</li>
+                    <li><span className="check">✓</span>{lang === "en" ? "Source citations (CVDR + date)" : "Broncitaties (CVDR + datum)"}</li>
+                    <li><span className="check">✓</span>{lang === "en" ? "Interactive Netherlands compliance map" : "Interactieve compliance-kaart"}</li>
+                    <li><span className="check">✓</span>{lang === "en" ? "No account required" : "Geen account nodig"}</li>
                   </ul>
                   <div className="svc-cta-row">
-                    <button type="button" className="btn btn-primary" style={{ background: accent.bg, color: accent.fg }}>
-                      Start gratis proefperiode <span className="arrow">→</span>
-                    </button>
+                    <a href="tool.html" type="button" className="btn btn-ghost" style={{ display: "inline-block", textDecoration: "none" }}>
+                      {lang === "en" ? "Try the tool" : "Probeer de tool"} <span className="arrow">→</span>
+                    </a>
                   </div>
                 </div>
 
-                <div className="svc-card is-dark">
-                  <div className="svc-eyebrow">Begeleid</div>
-                  <h2 className="svc-title">Consultatie</h2>
-                  <p className="svc-desc">Voor complexe projecten waar onzekerheid duur is. Wij verzorgen de volledige participatie-documentatie tot indiening.</p>
+                <div className="svc-card svc-card-recommended" style={{ borderColor: accent.bg }}>
+                  <div className="svc-flag mono" style={{ background: accent.bg, color: accent.fg }}>
+                    {lang === "en" ? "popular" : "populair"}
+                  </div>
+                  <div className="svc-eyebrow">{lang === "en" ? "Per-report" : "Per rapport"}</div>
+                  <h2 className="svc-title">{lang === "en" ? "Report credits" : "Rapport-credits"}</h2>
+                  <p className="svc-desc">
+                    {lang === "en"
+                      ? "Generate a complete, submission-ready DOCX participation report. One credit per municipality. Buy more, save more."
+                      : "Genereer een volledig DOCX-participatieverslag, klaar om in te dienen. Eén credit per gemeente. Bundel = meer korting."}
+                  </p>
                   <div className="svc-price-row">
-                    <div className="svc-price">€500–2000</div>
-                    <div className="svc-period">per project</div>
+                    <div className="svc-price">€29 / €99 / €249</div>
+                    <div className="svc-period">{lang === "en" ? "1 / 5 / 15 reports" : "1 / 5 / 15 rapporten"}</div>
                   </div>
                   <ul className="svc-features">
-                    <li><span className="check">✓</span>Project-beoordeling tegen gemeentelijk kader</li>
-                    <li><span className="check">✓</span>Voorbereiding volledige participatiedocumentatie</li>
-                    <li><span className="check">✓</span>Pre-submission review tegen gemeentelijke standaard</li>
-                    <li><span className="check">✓</span>Vooroverleg-begeleiding waar nodig</li>
-                    <li><span className="check">✓</span>Directe toegang tot specialist (Slack / mail)</li>
-                    <li><span className="check">✓</span>Garantie: ontvankelijk of geld terug</li>
+                    <li><span className="check">✓</span>{lang === "en" ? "Full DOCX report per municipality" : "Volledig DOCX-rapport per gemeente"}</li>
+                    <li><span className="check">✓</span>{lang === "en" ? "All required sections pre-filled" : "Alle vereiste secties ingevuld"}</li>
+                    <li><span className="check">✓</span>{lang === "en" ? "Bundle: 5 reports for €99 (€19.80 each)" : "Bundel: 5 rapporten €99 (€19,80 per stuk)"}</li>
+                    <li><span className="check">✓</span>{lang === "en" ? "Bulk: 15 reports for €249 (€16.60 each)" : "Bulk: 15 rapporten €249 (€16,60 per stuk)"}</li>
+                    <li><span className="check">✓</span>{lang === "en" ? "Credits never expire" : "Credits vervallen niet"}</li>
+                    <li><span className="check">✓</span>{lang === "en" ? "Pay as you need it — no subscription" : "Betaal als je het nodig hebt — geen abonnement"}</li>
                   </ul>
                   <div className="svc-cta-row">
-                    <button
-                      type="button"
-                      className="btn btn-ghost"
-                      style={{ borderColor: "oklch(0.5 0.01 250)", color: "oklch(0.85 0.005 250)" }}
-                      onClick={() => {
-                        if (window.openCalendly) window.openCalendly("diensten");
-                        if (window.trackEvent) window.trackEvent("demo_cta_click", "conversion", "diensten");
-                      }}
-                    >
-                      Plan een gesprek <span className="arrow">→</span>
-                    </button>
+                    <a href="tool.html" type="button" className="btn btn-primary" style={{ background: accent.bg, color: accent.fg, display: "inline-block", textDecoration: "none" }}>
+                      {lang === "en" ? "Buy credits" : "Koop credits"} <span className="arrow">→</span>
+                    </a>
+                  </div>
+                </div>
+
+                <div className="svc-card">
+                  <div className="svc-eyebrow">Pro</div>
+                  <h2 className="svc-title">{lang === "en" ? "Unlimited" : "Onbeperkt"}</h2>
+                  <p className="svc-desc">
+                    {lang === "en"
+                      ? "Unlimited report generation plus the application dashboard to track every permit by milestone."
+                      : "Onbeperkt rapporten genereren plus het aanvraag-dashboard om elke vergunning per mijlpaal te volgen."}
+                  </p>
+                  <div className="svc-price-row">
+                    <div className="svc-price">€79</div>
+                    <div className="svc-period">{lang === "en" ? "per month" : "per maand"}</div>
+                  </div>
+                  <ul className="svc-features">
+                    <li><span className="check">✓</span>{lang === "en" ? "Unlimited report generation" : "Onbeperkte rapportgeneratie"}</li>
+                    <li><span className="check">✓</span>{lang === "en" ? "Application dashboard with milestones" : "Aanvraag-dashboard met mijlpalen"}</li>
+                    <li><span className="check">✓</span>{lang === "en" ? "Policy updates by email" : "Beleidsupdates per e-mail"}</li>
+                    <li><span className="check">✓</span>{lang === "en" ? "Priority support — within 24h" : "Prioriteitssupport — binnen 24u"}</li>
+                    <li><span className="check">✓</span>{lang === "en" ? "Cancel monthly" : "Maandelijks opzegbaar"}</li>
+                  </ul>
+                  <div className="svc-cta-row">
+                    <a href="tool.html" type="button" className="btn btn-ghost" style={{ display: "inline-block", textDecoration: "none" }}>
+                      {lang === "en" ? "Start Pro" : "Start Pro"} <span className="arrow">→</span>
+                    </a>
                   </div>
                 </div>
               </div>
 
-              <div style={{ marginTop: 64 }}>
-                <h2 style={{ fontFamily: "var(--serif)", fontSize: 32, letterSpacing: "-0.02em", margin: "0 0 8px" }}>Welke past?</h2>
+              <div style={{ marginTop: 80 }}>
+                <div className="svc-eyebrow" style={{ marginBottom: 8 }}>{lang === "en" ? "Hands-on consultancy" : "Begeleide consultancy"}</div>
+                <h2 style={{ fontFamily: "var(--serif)", fontSize: 32, letterSpacing: "-0.02em", margin: "0 0 8px" }}>
+                  {lang === "en" ? "Need us to do the work?" : "Liever dat wij het werk doen?"}
+                </h2>
                 <p style={{ color: "var(--ink-soft)", maxWidth: "60ch", marginBottom: 32 }}>
-                  Geen verkooppraatje — een eerlijke beslisboom op basis van je situatie.
+                  {lang === "en"
+                    ? "For high-stakes projects where uncertainty is expensive. Two engagement levels: a focused 90-minute strategy session, or a full dossier review."
+                    : "Voor hoog-risico projecten waar onzekerheid duur is. Twee niveaus: een gerichte 90-minuten strategiesessie, of een volledige dossierbeoordeling."}
                 </p>
 
                 <div style={{ display: "grid", gridTemplateColumns: "repeat(2, 1fr)", gap: 16 }}>
                   <div style={{ padding: 24, border: "1px solid var(--hairline)", borderRadius: 8, background: "var(--bg)" }}>
-                    <div className="mono small" style={{ color: "var(--mute)", letterSpacing: "0.1em", textTransform: "uppercase", marginBottom: 8 }}>Kies abonnement als</div>
+                    <div className="mono small" style={{ color: "var(--mute)", letterSpacing: "0.1em", textTransform: "uppercase", marginBottom: 8 }}>
+                      {lang === "en" ? "Strategy session" : "Strategiesessie"}
+                    </div>
+                    <div style={{ fontFamily: "var(--serif)", fontSize: 28, marginBottom: 4 }}>€350</div>
+                    <div className="mono small" style={{ color: "var(--mute)", marginBottom: 12 }}>
+                      {lang === "en" ? "90-minute session" : "90-minuten sessie"}
+                    </div>
                     <ul style={{ paddingLeft: 18, fontSize: 15, color: "var(--ink-soft)", lineHeight: 1.7 }}>
-                      <li>Je 3+ projecten per jaar doet</li>
-                      <li>Je intern capaciteit hebt voor onderzoek</li>
-                      <li>Je gemeenten relatief stabiel zijn</li>
-                      <li>Je documentatie zelf opstelt</li>
+                      <li>{lang === "en" ? "Project review against municipal framework" : "Projectbeoordeling tegen gemeentelijk kader"}</li>
+                      <li>{lang === "en" ? "Document checklist tailored to your case" : "Documentchecklist op maat"}</li>
+                      <li>{lang === "en" ? "Direct expert access during the call" : "Directe expert-toegang tijdens het gesprek"}</li>
+                      <li>{lang === "en" ? "Written follow-up summary" : "Schriftelijke samenvatting achteraf"}</li>
                     </ul>
                   </div>
                   <div style={{ padding: 24, border: "1px solid var(--hairline)", borderRadius: 8, background: "var(--bg)" }}>
-                    <div className="mono small" style={{ color: "var(--mute)", letterSpacing: "0.1em", textTransform: "uppercase", marginBottom: 8 }}>Kies consultatie als</div>
+                    <div className="mono small" style={{ color: "var(--mute)", letterSpacing: "0.1em", textTransform: "uppercase", marginBottom: 8 }}>
+                      {lang === "en" ? "Full dossier review" : "Volledige dossierbeoordeling"}
+                    </div>
+                    <div style={{ fontFamily: "var(--serif)", fontSize: 28, marginBottom: 4 }}>€950</div>
+                    <div className="mono small" style={{ color: "var(--mute)", marginBottom: 12 }}>
+                      {lang === "en" ? "per dossier" : "per dossier"}
+                    </div>
                     <ul style={{ paddingLeft: 18, fontSize: 15, color: "var(--ink-soft)", lineHeight: 1.7 }}>
-                      <li>Eén project, hoge inzet</li>
-                      <li>Onzekere of nieuwe gemeente</li>
-                      <li>Eerdere afwijzing op participatie</li>
-                      <li>Tijdsdruk: aanvraag binnen 4 weken</li>
+                      <li>{lang === "en" ? "Full participation documentation review" : "Volledige beoordeling participatiedocumentatie"}</li>
+                      <li>{lang === "en" ? "Pre-submission compliance check" : "Pre-submission compliance check"}</li>
+                      <li>{lang === "en" ? "Vooroverleg coordination if needed" : "Vooroverleg-begeleiding waar nodig"}</li>
+                      <li>{lang === "en" ? "Hand-off ready for submission" : "Direct in te dienen na overdracht"}</li>
                     </ul>
                   </div>
+                </div>
+
+                <div style={{ marginTop: 24 }}>
+                  <button
+                    type="button"
+                    className="btn btn-primary"
+                    style={{ background: accent.bg, color: accent.fg }}
+                    onClick={() => {
+                      if (window.openCalendly) window.openCalendly("diensten");
+                      if (window.trackEvent) window.trackEvent("demo_cta_click", "conversion", "diensten");
+                    }}
+                  >
+                    {lang === "en" ? "Schedule a call" : "Plan een gesprek"} <span className="arrow">→</span>
+                  </button>
                 </div>
               </div>
             </div>

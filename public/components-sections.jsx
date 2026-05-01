@@ -293,7 +293,7 @@ function TrialModal({ lang, accent, onClose }) {
                 disabled={status === "loading"}
               >
                 {status === "loading" ? L.loading : L.cta}
-                {status !== "loading" && <span className="arrow">\u2192</span>}
+                {status !== "loading" && <span className="arrow">{"\u2192"}</span>}
               </button>
             </form>
             <hr className="modal-divider" />
@@ -309,11 +309,18 @@ function TrialModal({ lang, accent, onClose }) {
 function Pricing({ t, accent, onTrialOpen }) {
   const handleCta = (tier) => {
     if (tier.type === "trial") {
+      // Legacy: kept for backward compatibility with old trial flow
       if (onTrialOpen) onTrialOpen();
       if (window.trackEvent) window.trackEvent("trial_cta_click", "conversion", tier.name);
     } else if (tier.type === "demo") {
       if (window.openCalendly) window.openCalendly("pricing");
       else if (window.trackEvent) window.trackEvent("demo_cta_click", "conversion", tier.name);
+    } else if (tier.type === "credits") {
+      if (window.trackEvent) window.trackEvent("credits_cta_click", "conversion", tier.name);
+      window.location.href = "tool.html";
+    } else if (tier.type === "pro") {
+      if (window.trackEvent) window.trackEvent("pro_cta_click", "conversion", tier.name);
+      window.location.href = "tool.html";
     } else {
       // free tier — go straight to tool
       window.location.href = "tool.html";

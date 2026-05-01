@@ -162,7 +162,7 @@ function DashboardApp() {
         setAuthPassword('');
         setAuthError('');
       } else {
-        let msg = 'Er is iets misgegaan. Probeer opnieuw.';
+        let msg = t.auth.genericError;
         try {
           const errData = await res.json();
           if (errData && errData.error) msg = errData.error;
@@ -171,7 +171,7 @@ function DashboardApp() {
       }
     } catch (err) {
       console.error('Auth error:', err);
-      setAuthError('Geen verbinding met de server. Probeer opnieuw.');
+      setAuthError(t.auth.networkError);
     } finally {
       setAuthBusy(false);
     }
@@ -212,7 +212,7 @@ function DashboardApp() {
     const now = new Date();
     const diff = now - date;
     const days = Math.floor(diff / (1000 * 60 * 60 * 24));
-    return days === 0 ? 'vandaag' : days === 1 ? '1 dag' : `${days} ${t.dashboard.daysLabel}`;
+    return days === 0 ? t.dashboard.today : days === 1 ? t.dashboard.oneDay : `${days} ${t.dashboard.daysLabel}`;
   };
 
   return (
@@ -380,7 +380,7 @@ function DashboardShell({
                   </p>
                   {app.case_number && (
                     <p className="app-card-meta" style={{ fontSize: '12px', color: 'var(--mute)' }}>
-                      Zaaknummer: {app.case_number}
+                      {t.dashboard.caseNumberInline} {app.case_number}
                     </p>
                   )}
                   <div style={{ marginTop: '12px', display: 'flex', alignItems: 'center', justifyContent: 'space-between', gap: '12px' }}>
@@ -447,7 +447,7 @@ function ApplicationDetailPanel({ app, t, lang, statusClass, onClose, onUpdate, 
 
           {app.address && (
             <div className="app-detail-section">
-              <h3>Locatie</h3>
+              <h3>{t.dashboard.locationLabel}</h3>
               <div className="app-detail-field">
                 <span className="app-detail-value">{app.address}</span>
               </div>
@@ -456,7 +456,7 @@ function ApplicationDetailPanel({ app, t, lang, statusClass, onClose, onUpdate, 
 
           {app.case_number && (
             <div className="app-detail-section">
-              <h3>Zaaknummer</h3>
+              <h3>{t.dashboard.caseNumberLabel}</h3>
               <div className="app-detail-field">
                 <span className="app-detail-value">{app.case_number}</span>
               </div>
@@ -464,7 +464,7 @@ function ApplicationDetailPanel({ app, t, lang, statusClass, onClose, onUpdate, 
           )}
 
           <div className="app-detail-section">
-            <h3>Mijlpalen</h3>
+            <h3>{t.dashboard.milestonesLabel}</h3>
             <ul className="milestone-timeline">
               {(app.milestones || []).map((m) => (
                 <li key={m.id} className="milestone-item">
@@ -475,7 +475,7 @@ function ApplicationDetailPanel({ app, t, lang, statusClass, onClose, onUpdate, 
                         onUpdate(app.id, { completeMilestoneStage: m.stage });
                       }
                     }}
-                    title={m.completed_at ? 'Voltooid' : 'Markeer als voltooid'}
+                    title={m.completed_at ? t.dashboard.milestoneCompleted : t.dashboard.milestoneMarkComplete}
                   />
                   <div style={{ flex: 1 }}>
                     <div className="milestone-label">
@@ -493,7 +493,7 @@ function ApplicationDetailPanel({ app, t, lang, statusClass, onClose, onUpdate, 
           </div>
 
           <div className="app-detail-section">
-            <h3>Notities</h3>
+            <h3>{t.dashboard.notesLabel}</h3>
             <textarea
               className="notes-textarea"
               placeholder={t.dashboard.notesPlaceholder}
@@ -656,14 +656,14 @@ function AuthModal({ t, authMode, setAuthMode, authEmail, setAuthEmail, authPass
   return (
     <>
       <div className="modal-overlay" onClick={onClose} />
-      <div className="modal-box" style={{ maxWidth: '400px', margin: '50px auto' }}>
+      <div className="modal-box" style={{ maxWidth: '400px' }}>
         <div style={{ padding: '32px' }}>
           <h2 className="modal-title">
             {authMode === 'login' ? t.dashboard.loginBtn : t.dashboard.registerBtn}
           </h2>
           <form onSubmit={onSubmit}>
             <div className="form-group">
-              <label>Email</label>
+              <label>{t.dashboard.emailLabel}</label>
               <input
                 type="email"
                 required
@@ -673,7 +673,7 @@ function AuthModal({ t, authMode, setAuthMode, authEmail, setAuthEmail, authPass
               />
             </div>
             <div className="form-group">
-              <label>Wachtwoord</label>
+              <label>{t.dashboard.passwordLabel}</label>
               <input
                 type="password"
                 required
@@ -712,7 +712,7 @@ function AuthModal({ t, authMode, setAuthMode, authEmail, setAuthEmail, authPass
               }}
             >
               {authBusy
-                ? (authMode === 'login' ? 'Bezig...' : 'Account aanmaken...')
+                ? (authMode === 'login' ? t.dashboard.authBusyLogin : t.dashboard.authBusyRegister)
                 : (authMode === 'login' ? t.dashboard.loginBtn : t.dashboard.registerBtn)}
             </button>
             <button

@@ -88,14 +88,16 @@ function Nav({ lang, setLang, t, accent, sticky, glyph, onTrialOpen, theme, setT
             <span className="lang-sep">/</span>
             <span className={lang === "en" ? "active" : ""}>EN</span>
           </button>
-          <button
-            type="button"
+          <a
+            href="tool.html"
             className="nav-cta"
-            style={{ background: accent.bg, color: accent.fg }}
-            onClick={() => { if (onTrialOpen) onTrialOpen(); }}
+            style={{ background: accent.bg, color: accent.fg, textDecoration: "none", display: "inline-block" }}
+            onClick={() => {
+              if (window.trackEvent) window.trackEvent("nav_try_tool", "navigation", "header");
+            }}
           >
             {t.nav.tryTool}
-          </button>
+          </a>
           <button
             type="button"
             className={`nav-menu-toggle${mobileMenuOpen ? " open" : ""}`}

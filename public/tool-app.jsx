@@ -333,7 +333,9 @@ async function handleDocxClick({ muni, data, type, units, setShowAuth, setShowPu
 }
 
 // ── Simple inline auth modal ──────────────────────────────────────────────────
-function AuthModal({ onClose, onSuccess }) {
+function AuthModal({ lang = 'nl', onClose, onSuccess }) {
+  const t = (window.COPY && window.COPY[lang]) || window.COPY?.nl || {};
+  const a = t.auth || {};
   const [mode, setMode] = useStateT('login'); // 'login' | 'register'
   const [email, setEmail] = useStateT('');
   const [password, setPassword] = useStateT('');
@@ -353,13 +355,13 @@ function AuthModal({ onClose, onSuccess }) {
       });
       const data = await res.json();
       if (!res.ok) {
-        setError(data.error || 'Er is iets misgegaan.');
+        setError(data.error || a.genericError || 'Er is iets misgegaan.');
       } else {
         localStorage.setItem('authToken', data.token);
         onSuccess(data.user);
       }
     } catch (err) {
-      setError('Verbindingsfout. Probeer opnieuw.');
+      setError(a.networkError || 'Verbindingsfout. Probeer opnieuw.');
     } finally {
       setLoading(false);
     }
@@ -375,32 +377,30 @@ function AuthModal({ onClose, onSuccess }) {
         background: 'var(--bg)', borderRadius: 12, padding: '32px 28px',
         maxWidth: 400, width: '100%', boxShadow: '0 20px 60px rgba(0,0,0,0.25)',
       }} onClick={e => e.stopPropagation()}>
-        <div style={{ fontSize: 13, color: 'var(--ink-muted)', marginBottom: 4 }}>GRATIS ACCOUNT</div>
+        <div style={{ fontSize: 13, color: 'var(--ink-muted)', marginBottom: 4 }}>{a.eyebrow}</div>
         <h2 style={{ margin: '0 0 6px', fontSize: 22, fontWeight: 700 }}>
-          {mode === 'login' ? 'Inloggen' : 'Account aanmaken'}
+          {mode === 'login' ? a.loginTitle : a.registerTitle}
         </h2>
         <p style={{ margin: '0 0 20px', color: 'var(--ink-muted)', fontSize: 14 }}>
-          {mode === 'login'
-            ? 'Log in om uw participatieverslag te downloaden.'
-            : 'Maak gratis een account aan om uw rapport te downloaden.'}
+          {mode === 'login' ? a.loginIntro : a.registerIntro}
         </p>
         <form onSubmit={handleSubmit} style={{ display: 'flex', flexDirection: 'column', gap: 12 }}>
-          <input type="email" placeholder="E-mailadres" value={email}
+          <input type="email" placeholder={a.emailPlaceholder} value={email}
             onChange={e => setEmail(e.target.value)} required
             style={{ padding: '11px 14px', borderRadius: 8, border: '1.5px solid var(--hairline-strong)', background: 'var(--bg-alt)', fontSize: 15 }} />
-          <input type="password" placeholder="Wachtwoord" value={password}
+          <input type="password" placeholder={a.passwordPlaceholder} value={password}
             onChange={e => setPassword(e.target.value)} required
             style={{ padding: '11px 14px', borderRadius: 8, border: '1.5px solid var(--hairline-strong)', background: 'var(--bg-alt)', fontSize: 15 }} />
           {error && <div style={{ color: '#c0392b', fontSize: 13 }}>{error}</div>}
           <button type="submit" disabled={loading}
             style={{ padding: '12px', borderRadius: 8, background: '#111', color: '#fff', border: 'none', fontWeight: 600, fontSize: 15, cursor: 'pointer' }}>
-            {loading ? 'Bezig...' : (mode === 'login' ? 'Inloggen' : 'Account aanmaken')}
+            {loading ? a.busy : (mode === 'login' ? a.loginBtn : a.registerBtn)}
           </button>
         </form>
         <div style={{ textAlign: 'center', marginTop: 16, fontSize: 14 }}>
           {mode === 'login'
-            ? <span>Nog geen account? <button onClick={() => setMode('register')} style={{ background: 'none', border: 'none', cursor: 'pointer', textDecoration: 'underline', fontSize: 14 }}>Registreren</button></span>
-            : <span>Al een account? <button onClick={() => setMode('login')} style={{ background: 'none', border: 'none', cursor: 'pointer', textDecoration: 'underline', fontSize: 14 }}>Inloggen</button></span>
+            ? <span>{a.noAccount} <button onClick={() => setMode('register')} style={{ background: 'none', border: 'none', cursor: 'pointer', textDecoration: 'underline', fontSize: 14 }}>{a.registerLink}</button></span>
+            : <span>{a.hasAccount} <button onClick={() => setMode('login')} style={{ background: 'none', border: 'none', cursor: 'pointer', textDecoration: 'underline', fontSize: 14 }}>{a.loginLink}</button></span>
           }
         </div>
       </div>
@@ -1204,12 +1204,14 @@ function ToolPage({ lang, setLang }) {
     <>
       {showAuth && (
         <AuthModal
+          lang={lang}
           onClose={() => setShowAuth(false)}
           onSuccess={onAuthSuccess}
         />
       )}
       {showPurchase && (
         <PurchaseModal
+          lang={lang}
           onClose={() => setShowPurchase(false)}
           onLoginRequired={() => { setShowPurchase(false); setShowAuth(true); }}
         />
