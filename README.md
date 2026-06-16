@@ -2,7 +2,7 @@
 
 Reference tool for Dutch municipal compliance under the Omgevingswet. Built for real estate developers and advisors who need to know exactly what permits a project requires — by municipality, by project type, by location.
 
-**[permitintelligence.up.railway.app](https://permitintelligence.up.railway.app)**
+**[permit-intelligence-platform.vercel.app](https://permit-intelligence-platform.vercel.app/)**
 
 ---
 
